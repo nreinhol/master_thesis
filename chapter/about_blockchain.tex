@@ -5,17 +5,25 @@ In general, a blockchain can be described as a digital data structure that can b
 Consequently, the main reason of bockchain technologies is the removal of such third trusted intermediaries through a distributed network of various users, who cooperating together to verify transactions and protect the validity of the ledger
 
 \subsection{Architecture}
-This subsection covers the architectural design of a blockchain and present all contained components in detail. 
-To begin with, a blockchain is a sequence of blocks, which holds a complete list of transaction records \cite{zheng2017overview}.
+This subsection covers the architectural design of a blockchain and presents all contained components in detail. Due to the plurality of the blockchain technologies, each of the technology slightly differs in design and components. The following explanations are oriented torwards the Ethereum blockchain implementation, which is also used as the underlying ICT to implement the open simulation platform.
 
+\subsubsection{The World State}
+Referring to the \textit{Yellow Paper} \cite{wood2014ethereum}, Ethereum can be seen as a transaction-based state machine. What does that mean? At the beginning, Ethereums state machine starting with a so called \textit{"genesis state"}. This is analogous to a blank sheet. On this state, no transactions have happened on the network. Next, transactions are executed and the state of the Ethereum world changes into a new state. Further, transactions are executed incrementally and morph it into some final state. Consequently, the final state is accepted as the canonical version of the world of Ethereum and represents at any times the current state.
 
-Blockchain is a sequence of blocks, which holds a complete
-list of transaction records like conventional public ledger [14]. Figure 1 illustrates an example of a blockchain. With a previous block hash contained in the block header, a block has only one parent block. It is worth noting that uncle blocks (children of the block’s ancestors) hashes would also be stored in ethereum blockchain [15]. The first block of a blockchain is called genesis block which has no parent block. We then explain the internals of blockchain in details
+\subsubsection{The Block} 
+To begin with, a blockchain is a sequence of blocks, which holds a complete list of transaction records \cite{zheng2017overview}. However, what is a block, which informations are contained, and and how arises a chain out of the various single blocks? This questions will be adressed in the following part. 
+A block is a collection of different relevant informations and consists of the \textit{block header} and the contained transactions. Following \textit{Ethereums Yellow Paper} \cite{wood2014ethereum}, the subsequent pieces of information are contained in the \textit{block header}:
 
-
-
-\subsection{Consensus Algorithms}
-
-\subsection{Ethereum Blockchain}
-
-\subsubsection{Smart Contracts}
+\begin{description}
+	\item[Parent Hash:] This is the Keccak-256 hash of the parents block's header
+	\item[Beneficiary:] The miners address (20-byte) to which all block rewards from the successful mining of a block are transferred.
+	\item[State Root:] This is the Keccak-256 hash of the root node of the state trie, after a block and its transactions are finalized. The state trie is the one and only global state in the Ethereum world. It is used as a secure unqiue identifier for the state and the state root node is cryptographically dependent on all internal state trie data.
+	\item[Transactions Root:] This is the Keccak-256 hash of the root node of the transaction trie. This trie contains all transactions in the block body and there is a separate transactions trie for every block.
+	\item[Receipts Root:] Every time a transaction is executed, Ethereum generates a transaction receipt that contains information about the transaction execution. This field is the Keccak-256 hash of the root node of the transactions receipt trie.
+	\item[Difficulty:] This is a measure of how hard it was to mine this block – a quantity calculated from the previous block’s difficulty and its timestamp
+	\item[Number:] This is a quantity equal to the number of blocks that precede the current block in the blockchain.
+	\item[Gas Limit:] This is a quantity equal to the current maximum gas expenditure per block. Each transaction consumes gas. The gas limit specifies the maximum gas that can be used by the transactions included in the block. It is a way to limit the number of transactions in a block.
+	\item[Gas Used:] This is a quantity equal to the total gas used in transactions in this block.
+	\item[Timestamp:] This is a record of Unix’s time at this block’s inception.
+	\item[Nonce:] This is an 8-byte hash that verifies a sufficient amount of computation has been done on this block. Further, it is a number added to a hashed block that, when rehashed, meets the difficulty level restrictions. The nonce is the number that blockchain miners are solving for.
+\end{description}
