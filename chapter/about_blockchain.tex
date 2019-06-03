@@ -147,8 +147,56 @@ power consumption due to the solving of a cryptographical puzzle, which requires
 significant computational effort \shortcite{andoni2019blockchain}. 
 
 % erklärung crypthograpgical puzzle
+The \textit{PoW} is random process which is not predictable and therefore only solvable through a 
+trial and error approach \shortcite{bitcoin_wiki_pow}. 
+All mining nodes compete with each other and the goal is to achieve a hash output that 
+is lower than a given specified target \shortcite{andoni2019blockchain}.
+The hash output includes and comprises out of the \textit{Parent Hash}, \textit{Transaction Root} and
+\textit{Nonce}, which are all part of the block headers data, mentioned in \ref{sec:block}.
+However, the \textit{Parent Hash} and \textit{Transaction Root} are given and immutable, thus the \textit{Nonce}
+is the value that all the mining nodes are solving for \footnote{A interactive blockchain demo: https://anders.com/blockchain/}.
+Consequently, the mining nodes modify the \textit{Nonce} until the hash output is lower than the required target \shortcite{andoni2019blockchain}.
+The following pseudocode in listing \ref{lst:pow_mechanism} will illustrate the \textit{PoW} procedure:
+
+\vspace{7mm}
+\begin{lstlisting}[label={lst:pow_mechanism}, caption={Pseudocode for PoW mechanism}]
+	targetValue = 00005cdf6d384113165841052dfd4638eaf756ac
+	
+	parentHash = abbecf2d59eacbde676c3f1f0bfcf124f8c68209
+	transactionRoot = 917c631e5ee59596859910759c8ed76a21252010
+	nonce = 1
+
+	valid = False
+
+	while(not valid):
+			hashOutput = sha256(parentHash+transactionRoot+nonce)
+		
+			if(hashOutput <= targetValue):
+					valid = True
+			else:
+					nonce += 1
+
+\end{lstlisting}
+
+Finally, when one mining node successfully calculated the \textit{Nonce} and therefore reaches the target value, 
+it broadcasts the block to all other mining nodes in the network. Now, all other nodes mutually validate the correctness of the hash value
+by recalculating the hash output and verifying if it is lower then the target value. 
+If the block is validated through all other mining nodes, all nodes will append this new block to their own blockchains \shortcite{zheng2017overview}.  
 
 % erklärung multiple chains
+Considering, the network is decentralised and the simultaneous generation of valid blocks is possible when multiple nodes find 
+the suitable \textit{Nonce} at a nearly same time \shortcite{zheng2016blockchain}. In this case, branches will be generated as shown in figure \ref{figure:blockchain_branches}
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.9\linewidth]{./figures/blockchain_branches.png}
+	\caption{Scenario of Blockchain Branches}
+	\label{figure:blockchain_branches}
+\end{figure}
+
+Nevertheless, it is unlikely that two competing branches will generate the next block simultaneously again. In the \textit{PoW} protocol, the longer
+branch is judged as the authentic one. As you can see in figure \ref{figure:blockchain_branches}, two branches arised out of two simultaneous valided blocks \textit{Block 4a}
+and \textit{Block 4b}. 
 
 
 \subsubsection{Nodes}
