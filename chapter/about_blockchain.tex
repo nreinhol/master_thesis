@@ -11,7 +11,7 @@ This subsection covers the architectural design of a blockchain and presents the
 
 \subsubsection{World State}
 \label{sec:world_state}
-Referring to the \textit{Yellow Paper} \shortcite{wood2014ethereum}, Ethereum can be seen as a transaction-based state machine. What does that mean? At the beginning, Ethereums state machine starting with a so called \textit{"genesis state"}. This is analogous to a blank sheet. On this state, no transactions have happened on the network. Next, transactions are executed and the state of the Ethereum world changes into a new state. Further, transactions are executed incrementally and morph it into some final state. Consequently, the final state is accepted as the canonical version of the world of Ethereum and represents at any times the current state.
+Referring to the \textit{Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereum can be seen as a transaction-based state machine. What does that mean? At the beginning, Ethereums state machine starting with a so called \textit{"genesis state"}. This is analogous to a blank sheet. On this state, no transactions have happened on the network. Next, transactions are executed and the state of the Ethereum world changes into a new state. Further, transactions are executed incrementally and morph it into some final state. Consequently, the final state is accepted as the canonical version of the world of Ethereum and represents at any times the current state.
 
 \begin{figure}[htbp]
 	\centering
@@ -46,7 +46,7 @@ Because of this characteristic, it is not necessary to compare the data of the e
 \subsubsection{Block} 
 \label{sec:block}
 As described in section \ref{sec:world_state}, whenever transactions are executed, the state of the Ethereum world changes into a new state. Every state and the belonging transactions, which transform the prior state into the new state, is cumulated in a so called block. That means, states are represented by blocks. As you can see in figure \ref{figure:state_transition}, the history of the Ethereum world is a linkage of states, or in other words, blocks. That is where the name blockchain comes from. A blockchain is a sequence of blocks, which holds a complete list of transaction records \shortcite{zheng2017overview}. 
-Moreover, a block is a collection of different relevant informations and consists of the \textit{block header} and the \textit{block body}, which contains the list of transactions. Following \textit{Ethereums Yellow Paper} \shortcite{wood2014ethereum}, the subsequent pieces of information are contained in the \textit{block header}:
+Moreover, a block is a collection of different relevant informations and consists of the \textit{block header} and the \textit{block body}, which contains the list of transactions. Following \textit{Ethereums Yellow Paper} by \shortciteA{wood2014ethereum}, the subsequent pieces of information are contained in the \textit{block header}:
 
 \begin{description}
 	\item[Parent Hash:] This is the hash of the parents block's header. Therefore, every block points to his ancestor. Due to this contained attribute, a chain arises out of the single blocks.
@@ -84,8 +84,22 @@ Though, both different types of transaction share the following common attribute
 \label{sec:transaction_lifecycle}
 Next, the life cycle of a transaction will be outlined. We will take a simple \textit{message call} as an example and will pass through the entire flow of how this transaction gets executed and permanently stored on the blockchain. During this process, many basic concepts of a blockchain will be introduced. 
 
-To begin with, someone want to send an abitrary amount of ether to someone else. Consequently, a transaction with the respective attributes, which are stated in section \ref{sec:transaction}, will be created. As a first step, this transaction will be signed. That means, the one who wants to execute the transaction needs to proof the ownership of the account. Otherwise, someone else could execute a transaction on your behalf. The way to proof this is by signing the transaction with the corresponding private key of this account \shortcite{transaction_life_cycle}. 
-Next, the signed transaction is submitted to the related Ethereum node. Then, the node will validate the signed transaction. After a successful validation, the node will send the transaction to it's peer nodes, who again send it to their peer nodes and so on \shortcite{transaction_life_cycle}. As soon as the transaction is broadcast to the network, the related node will declare a transaction id, which is the hash of the signed transaction and can be used to track the status of the transaction \footnote{A Website to track transactions: https://etherscan.io/}. Further, figure \ref{figure:node_network} describes a Ethereum network. As you can see, it contains a mix of miner nodes and non miner nodes. The non miner nodes can be distinguished into different types of nodes with different behavior, which are explained in detail in section \ref{sec:nodes}. The miner nodes are the ones who processing transactions into blocks \shortcite{transaction_life_cycle}. 
+To begin with, someone want to send an abitrary amount of ether to someone else. 
+Consequently, a transaction with the respective attributes, which are stated 
+in section \ref{sec:transaction}, will be created. As a first step, this transaction 
+will be signed. That means, the one who wants to execute the transaction needs to proof the 
+ownership of the account. Otherwise, someone else could execute a transaction on your behalf. 
+The way to proof this is by signing the transaction with the corresponding private
+key of this account \shortcite{transaction_life_cycle}. 
+Next, the signed transaction is submitted to the related Ethereum node. 
+Then, the node will validate the signed transaction. 
+After a successful validation, the node will send the transaction to 
+it's peer nodes, who again send it to their 
+peer nodes and so on \shortcite{transaction_life_cycle}. 
+As soon as the transaction is broadcast to the network, 
+the related node will declare a transaction id, which is the hash 
+of the signed transaction and can be used to track the 
+status of the transaction \footnote{A Website to track transactions: https://etherscan.io/}. 
 
 \begin{figure}[htbp]
 	\centering
@@ -94,7 +108,19 @@ Next, the signed transaction is submitted to the related Ethereum node. Then, th
 	\label{figure:node_network}
 \end{figure}
 
-Mining nodes contain and maintain a pool of transactions where they collect incoming transactions. They sort the transactions by gas price. However, there are no specific rules how the nodes sort the transactions. A common configuration is to sort the transaction by gas price in a descending order to optimize for a higher pay \shortcite{transaction_life_cycle}.
+\clearpage
+
+Further, figure \ref{figure:node_network} describes a Ethereum network. 
+As you can see, it contains a mix of miner nodes and non miner nodes. 
+The non miner nodes can be distinguished into different types of nodes with different 
+behavior, which are explained in detail in section \ref{sec:nodes}. 
+The miner nodes are the ones who processing transactions into blocks \shortcite{transaction_life_cycle}. 
+
+Mining nodes contain and maintain a pool of transactions where they collect incoming transactions. 
+They sort the transactions by gas price. 
+However, there are no specific rules how the nodes sort the transactions. 
+A common configuration is to sort the transaction by gas price in a descending order to 
+optimize for a higher pay \shortcite{transaction_life_cycle}.
 
 \begin{longtable}{c|c}
 	\hline
@@ -131,12 +157,15 @@ in the blockchain and modified the world state as mentioned in section \ref{sec:
 
 \subsubsection{Mining}
 \label{sec:mining}
-Next, the validation of a block will be outlined. In general, each mining node in the 
-network can generate or propose a block. The emerging question is, which node build the new 
-block and how will the newly generated block accepted by the remaining network members? 
+In this section, the stteps of the validation process of a pending block will be described. 
+In general, each mining node in the network can generate or propose a block. 
+The emerging question is, which node build the new block and how will the newly 
+generated block accepted by the remaining network members? 
 This process is called \textit{consensus mechanism}.
 It exists a lot of various consensus algorithms, each of them provides different features,
-advantages and disadvantages. To a large extent, the key perfomance drivers of a blockchain
+advantages and disadvantages. 
+
+To a large extent, the key perfomance drivers of a blockchain
 like transaction speed, scalability and security depending on the embedded consensus algorithm \shortcite{andoni2019blockchain}. 
 In this section, we will expound the \textit{Proof of Work (PoW)} mechanism, 
 which is at the time of this writing the current strategy in the Ethereum blockchain 
@@ -147,7 +176,7 @@ power consumption due to the solving of a cryptographical puzzle, which requires
 significant computational effort \shortcite{andoni2019blockchain}. 
 
 % erklärung crypthograpgical puzzle
-The \textit{PoW} is random process which is not predictable and therefore only solvable through a 
+The \textit{PoW} is a random process which is not predictable and therefore only solvable through a 
 trial and error approach \shortcite{bitcoin_wiki_pow}. 
 All mining nodes compete with each other and the goal is to achieve a hash output that 
 is lower than a given specified target \shortcite{andoni2019blockchain}.
@@ -161,11 +190,9 @@ The following pseudocode in listing \ref{lst:pow_mechanism} will illustrate the 
 \vspace{7mm}
 \begin{lstlisting}[label={lst:pow_mechanism}, caption={Pseudocode for PoW mechanism}]
 	targetValue = 00005cdf6d384113165841052dfd4638eaf756ac
-	
 	parentHash = abbecf2d59eacbde676c3f1f0bfcf124f8c68209
 	transactionRoot = 917c631e5ee59596859910759c8ed76a21252010
 	nonce = 1
-
 	valid = False
 
 	while(not valid):
@@ -177,6 +204,7 @@ The following pseudocode in listing \ref{lst:pow_mechanism} will illustrate the 
 					nonce += 1
 
 \end{lstlisting}
+\clearpage
 
 Finally, when one mining node successfully calculated the \textit{Nonce} and therefore reaches the target value, 
 it broadcasts the block to all other mining nodes in the network. Now, all other nodes mutually validate the correctness of the hash value
@@ -194,13 +222,36 @@ the suitable \textit{Nonce} at a nearly same time \shortcite{zheng2016blockchain
 	\label{figure:blockchain_branches}
 \end{figure}
 
-Nevertheless, it is unlikely that two competing branches will generate the next block simultaneously again. In the \textit{PoW} protocol, the longer
-branch is judged as the authentic one. As you can see in figure \ref{figure:blockchain_branches}, two branches arised out of two simultaneous valided blocks \textit{Block 4a}
-and \textit{Block 4b}. 
+Nevertheless, it is unlikely that two competing branches will generate the next block simultaneously again. 
+In the \textit{PoW} protocol, the longer branch is judged as the authentic one. 
+In figure \ref{figure:blockchain_branches}, two branches arised out of 
+two simultaneous valided blocks \textit{Block 4a} and \textit{Block 4b}. 
+After that, all mining nodes accept both branches and start working on 
+the next consecutive block until a longer branch is found \shortcite{andoni2019blockchain}. 
+As you can see in figure \ref{figure:blockchain_branches}, \textit{Block 4b} and \textit{Block 5} forms the longer 
+chain, therefore all miners on the branch with \textit{Block 4a} will switch to 
+the longer branch \shortcite{zheng2017overview}. 
 
+To sum up, this section joins and completes the previous section \ref{sec:transaction_lifecycle}.
+The consensus mechanism \textit{PoW} is described and outlined in pseudocode, whereby
+the validation process of new generated blocks is explained and illustrated.
+\clearpage
 
 \subsubsection{Nodes}
 \label{sec:nodes}
+
+As mentioned earlier in the previous section \ref{sec:transaction_lifecycle} 
+and illustrated in the figure \ref{figure:node_network}, nodes can be distinguished into different types. 
+This section will describe the concept of a node in general and will give a brief overview of the different
+types.
+
+In general, an Ethereum node (often also called client) is a software application 
+that implements the Ethereum specification and communicates over 
+the peer-to-peer network with other Ethereum clients.
+Although these clients can be implemented in different programming languages, they all communicate through
+the standardized ethereum protocol \shortcite{antonopoulos2018mastering}. 
+Therefore, they are able to operate and interact with the same Ethereum network. 
+
 
 
 \clearpage
