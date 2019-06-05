@@ -41,7 +41,7 @@ Therefore, any change to the underlying data, stored in a \textit{leaf node}, ca
 	\label{figure:merkle_tree_change}
 \end{figure}
 
-Because of this characteristic, it is not necessary to compare the data of the entire tree. It is sufficient to compare the single root hash to ensure that all the data are the same. This property is very important, because it makes it possible to store only the hash of the root node to represent a state of the ethereum world. 
+Because of this characteristic, it is not necessary to compare the data of the entire tree. It is sufficient to compare the single root hash to ensure that all the data are the same. This property is very important, because it makes it possible to store only the hash of the root node to represent a state of the Ethereum world. 
 
 \subsubsection{Block} 
 \label{sec:block}
@@ -152,7 +152,7 @@ So far, it is described how a pending block will be created and the transaction
 limit of a block is explained. In the next section \ref{sec:mining}, 
 the process of a pending block to a valid block is outlined in depth. 
 Finally, after the validation process of a block is finished successfully, 
-the life cycle of a transaction is over. That means, the transaction is anchored 
+the life cycle of a transaction is terminated. In other words, the transaction is anchored 
 in the blockchain and modified the world state as mentioned in section \ref{sec:world_state}.
 
 \subsubsection{Mining}
@@ -237,21 +237,88 @@ The consensus mechanism \textit{PoW} is described and outlined in pseudocode, wh
 the validation process of new generated blocks is explained and illustrated.
 \clearpage
 
-\subsubsection{Nodes}
+\subsubsection{Ethereum Clients}
 \label{sec:nodes}
 
+First of all, the expressions Ethereum client and Ethereum node can be used interchangeable. 
 As mentioned earlier in the previous section \ref{sec:transaction_lifecycle} 
-and illustrated in the figure \ref{figure:node_network}, nodes can be distinguished into different types. 
-This section will describe the concept of a node in general and will give a brief overview of the different
+and illustrated in the figure \ref{figure:node_network}, clients can be distinguished into different types. 
+This section will describe the concept of an Ethereum client in general and will give a brief overview of the different
 types.
 
-In general, an Ethereum node (often also called client) is a software application 
-that implements the Ethereum specification and communicates over 
-the peer-to-peer network with other Ethereum clients.
+In general, an Ethereum client is a software application 
+that implements the Ethereum specification, which is specified in the Ethereum yellow paper \shortcite{wood2014ethereum}.
+A client communicates over the peer-to-peer network with other Ethereum clients.
 Although these clients can be implemented in different programming languages, they all communicate through
-the standardized ethereum protocol \shortcite{antonopoulos2018mastering}. 
-Therefore, they are able to operate and interact with the same Ethereum network. 
+the standardized Ethereum protocol, wherefore they are able 
+to operate and interact with the same Ethereum network. \shortcite{antonopoulos2018mastering}. 
 
+Since the Ethereum blockchain is not officially implemented in a particular programming language, 
+following a list of the current main implementations of the Ethereum protocol:
+
+\begin{itemize}
+	\item \texttt{Parity}, written in Rust
+	\item \texttt{Geth}, written in Go
+	\item \texttt{cpp-Ethereum}, written in C++
+	\item \texttt{pyethereum}, written in Python
+	\item \texttt{Harmony}, written in Java 
+\end{itemize}
+
+However, while all clients differ from each other, they share some fundamental features \shortcite{ethereum_clients}.
+
+First, each is able to join the peer-to-peer Ethereum network. 
+Next, they all synchronizing a local copy of the blockchain.
+There are a few modes of synchronizing, which comes with miscellaneous advantages and disadvantages, 
+which will be outlined later on. Moreover, it makes a significant difference 
+for the health and resilience of the decentralised network. 
+Lastly, each client is also capable of broadcasting new transactions to the network and creating and 
+managing accounts \shortcite{ethereum_clients}.
+
+As mentioned above, there are differences in client behavior regarding to the synchronizing modes. 
+In general, the clients can be distinguished into two different types, the so called \textit{full node} and 
+\textit{light node}. 
+
+\paragraph{Full Node:} A full node will download all history data peer-to-peer from
+another full node. This requires a significant amount of hardware and bandwith resources \shortcite{antonopoulos2018mastering}.
+Afterwards, it will simulate every transaction in the ledger
+and execute the whole deployed source code to recalculate the state of each existing block \shortcite{ethereum_clients}.
+Therefore, the amount of independently operating and geographically dispersed full nodes 
+is a crucial and very important indicator for the health, resilience and 
+censorship resistance of a blockchain \shortcite{antonopoulos2018mastering}. 
+However, a full node is not necessarily a mining node. It authoritatively validates all transactions, but 
+to participate in the mining competition, an additional software called \textit{ethminer}
+ is needed \footnote{GPU Mining Worker: https://github.com/ethereum-mining/ethminer}
+
+\paragraph{Light Node:} To begin with, a light node is not a separate piece of software from the clients that 
+run a full node. The difference lies in the \textit{light} mode for synchronization. 
+In contrast to a full node, a light node only synchronize the block headers and the 
+current state of the chain \shortcite{ethereum_light_node}.
+Anyway, a light node lacks the ability to run transactions throughout the history of the 
+whole blockchain. For this reason, it does not contribute to the health and resilience of 
+the network like a full node and traditionally cannot act as a mining node \shortcite{ethereum_clients}. 
+In addition, a light node has some further limitations. For instance, they are not 
+capable to monitor pending transactions from the network and the hash of a transaction
+is not sufficient to locate the transaction. Moreover, to perform certrain types of operations,
+a light node relies on requests to full nodes, whereby they can be far slower to query the chain \shortcite{ethereum_light_node}.
+
+
+\subsubsection{Smart Contract}
+
+- In the context of Ethereum, the term is actually a bit of a misnomer, 
+because Ethereum smart contracts are neither smart nor legal contracts \shortcite{antonopoulos2018mastering}
+
+- Immutable computer program that run deterministically in the context of an 
+Ethereum Virtual Machine as part of the networkprotocol \shortcite{antonopoulos2018mastering}
+
+- unpack the definition
+	- immutable: once deployed, code of contract cannot change. 
+	only way to modify is to deploy a new instance
+
+	- deterministic:outcome of the execution is the same fir everyone who runs it,
+	given the context of the transaction that initiated its execution and the state of 
+	the blockchain at the moment of execution 
+
+	
 
 
 \clearpage
