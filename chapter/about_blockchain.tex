@@ -304,21 +304,38 @@ a light node relies on requests to full nodes, whereby they can be far slower to
 
 \subsubsection{Smart Contract}
 
-- In the context of Ethereum, the term is actually a bit of a misnomer, 
-because Ethereum smart contracts are neither smart nor legal contracts \shortcite{antonopoulos2018mastering}
+This section deals with smart contracts in the Ethereum world and based 
+entirely on the book \textit{Mastering Ethereum} by \shortciteA{antonopoulos2018mastering}.
+First of all, the term smart contract is a bit misleading, since Ethereum smarts contract 
+are neither smart nor legal contracts. However, how can a Ethereum smart contract be defined?
+A Ethereum smart contract is an immutable comuputer program that runs deterministically in the context of an
+Ethereum Virtual Machine (EVM) as part of the networkprotocol. To go into the definition in more detail, 
+immutable means, that once the contract is deployed into the blockchain, it is not possible to make any
+changes in the source code. The only way to modify the contract is to deploy a whole new instance. 
+Further, deterministic means that the result of the execution is the same for all who run it, 
+depending on the context of the transaction that initiated its execution and the state of the blockchain
+at the moment of execution.
+As already mentioned in section \ref{sec:transaction}, in the Ethereum world exists two different types of transactions.
+Those which result in a message call, and those which result in a contract creation. 
+That means, smart contracts are deployed through special contract creation transactions into the blockchain. 
+The special thing about these transactions is that the recipient of the transaction remains empty, whereby the transaction
+will be send to a special destination address called \textit{zero address (0x0)}. Each contract is identified and reachable via
+a common Ethereum address, which can be used in a transaction as the recipient to send funds to the contract or to call 
+one of the contract functions. Anyway, in contrast to an externally owned account, there are no keys associated with 
+an account of a smart contract. For this reason, the creator of a smart contract does not have any special rights at the 
+protocol level. Although, it is possible to get those special rights if you explicitly 
+specified them in the source code of the contract.
+Furhtermore, contracts are only active and run if they called by a transaction. 
+A contract is able to call another contract and so on, but nevertheless, 
+the first call have always come from an externally owned account. 
+A contract will never run on his own or in the background. Additionally, contracts are not executed in parallel.
+They will always executed consecutively, hence the Ethereum blockchain can be considered as a single-threaded machine. 
+Finally, it should be noted that transactions are atomic regardless of how many contracts they call. Transactions execute in
+their entirety and any changes in the global state are only recorded if all executions terminates successfully. 
+If the executions fails, all the changes in state are reverted as if the transaction never ran. Anyhow, a failed
+execution of a transaction is recorded as having been attempted. Moreover, the gas fees spent for the execution is withdrawn
+from the originating account.
 
-- Immutable computer program that run deterministically in the context of an 
-Ethereum Virtual Machine as part of the networkprotocol \shortcite{antonopoulos2018mastering}
-
-- unpack the definition
-	- immutable: once deployed, code of contract cannot change. 
-	only way to modify is to deploy a new instance
-
-	- deterministic:outcome of the execution is the same fir everyone who runs it,
-	given the context of the transaction that initiated its execution and the state of 
-	the blockchain at the moment of execution 
-
-	
 
 
 \clearpage
