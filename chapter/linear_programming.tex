@@ -5,7 +5,17 @@ Linear optimization refers to the problem of optimizing a linear objective funct
 decision variables , $x_{1}, ..., x_{n}$ subject to linear equality or inequality constraints. 
 In canonical form a linear programm (LP) is given as:
 
-\subsection{Market Design}
+\begin{equation}
+    \begin{array}{ll@{}ll}
+        \text{max}  & \displaystyle\sum\limits_{j=1}^{n} c_{j}x_{j} &\\
+        \text{s.t.}& \displaystyle\sum\limits_{j=1}^{n} a_{ij}x_{j} \leq b_{i},  &&i=1 ,..., m\\
+                    &                        x_{j} \geq 0, &&j=1 ,..., n
+    \end{array}
+\end{equation}
+
+\subsection{Duality Theory}
+
+\section{Market Design}
 
 
 \textit{Mathematical Optimization} plays a central role in the design and analysis of multi-object 
@@ -19,4 +29,6 @@ Overall, makret design aims at design principles and rules for market institutio
 against manupulation and allow bidders to express their preferences, so that the designer can aim 
 for good or even optimal allocations. This is similar to network security, where designers aim 
 for secure network protocols that are hard to tamper with, 
-knowing that there is no absolute security.
+knowing that there is no absolute security
+
+\subsubsection{Closed Order Book}
