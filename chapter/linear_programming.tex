@@ -1,24 +1,122 @@
 % everything of the following originate from the book 'Market Design' from Martin Bichler
 
 \section{Linear Programming}
-Linear optimization refers to the problem of optimizing a linear objective function with the
-decision variables , $x_{1}, ..., x_{n}$ subject to linear equality or inequality constraints. 
-In canonical form a linear programm (LP) is given as:
+\label{sec:linear_progamming}
+This section will give an introduction into the basics of mathematical linear programming
+and linear programming duality.
+It will present the purpose and necessity of optimization models and will give
+an example how an optimization model is constructed. 
 
-\begin{equation}
+To begin with, optimization models try to define in mathematical terms, the goal
+of solving a problem in the best or optimal way. 
+This can be applied in many different areas, for example, it might mean running a business to 
+maximize profit, designing a bridge to minimize weight or selecting a flight plan for an aircraft
+to minimize time or fuel use \shortcite{griva2009linear}. 
+The use case of solving an optimization problem optimally is so ubiquitous, 
+that optimization models are used in almost every area of application \shortcite{griva2009linear}.
+Often it is not possible or economically feasible to make decisions without the help
+of such a model. Due to the excellent improvements in computer hardware and software
+in the last decades, optimization models became a practical tool 
+in business, science and engineering \shortcite{griva2009linear}. 
+Finally, it is possible to solve optimization problems with a huge set of variables. 
+
+Further, linear optimization, also known as a \textit{linear program}, refers to the optimization
+of a linear function with the decision variables, $x_{1}, ..., x_{n}$ subject to 
+linear equality or inequality constraints. 
+As presented by \shortciteA{bichler2017market}, in canonical form 
+a linear optimization model is given as:
+
+\begin{equation*}
     \begin{array}{ll@{}ll}
         \text{max}  & \displaystyle\sum\limits_{j=1}^{n} c_{j}x_{j} &\\
         \text{s.t.}& \displaystyle\sum\limits_{j=1}^{n} a_{ij}x_{j} \leq b_{i},  &&i=1 ,..., m\\
                     &                        x_{j} \geq 0, &&j=1 ,..., n
     \end{array}
-\end{equation}
+\end{equation*}
+
+However, a linear program can be modeled in different forms. It is also possible 
+to write a model in the matrix-vector notation. To represent the above model in this form, letting
+$x=(x_{1}, ..., x_{n})^{T}$, $c=(c_{1}, ..., c_{n})^{T}$, $b=(b_{1}, ..., b_{m})^{T}$
+and name the matrix of the coefficients $a_{ij}$ by $A$. As introduced by \shortciteA{griva2009linear},
+the model becomes:
+
+\begin{equation*}
+    \begin{array}{ll@{}ll}
+        \text{max}  & \displaystyle c^{T}x &\\
+        \text{s.t.}& \displaystyle Ax \leq b&\\
+                    &                        x \geq 0
+    \end{array}
+\end{equation*}
+
+\clearpage
+In general, the objective function of a linear model is either minimized or maximized.
+Additionally, the constraints may include a combination of inequalities and equalities
+and the variables are unrestricted or restricted in sign \shortcite{bichler2017market}.
 
 \subsection{Duality Theory}
+In addition, for every linear program exists another problem, which
+is called the \textit{dual} of the original linear problem, also known as the 
+\textit{primal} \shortcite{bichler2017market}.
+In the \textit{dual}, the roles of variables and constraints are reversed. 
+That means, every variable of the \textit{primal} becomes a constraint in the \textit{dual},
+and every constraint in the \textit{primal} becomes a variable in 
+the \textit{dual} \shortcite{griva2009linear}.
+For instance, if the \textit{primal} has $n$ variables and $m$ constraints, the \textit{dual}
+will have $m$ variables and $n$ constraints. Further, the \textit{primal} objective coefficients 
+are the coefficients on the right-hand side of 
+the \textit{dual}, and vice versa.
+Finally, the transposed coefficient matrix of the \textit{primal} constitutes the matrix in the 
+\textit{dual} \shortcite{griva2009linear}.
+To give an example of a \textit{primal} and the corresponding \textit{dual} linear program,
+the representation by \shortciteA{bichler2017market} is considered:
 
-\section{Market Design}
+\begin{equation}
+    \tag{primal}
+    \begin{array}{ll@{}ll}
+        \text{min}  & \displaystyle c^{T}x &\\
+        \text{s.t.}& \displaystyle Ax \geq b  &\\
+                    &                        x \geq 0
+    \end{array}
+\end{equation}
+
+\begin{equation}
+    \tag{dual}
+    \begin{array}{ll@{}ll}
+        \text{max}  & \displaystyle b^{T}y &\\
+        \text{s.t.}& \displaystyle A^{T}y \leq c &\\
+                    &                        y \geq 0
+    \end{array}
+\end{equation}
 
 
-\textit{Mathematical Optimization} plays a central role in the design and analysis of multi-object 
+Next, the motivation of the duality theory can explained by the issue of trying to find 
+bounds on the value of the optimal solution to a linear programming problem. 
+If the \textit{primal} is a minimization problem, the \textit{dual} represents a lower bound
+on the value of the optimal solution, otherwise, if the \textit{primal} is a maximization problem,
+the \textit{dual} represents an upper bound \shortcite{bichler2017market}.
+To illustrate the concept and motivation of duality theory more tangible, an example stated by 
+\shortciteA{bichler2017market} is given. 
+In an application, the variables in the \textit{primal} linear problem stand for consumer products and
+the objective coefficients represent the profits linked to the production of those consumer products. 
+In this case, the objective in the \textit{primal} describes directly the relation between a change
+in the production of the products and profit. Whereas, the constraints in the \textit{primal} 
+describe the availability of raw materials. Consequently, an increase in the availability of 
+raw materials needed for the production of the consumer products, enables an increase in production,
+and finally an increase in the overall profit. 
+However, the \textit{primal} problem does not outline this relationship properly. Hence, one of 
+the benefit of the \textit{dual} is to properly show the effect of changes in the constraints on the
+value of the objective. Due to this, the variables in a \textit{dual} linear program often called 
+\textit{shadow prices}, since they describe the hidden costs associated with the constraints. 
+
+\begin{comment}
+# transform primal into dual (tables)
+# weak and strong duality
+# simplex
+
+
+
+# market design
+Mathematical Optimization plays a central role in the design and analysis of multi-object 
 markets and also provides a central foundation for theoretical models of mulit-object markets. 
 
 However, market design is more than mathematical programming, as it takes into consideration bidding
@@ -31,4 +129,9 @@ for good or even optimal allocations. This is similar to network security, where
 for secure network protocols that are hard to tamper with, 
 knowing that there is no absolute security
 
-\subsubsection{Closed Order Book}
+# closed order book
+
+\end{comment}
+
+
+
