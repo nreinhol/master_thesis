@@ -54,6 +54,7 @@ Additionally, the constraints may include a combination of inequalities and equa
 and the variables are unrestricted or restricted in sign \shortcite{bichler2017market}.
 
 \subsection{Duality Theory}
+\label{sec:duality_theory}
 In addition, for every linear program exists another problem, which
 is called the \textit{dual} of the original linear problem, also known as the 
 \textit{primal} \shortcite{bichler2017market}.
@@ -103,10 +104,65 @@ in the production of the products and profit. Whereas, the constraints in the \t
 describe the availability of raw materials. Consequently, an increase in the availability of 
 raw materials needed for the production of the consumer products, enables an increase in production,
 and finally an increase in the overall profit. 
-However, the \textit{primal} problem does not outline this relationship properly. Hence, one of 
+However, the \textit{primal} problem does not outline this relationship reasonable. Hence, one of 
 the benefit of the \textit{dual} is to properly show the effect of changes in the constraints on the
 value of the objective. Due to this, the variables in a \textit{dual} linear program often called 
 \textit{shadow prices}, since they describe the hidden costs associated with the constraints. 
+
+\subsubsection{Weak Duality Theorem}
+As stated in the section before (\ref{sec:duality_theory}), the \textit{dual} problem 
+provides, depending on maximization or minimization problem, lower and upper bounds for 
+the \textit{primal} objective function. Referring to \shortciteA{vanderbei2015linear},
+this result is true in general and is described as the \textit{Weak Duality Theorem}:
+
+\begin{theorem}
+    If $x$ is feasible for the primal and 
+    $y$ is feasible for the dual, then:
+
+    \begin{equation*}
+        \begin{array}{ll@{}ll}
+            \displaystyle c^{T}x \leq b^{T}y&\\
+        \end{array}
+    \end{equation*}    
+
+\end{theorem}
+
+Regarding to \shortciteA{griva2009linear}, there are some logical corollaries 
+of the \textit{Weak Duality Theorem}:
+
+\begin{corollary}
+    If the primal is unbounded, then the dual is infeasible. 
+    If the dual is unbounded, then the primal is infeasible.
+\end{corollary}
+
+\begin{corollary}
+\label{strong_duality_corollary}
+    If $x$ is a feasible solution to the primal, 
+    $y$ is a feasible solution to the dual,
+    and $c^{T}x = b^{T}y$, then x and y are optimal for their respective problems.
+\end{corollary}
+
+\subsubsection{Strong Duality Theorem}
+Concerning to corollary \ref{strong_duality_corollary}, it is possible to verify if 
+the points x and y are optimal solutions, without solving the corresponding linear programs. 
+Furthermore, this corolary is also used in the proof of strong duality \shortcite{griva2009linear}. 
+The \textit{Strong Duality Theorem} describes, that for linear programming there 
+is never a gap between the \textit{primal} and the \textit{dual} 
+optimal objective values \shortcite{vanderbei2015linear}.
+
+\begin{theorem}
+    If  the primal problem has an optimal solution $x^{*}$,
+    then the dual also has an optimal solution $y^{*}$,
+    such that:
+
+    \begin{equation*}
+        \begin{array}{ll@{}ll}
+            \displaystyle c^{T}x^{*} = b^{T}y^{*}&\\
+        \end{array}
+    \end{equation*}    
+
+\end{theorem}
+
 
 \begin{comment}
 # transform primal into dual (tables)
