@@ -163,11 +163,50 @@ optimal objective values \shortcite{vanderbei2015linear}.
 
 \end{theorem}
 
+\subsubsection{Simplex-Method}
+This subsection will give a brief introduction to the \textit{simplex-method}. 
+To start with, in the field of linear programming, the \textit{simplex-method} 
+is the most widely used algorithm. 
+This method was developed around 1940 and had several competitors at that time.
+However, the algorithm was able to assert itself due to its efficiency. \shortcite{griva2009linear}
+In general, the \textit{simplex-method} is an iterative algorithm, used to solve 
+linear programming models \shortcite{griva2009linear}. To apply the algorithm to a model, 
+it must be in standard form \shortcite{Luenberger2008}. According to \shortciteA{griva2009linear}, 
+we consider the following linear progamming model:
+
+\begin{equation*}
+    \begin{array}{ll@{}ll}
+        \text{min}  & \displaystyle z = -x_{1} - 2x_{2} &\\
+        \text{s.t.}& \displaystyle - 2x_{1} + x_{2} \leq 2 &\\
+                    & \displaystyle - x_{1} + 2x_{2} \leq 7 &\\
+                    & \displaystyle  x_{1} \leq 3 &\\
+                    &                        x_{1}, x_{2} \geq 0
+    \end{array}
+\end{equation*}
+
+Next, we give an example to illustrate how to convert a linear program into standard form.
+To achieve that, the so called \textit{slack variables} will be added, which represents the 
+difference between the right-hand side and the left-hand side. 
+
+\begin{equation*}
+    \begin{array}{ll@{}ll}
+        \text{min}  & \displaystyle z = -x_{1} - 2x_{2} &\\
+        \text{s.t.}& \displaystyle - 2x_{1} + x_{2} + x_{3} = 2 &\\
+                    & \displaystyle - x_{1} + 2x_{2} + x_{4} = 7 &\\
+                    & \displaystyle  x_{1} + x_{5} = 3 &\\
+                    &                        x_{1}, x_{2}, + x_{3}, + x_{4}, + x_{5} \geq 0
+    \end{array}
+\end{equation*}
+
+
+Finally, with the linear progamming model in standard form, the idea of the \textit{simplex-method}
+is to iteratively proceed from one basic feasible solution to another \shortcite{Luenberger2008}.
+Thereby, it always looks for a feasible solution which is better then the one before. 
+The definition of better in this case depends on the nature of the linear problem. 
+The process is performed until a solution is reached which cannot 
+be improved anymore. In the end, this final solution is then an optimal solution \shortcite{vanderbei2015linear}. 
 
 \begin{comment}
-# transform primal into dual (tables)
-# weak and strong duality
-# simplex
 
 
 
