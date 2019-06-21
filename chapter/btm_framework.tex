@@ -1,0 +1,64 @@
+\section{The Bundle-Trading-Market Framework}
+As already introduced in the sections \ref{sec:research_motivation} 
+and \ref{sec:Distributed Resource Optimization}, this section covers and explain in detail
+the developed market-based optimization algorithm, which is also called the 
+\textit{bundle trading market framework} or short \textit{BTM}. 
+In the proposed framework by \shortciteA{guo2012computational}, independent, self-interested
+agents trading bundled resources in a double-auction market, which run by a dealer. 
+In this case, the dealer replaces the central authority and agents represent distributed
+entities. Generally, the \textit{BTM} consists of a master problem that solves 
+the market-matching problem, which is managed by the dealer, 
+and  subproblems that solve the bundle-determination problem of the dealer.
+Further, the solution process is an iteration between the market-matching problem and the 
+the bundle-determination problems \shortcite{guo2007market}.
+Considering, the \textit{BTM} constitutes a market-based decomposition method for decomposable linear systems,
+which can be easily implemented to support real-time optimization of distributed systems \shortcite{guo2007market}.
+Therefore, the \textit{BTM} is a suitable market mechanism for the concept of a LEM and will be used
+as such in the developed blockchain-based LEM simulation platform. 
+
+
+\begin{comment}
+### RESEARCH MOTIVATION - BTM FRAMEWORK
+Further, Guo, Koehler and Whinston developed a market-based optimization algorithm, 
+which solves a distributed system optimization problem by self-interested agents 
+iteratively trading bundled resources in a double auction market run by a dealer. 
+The authors called it bundle trading market framework or short BTM \shortcite{guo2007market}. 
+The central problem of the stated market-based optimization algorithm can interpreted 
+as the welfare optimization of all participants in a LEM. The dealer, 
+which runs the double auction market, maximizes the welfare through allowing 
+agents to trade their preferable bundles of energy. Hence, the stated 
+BTM implemented on basis of a blockchain as underlying ICT can depict the concept of a LEM.
+
+### RESEARCH MOTIVATION - BRINGING ALL TOGEHTER
+Consequently, this research will bring all the introduced approaches together and 
+develop an open blockchain-based LEM simulation, which enables the research approach 
+based on the three stated elements of CB. The platform will be realized through the 
+introduced optimization algorithm with a blockchain as the underlying ICT. 
+That means, the smart contract takes the role of the market dealer and the 
+self-interested agents represent the individual participants in a LEM. 
+The focus of this paper will be on the implementation and software design of 
+the open blockchain-based LEM simulation platform.
+
+### LITERATURE REVIEW
+To begin with, Fan et al. outline a new approach for the development of an 
+information system which can be used for the problem of a supply chain. 
+The concept demonstrate a decentralized decision making process that is 
+realized through the design of a market-based coordination system which 
+incite the pariticipants to act in a way that is beneficial to the overall 
+systems \shortcite{fan2003decentralized}. Further, Guo et al. revive this 
+concept and develop a market-based decomposition method for 
+decomposable linear systems, that can be easily implemented to 
+support real-time optimization of dsitributed systems \shortcite{guo2007market}. 
+They prove that the system optimality can be achieved under a dynamic 
+market-trading algorithm in a finite number of trades. 
+Moreover, the outlined alogrithm can be operated in synchronous 
+and as well in asynchronous environments. 
+Later on, Guo et al. extend their stated concept to a dynamic, asynchronous 
+internet market environment \shortcite{guo2012computational}. 
+Additionally, they examine how various market design factors 
+like dealer inventory policies, market communication patterns, 
+and agent learning strategies affect the computational market efficiency 
+and implementation. Finally, also this time, Guo et al. prove finite 
+convergence to an optimal solution under all these different schemes. 
+
+\end{comment}
