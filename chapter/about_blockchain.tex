@@ -1,7 +1,15 @@
 \section{About Blockchain}
 \label{sec:about_blockchain}
 
-To begin with, this chapter will give an overview of the general purpose, the contained components and the fundamental functionality of a blockchain. 
+To begin with, in section \ref{sec:lem} we stated that the implementation of a LEM
+needs local distributed control and management techniques. Furhter, we emphasises
+that the blockchain technology as an emerging ICT offers new opportunities for decentralized
+market designs and helps adressing the challenges faced by decentralized energy systems. 
+In conclusion, this research will use a blockchain in the developed LEM simulation platform 
+as the underlying ICT. 
+
+Hence, this chapter will give an overview of the general purpose, 
+the contained components and the fundamental functionality of a blockchain. 
 
 \subsection{General Purpose}
 In general, a blockchain can be described as a digital data structure that can be understand as a shared and distributed database, containing a continuous expanding and chronological log of transactions \shortcite{andoni2019blockchain}. Besides, various types like digital transactions, data records and executables can be stored in this digital data structure. The data transmission in a blockchain is comparable with copying data from one computer to another. However, the resulting challenge is that the system needs to ensure that the data is copied just once \shortcite{andoni2019blockchain}. For example, in the domain of cryptocurrencies, this is equal to sending a coin from one wallet to another. In this case, the system needs to validate that this coin is spended just once and there is no double-spending. A conventional solution for this problem is a third intermediary. To come back to the stated example, the third intermediary is represented by a traditional bank, which store, protect and continuously update the valid state of the ledger \shortcite{andoni2019blockchain}. But, in some cases central management is not practicable or reasonable. Reasons for this are possible intermediary costs or a high degree of trust of the users into the intermediary who operates the system. Further, central management has a significant disadvantage because of a single point of failure. Hence, the centralized system is fragile to technical problems as well to external malicious attacks \shortcite{andoni2019blockchain}.
@@ -16,7 +24,7 @@ Referring to the \textit{Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereu
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.9\linewidth]{./figures/state_transition.png}
+	\includegraphics[width=.75\linewidth]{./figures/state_transition.png}
 	\caption{World State: Transition of States}
 	\label{figure:state_transition}
 \end{figure}
@@ -28,7 +36,7 @@ As mentioned before, the \textit{leaf nodes} contain the stored data by splittin
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.9\linewidth]{./figures/merkle_tree.png}
+	\includegraphics[width=.75\linewidth]{./figures/merkle_tree.png}
 	\caption{Example of a Patricia Merkle tree}
 	\label{figure:merkle_tree}
 \end{figure}
@@ -37,7 +45,7 @@ Therefore, any change to the underlying data, stored in a \textit{leaf node}, ca
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.9\linewidth]{./figures/merkle_tree_change.png}
+	\includegraphics[width=.75\linewidth]{./figures/merkle_tree_change.png}
 	\caption{Example of a data change in a leaf node}
 	\label{figure:merkle_tree_change}
 \end{figure}
@@ -104,7 +112,7 @@ status of the transaction \footnote{A Website to track transactions: https://eth
 
 \begin{figure}[htbp]
 	\centering
-	\includegraphics[width=.9\linewidth]{./figures/node_network.png}
+	\includegraphics[width=.7\linewidth]{./figures/node_network.png}
 	\caption{Node network demonstrating a transaction broadcast}
 	\label{figure:node_network}
 \end{figure}
