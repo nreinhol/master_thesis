@@ -1,7 +1,17 @@
 \section{The Bundle-Trading-Market Framework}
+To start with, we explained in section \ref{sec:lem} that local energy markets enable the trading 
+of locally generated energy through a market platform, market mechanism and market access for 
+small-scale prosumer and consumer. 
+In addition, we presented in section \ref{sec:components_of_local_energy_markets} 
+a market mechanism as one of seven core components for a efficient operation of blockchain-based
+local energy markets.
+
+On account of that, this chapter covers and explain in detail the applied market mechanism in the 
+developed open blockchain-based LEM platform. 
+
 As already briefly introduced in the sections \ref{sec:research_motivation} 
-and \ref{sec:Distributed Resource Optimization}, this chapter covers and explain in detail
-the developed market-based optimization algorithm, which is also called the 
+and \ref{sec:Distributed Resource Optimization}, the applied market mechanism is implemented 
+through the developed market-based optimization algorithm, which is also called the 
 \textit{bundle trading market framework} or short \textit{BTM}. 
 In the proposed framework by \shortciteA{guo2012computational}, independent, self-interested
 agents trading bundled resources in a double-auction market, which run by a dealer. 
@@ -11,68 +21,65 @@ the market-matching problem, which is managed by the dealer,
 and  subproblems that solve the bundle-determination problem of the dealer.
 Further, the solution process is an iteration between the market-matching problem and the 
 the bundle-determination problems \shortcite{guo2007market}.
-Considering, the \textit{BTM} constitutes a market-based decomposition method for decomposable linear systems,
-which can be easily implemented to support real-time optimization of distributed systems \shortcite{guo2007market}.
-Therefore, the \textit{BTM} is a suitable market mechanism for the concept of a LEM and will be used
-as such in the developed blockchain-based LEM simulation platform. 
+Considering, the \textit{BTM} constitutes a market-based decomposition method 
+for decomposable linear systems,
+which can be easily implemented to support real-time optimization 
+of distributed systems \shortcite{guo2007market}.
+Likewise, the central problem of the stated market-based optimization algorithm can 
+interpreted as the welfare optimization of all participants in a LEM. 
+The dealer, which runs the double auction market, maximizes the welfare through allowing 
+agents to trade their preferable bundles of energy.
+Therefore, the \textit{BTM} is a suitable market mechanism 
+for the concept of a LEM and will be used as such in the developed blockchain-based LEM 
+simulation platform. 
+
+\subsection{Problem Overview}
+This subsection will give an introductory description to the overall problem. 
+With reference to \shortciteA{guo2012computational}, we consider a distributed 
+system with $k$ independent agents.
+In addition, we have a central problem and individual 
+problems of the $k$ individual agents, which both can be expressed as the following 
+linear programs. Besides, the \textit{BTM} presented by \shortciteA{guo2007market} requires 
+a nondegenerate central problem with a bounded solution. In contrast to discrete markets where 
+only integer number of units can be traded, the proposed framework facilitate continuous 
+trade amounts. 
+
+\paragraph*{Central problem}
+\begin{equation}
+    \begin{array}{ll@{}ll}
+        \underset{x_{j} \geq 0}{\text{min}}  & \displaystyle\sum\limits_{j=1}^{k} d^{T}_{j}x_{j} &\\
+        \text{s.t.}& \displaystyle N_{j}x_{j} \geq n_{j}, &&i=1 ,..., k  \\
+                    & \displaystyle\sum\limits_{j=1}^{k} C_{j}x_{j} \leq c
+    \end{array}
+\end{equation}
+
+\paragraph*{Agent problem (j=1, ..., k)}
+\begin{equation}
+    \begin{array}{ll@{}ll}
+        \underset{x_{j} \geq 0}{\text{min}}  & \displaystyle\sum\limits_{j=1}^{k} d^{T}_{j}x_{j} &\\
+        \text{s.t.}& \displaystyle N_{j}x_{j} \geq n_{j}, &&\\
+                    & \displaystyle\sum\limits_{j=1}^{k} C_{j}x_{j} \leq c_{j}
+    \end{array}
+\end{equation}
+
+\subsection{Market Environment}
 
 
 \begin{comment}
-### RESEARCH MOTIVATION - BTM FRAMEWORK
-Further, Guo, Koehler and Whinston developed a market-based optimization algorithm, 
-which solves a distributed system optimization problem by self-interested agents 
-iteratively trading bundled resources in a double auction market run by a dealer. 
-The authors called it bundle trading market framework or short BTM \shortcite{guo2007market}. 
-The central problem of the stated market-based optimization algorithm can interpreted 
-as the welfare optimization of all participants in a LEM. The dealer, 
-which runs the double auction market, maximizes the welfare through allowing 
-agents to trade their preferable bundles of energy. Hence, the stated 
-BTM implemented on basis of a blockchain as underlying ICT can depict the concept of a LEM.
+## PROBLEM OVERVIEW
 
-### RESEARCH MOTIVATION - BRINGING ALL TOGEHTER
-Consequently, this research will bring all the introduced approaches together and 
-develop an open blockchain-based LEM simulation, which enables the research approach 
-based on the three stated elements of CB. The platform will be realized through the 
-introduced optimization algorithm with a blockchain as the underlying ICT. 
-That means, the smart contract takes the role of the market dealer and the 
-self-interested agents represent the individual participants in a LEM. 
-The focus of this paper will be on the implementation and software design of 
-the open blockchain-based LEM simulation platform.
+The central planner’s objective is to minimize the overall system 
+operating cost subject to each individual agent’s operational constraints 
+(the first set of constraints) and the total shared resources 
+capacity constraints (the second set of constraints). 
+However, the central planner does not have access to all the relevant information
 
-### LITERATURE REVIEW
-To begin with, Fan et al. outline a new approach for the development of an 
-information system which can be used for the problem of a supply chain. 
-The concept demonstrate a decentralized decision making process that is 
-realized through the design of a market-based coordination system which 
-incite the pariticipants to act in a way that is beneficial to the overall 
-systems \shortcite{fan2003decentralized}. Further, Guo et al. revive this 
-concept and develop a market-based decomposition method for 
-decomposable linear systems, that can be easily implemented to 
-support real-time optimization of dsitributed systems \shortcite{guo2007market}. 
-They prove that the system optimality can be achieved under a dynamic 
-market-trading algorithm in a finite number of trades. 
-Moreover, the outlined alogrithm can be operated in synchronous 
-and as well in asynchronous environments. 
-Later on, Guo et al. extend their stated concept to a dynamic, asynchronous 
-internet market environment \shortcite{guo2012computational}. 
-Additionally, they examine how various market design factors 
-like dealer inventory policies, market communication patterns, 
-and agent learning strategies affect the computational market efficiency 
-and implementation. Finally, also this time, Guo et al. prove finite 
-convergence to an optimal solution under all these different schemes. 
+for decision making so an optimal solution to the central problem 
+cannot be directly calculated. The BTM objective is to use a 
+market-based resource allocation mechanism to coordinate decentralized 
+decision making from agents so that an optimal solution to the central 
+problem can be indirectly obtained through an iterative bidding process.
 
-## LOCAL ENERGY MARKET
-Those local energy markets provide a market platform, market mechanism and market access
-for small-scale prosumer and consumer, to trade locally generated energy within their community.
-
-Besides, a market mechanism implemented through 
-the information system is necessary. This market mechanism implies the allocation of the
-market and the payment rules. Further, a clear bidding format should be defined. 
-It follows that the main objective of the mechanism is to provide an efficient
-energy allocation by matching the buy and sell orders of the participants appropriately.
-Finally, this should happen in near real time granularity.
-
-The market mechanism (C4) includes the pricing mechanism 
-and supports the efficient allocation of energy supply and demand. 
+## 
 
 \end{comment}
