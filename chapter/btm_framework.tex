@@ -1,4 +1,5 @@
 \section{The Bundle-Trading-Market Framework}
+\label{sec:btm}
 To start with, we explained in section \ref{sec:lem} that local energy markets enable the trading 
 of locally generated energy through a market platform, market mechanism and market access for 
 small-scale prosumer and consumer. 
@@ -18,7 +19,7 @@ agents trading bundled resources in a double-auction market, which run by a deal
 In this case, the dealer replaces the central authority and agents represent distributed
 entities. Generally, the \textit{BTM} consists of a master problem that solves 
 the market-matching problem, which is managed by the dealer, 
-and  subproblems that solve the bundle-determination problem of the dealer.
+and  subproblems that solve the bundle-determination problem of the agents.
 Further, the solution process is an iteration between the market-matching problem and the 
 the bundle-determination problems \shortcite{guo2007market}.
 Considering, the \textit{BTM} constitutes a market-based decomposition method 
@@ -200,6 +201,7 @@ independent of the market price $p$.
 It only depends on the respective resource level $c_{j}$. 
 
 \subsubsection{The Dealer’s Market Clearing Mechanism}
+\label{sec:market_clearing_mechanism}
 First of all, the developed open blockchain-based LEM platform applied a synchronous 
 call market where the market prices $p$ are announced periodically by the market dealer. 
 However, the synchronous requirement can be relaxed. 
