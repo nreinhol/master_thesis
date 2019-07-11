@@ -65,21 +65,68 @@ a linear programming problem which depicts the energy efficient demand side mana
 
 \subsection{Demand side management of a household}
 This subsection will embed the \text{BTM} into the topic of local energy markets. 
-Therefore, we will develop a linear programming problem in terms of energy efficient demand side management of households.  
+Therefore, we will develop a exemplary and simplified linear programming problem in terms of energy efficient demand side management of households.  
 That means, the objective of the respective households is to minimize their monetary expense regarding energy consumption.
 However, the minimization of the costs due to energy consuming depends on a number of constraints. 
+It must be ensured that sufficient energy can be provided at all times.
+
+\shortciteA{Chen2013} developed such a linear programming model for demand side management of households, on which the following
+presented model is based. 
+
+First, we introduce all relevant variables. Let $a$ denote an appliance, and $A$ the set of all existing appliances in a household.
+In that case, an appliance constitutes energy consuming items, e.g. washers, refrigerators, plug-in hybrid vehicles, etc.
+Next, the variable $x_{a}$ denotes the energy consumed by an appliance $a$  to a given point in time. 
+Further, each appliance $a \in A$ has a maximum energy level that is defined as rated power and described by $P_{a}$.
+Additionally, it exists a limit on the total energy consumed by various appliances of a household. This total 
+energy consumption limit is described by $L_{A}$. In case the total energy consumption limit is exceeded, the power network of 
+the household will be tripped out.
+Moreover, a household consumes on the one hand solar energy from
+photovoltaic systems (PV) and on the other hand energy from the electrical grid. 
+If households do not consume the solar energy directly, they have the opportunity to 
+store it in batteries, or export it back to the main power grid if the battery is full.
+Let $e_{g}$ denote the energy used from the electrical grid, and $e_{s}$ the energy produced by the photovoltaic systems.
+In addition, let $p_{g}$ and $p_{s}$ denote the unit price of the energy from the electrical grid and solar energy.
+Furthermore, we describe the solar energy used by all appliances of a household as $y_{s}$, the consumed battery energy 
+as $y_{b}$ and the remaining solar energy which is not used by the household appliances and stored in the battery as $z_{b}$.
+Besides, the amount of exported surplus solar energy of a household to the electrical grid is denoted as $u_{s}$.
+
+Finally, we developed the following linear program for optimization of the household monetary expense.
+
+\begin{equation}
+    \begin{array}{ll@{}ll}
+        \text{min}  & \displaystyle p_{g} \cdot e_{g} - p_{s} \cdot u_{s} &\\
+        \text{s.t.}& \displaystyle \sum\limits_{a \in A}^{} x_{a} \leq L_{A}  \\
+					& \displaystyle x_{a} \leq P_{a}, \quad \forall a \in A \\
+					& \displaystyle \sum\limits_{a \in A}^{} x_{a} = y_{s} + y_{b} + e_{g} \\
+					& \displaystyle y_{s} + z_{b} + u_{s} = e_{s}
+    \end{array}
+\end{equation}
+
+In the table below, all applied variables of the developed linear program are listed:
+
+\begin{longtable}{c|l}
+	\hline
+    $a$ & energy consuming appliance of household \\
+	$A$ & set of all existing energy consuming appliances of household \\
+	$x_{a}$ & consumed energy of an appliance $a$ \\
+	$P_{a}$ & maximum energy level (rated power) of an appliance $a$ \\
+	$L_{A}$ & total energy consumption limit of a household \\
+	$e_{g}$ & energy used from the electrical grid \\
+	$e_{s}$ & energy produced by PV \\
+	$p_{g}$ & unit price of energy from electrical grid \\
+	$p_{s}$ & unit price of energy from PV \\
+	$y_{s}$ & solar energy used by all appliances of a household \\
+	$y_{b}$ & consumed batterie energy by all appliances of a household \\
+	$z_{b}$ & remaining unused solar energy stored in the batterie \\
+	$u_{s}$ & exported surplus solar energy of a household to the electrical grid \\
+	\hline
+	\caption{Applied variables in linear program for optimization of the household monetary expense}
+	\label{table:sorted_gas_prices}
+\end{longtable} 
+
+
 
 
 \begin{comment}
-
-# CONTENT
-
-an agents bundle selection 
-can be defined as the following \textit{bundle determination problem:}
-
-rational agent will choose an improving bundle for trading, 
-which leaves his wealth level on the same level or better off. 
-
-
 
 \end{comment}
