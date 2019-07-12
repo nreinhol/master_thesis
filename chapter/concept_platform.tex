@@ -88,20 +88,20 @@ Let $e_{g}$ denote the energy used from the electrical grid, and $e_{s}$ the ene
 In addition, let $p_{g}$ and $p_{s}$ denote the unit price of the energy from the electrical grid and solar energy.
 Furthermore, we describe the solar energy used by all appliances of a household as $y_{s}$, the consumed battery energy 
 as $y_{b}$ and the remaining solar energy which is not used by the household appliances and stored in the battery as $z_{b}$.
-Besides, the amount of exported surplus solar energy of a household to the electrical grid is denoted as $u_{s}$.
 
 Finally, we developed the following linear program for optimization of the household monetary expense.
 
 \begin{equation}
     \begin{array}{ll@{}ll}
-        \text{min}  & \displaystyle p_{g} \cdot e_{g} - p_{s} \cdot u_{s} &\\
+        \text{min}  & \displaystyle p_{g} \cdot e_{g} + p_{s} \cdot e_{s} &\\
         \text{s.t.}& \displaystyle \sum\limits_{a \in A}^{} x_{a} \leq L_{A}  \\
 					& \displaystyle x_{a} \leq P_{a}, \quad \forall a \in A \\
 					& \displaystyle \sum\limits_{a \in A}^{} x_{a} = y_{s} + y_{b} + e_{g} \\
-					& \displaystyle y_{s} + z_{b} + u_{s} = e_{s}
+					& \displaystyle y_{s} + z_{b} \leq e_{s}
     \end{array}
 \end{equation}
 
+\clearpage
 In the table below, all applied variables of the developed linear program are listed:
 
 \begin{longtable}{c|l}
@@ -118,15 +118,77 @@ In the table below, all applied variables of the developed linear program are li
 	$y_{s}$ & solar energy used by all appliances of a household \\
 	$y_{b}$ & consumed batterie energy by all appliances of a household \\
 	$z_{b}$ & remaining unused solar energy stored in the batterie \\
-	$u_{s}$ & exported surplus solar energy of a household to the electrical grid \\
 	\hline
 	\caption{Applied variables in linear program for optimization of the household monetary expense}
 	\label{table:sorted_gas_prices}
 \end{longtable} 
 
+As mentioned earlier,
+the objective of the respective households is to minimize
+their monetary expense regarding energy consumption.
+The term $p_{g} \cdot e_{g}$ denotes the costs for energy from the electrical
+grid, whereas the term $p_{s} \cdot e_{s}$ denotes the costs for energy from photovoltaic systems. 
+
+Besides, the first constraint ensures that the total energy consumption of all energy consuming
+appliances of a household not exceeds the limit $L_{A}$. 
+
+Next, the second constraint describes the requirement that the consumed energy
+for all existing appliances $a$ in a household is less or equal 
+to the respective rated power $P_{a}$.
+
+Further, the third constraint makes sure that the energy consumed by all appliances
+of a household is the sum of the energy from the electrical grid, the solar energy from 
+the PV system and the battery energy. This implies, if the amount of solar and battery 
+energy is not sufficient to cover the energy consumption of all appliances, external 
+energy from the electrical grid will be used. Therefore, it is ensured 
+that sufficient energy is available at all times.
+
+Finally, the fourth constraint describes that the solar energy produced by the PV system 
+is greater or equal to the sum of the consumed and stored solar energy. 
+At times when the battery is fully charged and the energy consumption of the 
+appliances is covered by solar energy, it is possible to sell the surplus of 
+wasted solar energy. 
+i
+Referring to the \textit{BTM}, the first two constraints of the proposed linear
+programming model constitute the independent resources that are managed locally.
+The shared resources are represented by 
+the energy resources $e_{g}$ and $e_{s}$.
+Therefore the respective households trade the following limited bundles.
+
+\begin{equation*}
+    \begin{array}{ll@{}ll}
+		w = 
+		\begin{pmatrix}
+			e_{g} \\
+			e_{s}
+		\end{pmatrix}
+    \end{array}
+\end{equation*}
+
+Consequently, the objective of the linear programming 
+model written in matrix-vector notation.
+
+\begin{equation*}
+    \begin{array}{ll@{}ll}
+		\text{min}  & \displaystyle p^{T} \cdot w
+    \end{array}
+\end{equation*}
+
+where $p^{T}$ denotes the transposed price vector.
+
+\begin{equation*}
+    \begin{array}{ll@{}ll}
+		p^{T} = 
+		\begin{pmatrix}
+			p_{g} &
+			p_{s}
+		\end{pmatrix}
+    \end{array}
+\end{equation*}
 
 
 
 \begin{comment}
+
 
 \end{comment}
