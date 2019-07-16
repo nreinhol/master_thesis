@@ -1,4 +1,5 @@
 \section{Concept of LEM Simulation Platform}
+\label{sec:concept_of_lem}
 To start off, this section brings together the previous sections \ref{sec:about_blockchain} and \ref{sec:btm},
 and explains how the bundle trading market framework \textit{(BTM)} and a blockchain interact to implement a simulation 
 of a local energy market, which are introduced in section \ref{sec:lem}.
@@ -51,7 +52,7 @@ They will never run on his own or in the background. For this reason, a mechanis
 \textit{market matching problem}. The implementation of an \textit{off-chain} dealer is also suitable for this.
 
 So far, this section presented the basic idea and concept of the developed open blockchain-based LEM platform
-and explained the necessity of all exisiting components. In the following section [ref einfügen!], the setup 
+and explained the necessity of all exisiting components. In the following section \ref{sec:implementation}, the setup 
 and technical implementation of the simulation will be described in detail. 
 
 However, we stated earlier in this section that the agents of the \textit{BTM} respresent households
@@ -120,7 +121,7 @@ In the table below, all applied variables of the developed linear program are li
 	$z_{b}$ & remaining unused solar energy stored in the batterie \\
 	\hline
 	\caption{Applied variables in linear program for optimization of the household monetary expense}
-	\label{table:sorted_gas_prices}
+	\label{table:applied_variables_lp}
 \end{longtable} 
 
 As mentioned earlier,
@@ -194,9 +195,7 @@ Furthmore, the developed model should only serve as an inspiration and example
 and has no claim to completeness. 
 It is intended to illustrate how the presented framework can be adapted to enable the trading 
 of energy resourcres in a local energy market. 
-Thus, researchers without a deep technically background are able to use this platform and
-develop and investigate their concepts 
-
-Finally, the following section will present the implementation of the developed platform in depth.
+Finally, researchers without a deep technically background are able to use this platform and
+develop and investigate their concepts.
 
 \clearpage

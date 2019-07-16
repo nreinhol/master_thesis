@@ -1,0 +1,190 @@
+\section{Implementation}
+\label{sec:implementation}
+
+This section deals with the technical implementation of the LEM simulation
+and gives insights into the developed source code.
+First, a brief introduction to the applied software 
+technologies and libraries is given.
+Next, the individual components and their attributes are presented. 
+Finally, the whole simulation process is outlined and the 
+implementation of the fundamental parts 
+of the simulation process are described in detail. 
+
+\subsection{Applied technologies}
+\label{sec:applied_technologies}
+Above all, this subsection give a brief introduction to the used software technologies and libraries.
+
+\paragraph{Python}
+An interpreted, object-oriented, high-level programming 
+language with dynamic semantics. Additionally, it is simple and 
+comes with a easy to learn syntax \footnote{https://www.python.org/}.
+The programming language of choice, which is used to develop the 
+respective components that communicate via the blockchain.
+
+\paragraph{Web3.py}
+A Python library for interacting with a Ethereum blockchain \footnote{https://github.com/ethereum/web3.py}. 
+It enables the developed Python components to communicate via the blockchain.
+
+\paragraph{Ganache}
+A personal blockchain for Ethereum development \footnote{https://github.com/trufflesuite/ganache-cli}.
+It simulates a full client behavior and make developing Ethereum applications faster, easier and safer.
+Ganache is provided on the one hand as a software tool with a graphical user interface (GUI) and 
+on the other hand as command line tool (CLI). In the develop LEM simulation the command line version 
+of Ganache is used. 
+
+\paragraph{Solidity}
+A statically typed, contract-oriented, high-level programming language for implementing smart contracts on the Ethereum
+blockchain \footnote{https://github.com/ethereum/solidity}.
+It is used to implement the smart contract dealer. 
+
+\clearpage
+%--------------------------------------
+\subsection{Components}
+To start off, this subsection presents the respective main components 
+that interact with each other during the runtime of the simulation.
+However, the individual components are considered in isolation in this subsection.
+
+\subsubsection{Agent}
+The agents are implemented by a Python class. Moreover, the naming is oriented on the proposed \textit{BTM} and,
+as mentioned earlier in section \ref{sec:concept_of_lem}, the agents represent the respective household 
+in the LEM simulation.
+To begin with, the class attributes are presented. 
+The associated source code can be seen in the following listing \ref{lst:agent_class_attributes}.
+
+\begin{lstlisting}[label=lst:agent_class_attributes, caption=Overview of the agent class attributes, language=Python]
+    class Agent(object):
+
+    def __init__(self, agent_number, account_address, web3, dealer_contract):
+        self._name = 'AGENT{}'.format(agent_number)
+        self._account_address = account_address
+        self._web3 = web3
+        self._dealer_contract = dealer_contract
+        self._optimization_problem = None
+        self._bundle_set = None
+        self._bid = None
+        self._mkt_prices = None
+        self._trade = None
+        self._objective = None
+        self._wealth = None
+        self._accept_trade = None
+\end{lstlisting}
+
+The variables \verb|agent_number|, \verb|account_address|, \verb|web3| and \verb|dealer_contract| are initialized when the class is instantiated.
+The variable \verb|agent_number| is attached to the name of the respective agent and serves as an identifier. 
+Otherwise the variable \verb|account_address| could be used to identify the agents, 
+but it would be cumbersome due to the cryptic hexadecimal representation of the blockchain account addresses.
+Therefore a more understandable name for each agent is established.
+Furthermore, each agent is assigned an Ethereum blockchain account defined by the variable \verb|account_address|. It is required to submit and 
+receive transactions via the blockchain.
+Moreover, the variable \verb|web3| represents the Python library for interacting with a Ethereum blockchain, which is already introduced in section \ref{sec:applied_technologies}.
+The last variable which is initialized on instantiation is the \verb|dealer_contract|. 
+This variable contains a object of the smart contract dealer. This object knows all implemented functions of the dealers' smart contract.
+Hence, this variable is needed to call the functions of the smart contract out of this Python class.
+All other class attributes are set immediately after the instantiation or during the running simulation. 
+
+Next, some of the most important functions of the class are introduced and explained.
+After the instantiation, each agent get their optimization problem. In the listing \ref{lst:lp_setter} below, the implementation 
+of the setter is shown.
+
+\begin{lstlisting}[label=lst:lp_setter, caption=Setter of optimization problem, language=Python]
+    @optimization_problem.setter
+    def optimization_problem(self, value):
+        self._optimization_problem = value
+        self._objective = self._optimization_problem.solve().fun
+        self._wealth = self.balance + abs(self._objective)
+\end{lstlisting}
+
+As you can see in the listing, after setting the optimization problem, the class attributes \verb|objective| and \verb|wealth| will be determined.
+In this case, the attribute \verb|wealth| is defined as the sum of the current \verb|balance| of the account and the absolute value of the current \verb|objective|.
+Equally, it is defined in the \textit{BTM}, outlined in section \ref{sec:btm}.
+However, \verb|balance| is not a class attribute, but a class function. It uses the class attributes \verb|web3| and \verb|account_address| to retrieve the current
+balance of the account from the blockchain.
+
+In addtion, the function for determining the improving bundle set and the associated bid is introduced in the listing \ref{lst:determine_bundle}.
+
+\begin{lstlisting}[label=lst:determine_bundle, caption=Determining of bundle attributes, language=Python]
+    def determine_bundle_attributes(self):
+        result = solve_bundle_determination(self._optimization_problem, self._mkt_prices)
+        self._bundle_set = result.x
+        self._bid = self._objective - result.fun
+\end{lstlisting}
+
+As shown in the listing, first the bundle determination problem will be solved.
+It is solved in a separate function depending on the optimization problem and the current market prices.
+Due to the high complexity, this function is not shown here. Further, the class attributes \verb|bundle_set| and \verb|bid| are initialized.
+We stated in section \ref{sec:agent_bidding} that the applied market mechanism implemented nonstrategic bidding and pricing, wherefore 
+an agent will always submit a limit price equal to the valuation of the bundle. 
+This is reflected in the definition of the class attribute \verb|bid|. The true value of the improving \verb|bundle_set| 
+is the current \verb|objective| minus the objective of the optimization problem with the resources of the \verb|bundle_set|.
+In this case, the minus sign reflects the fact that we are minimizing costs.
+After presenting the determination of all necessary bundle attributes, the submitment of an order will be shown in the listing \ref{lst:set_order} below.
+First of all, the variables \verb|bundle_set| and \verb|bid| will be prepared for sending to the dealers' smart contract.
+In Solidity, fixed point numbers are not fully supported yet. It is possible to declare them, but they cannot be assigned to or from \shortcite{solidity_fixed_point}.
+
+\begin{lstlisting}[float=htbp, label=lst:set_order, caption=Submitment of order, language=Python]
+    def set_order(self):
+        bundle_set = utils.prepare_for_sending(self._bundle_set)
+        bid = utils.prepare_for_sending(self._bid)
+        
+        if(bid > 0):
+            prepayment = utils.from_ether_to_wei(self._bid)
+        else:
+            prepayment = 0
+
+        self._dealer_contract.contract.functions.setOrder(bundle_set, bid, prepayment).transact({'from': self._account_address, 'value': prepayment})
+\end{lstlisting}
+
+Therefore, we developed a work around that shift the decimal place two digits to the right and cuts off the remainder,
+so that you receive integer values. 
+
+Additionally, the variable \verb|prepayment| is assigned. 
+The condition that \verb|bid| is greater than zero identifies if this order represents a buy order.
+In case of a buy order, the agents have to pay in advance.
+Therefore the value of \verb|prepayment| will be set equally to the value of variable \verb|bid|. 
+This procedure is implemented to prevent the strategic placing of orders and to ensure that the financial resources are available.
+If it is a sell order, no payment in advance is required and the value of \verb|prepayment| will be set to zero.
+
+Finally, the already introduced class attribute \verb|dealer_contract| is used to call the function of the dealers' smart contract which is
+responsible for setting the oders.
+
+Furthermore, the class provide a function to evaluate the published market prices of the dealer. 
+This function is implemented to verify if the dealer has calculated the prices of the respective trades 
+correctly.  
+
+\begin{lstlisting}[float=htbp, label=lst:verify_trade, caption=Verification of trades, language=Python]
+    def verify_strong_duality(self):
+        mmp_values, mmp_duals, mmp_target_coefs, mmp_bounds = self.get_mmp_attributes()
+        primal_bound = (-np.sum(mmp_values * mmp_target_coefs))
+        dual_bound = np.sum(mmp_duals * mmp_bounds)
+        primal_bound = math.floor(primal_bound * 10) / 10
+        dual_bound = math.floor(dual_bound * 10) / 10
+
+        if primal_bound == dual_bound:
+            self._accept_trade = True
+        else:
+            self._accept_trade = False
+\end{lstlisting}
+
+The related source code of this function can be seen in the listing \ref{lst:verify_trade} above. 
+To begin with, the function retrieves the values of the primal \textit{market matching problem} and
+the belonging dual problem. For the verification of the correctness, the introduced \textit{Strong Duality Theorem}
+in section \ref{sec:strong_duality_theorem} is applied. 
+Due to this, it is possible to verify if the solution of the dealer is optimal, without solving the corresponding
+\textit{market matching problem}.
+
+\subsubsection{Smart contract dealer}
+
+\subsubsection{Off-chain dealer}
+
+\subsubsection{Blockchain}
+
+%--------------------------------------
+\subsection{Simulation process}
+
+\subsubsection{Initial setup}
+
+\subsubsection{Agent bidding}
+
+\subsubsection{Dealer's market clearing mechanism}
+
+\subsubsection{Agent trade verification}
