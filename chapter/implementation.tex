@@ -145,7 +145,7 @@ This procedure is implemented to prevent the strategic placing of orders and to 
 If it is a sell order, no payment in advance is required and the value of \verb|prepayment| will be set to zero.
 
 Finally, the already introduced class attribute \verb|dealer_contract| is used to call the function of the dealers' smart contract which is
-responsible for setting the oders.
+responsible for setting the orders.
 
 Furthermore, the class provide a function to evaluate the published market prices of the dealer. 
 This function is implemented to verify if the dealer has calculated the prices of the respective trades 
@@ -154,12 +154,12 @@ correctly.
 \begin{lstlisting}[float=htbp, label=lst:verify_trade, caption=Verification of trades, language=Python]
     def verify_strong_duality(self):
         mmp_values, mmp_duals, mmp_target_coefs, mmp_bounds = self.get_mmp_attributes()
-        primal_bound = (-np.sum(mmp_values * mmp_target_coefs))
-        dual_bound = np.sum(mmp_duals * mmp_bounds)
-        primal_bound = math.floor(primal_bound * 10) / 10
-        dual_bound = math.floor(dual_bound * 10) / 10
+        primal_solution = (-np.sum(mmp_values * mmp_target_coefs))
+        dual_solution = np.sum(mmp_duals * mmp_bounds)
+        primal_solution = math.floor(primal_solution * 10) / 10
+        dual_solution = math.floor(dual_solution * 10) / 10
 
-        if primal_bound == dual_bound:
+        if primal_solution == dual_solution:
             self._accept_trade = True
         else:
             self._accept_trade = False
@@ -167,10 +167,64 @@ correctly.
 
 The related source code of this function can be seen in the listing \ref{lst:verify_trade} above. 
 To begin with, the function retrieves the values of the primal \textit{market matching problem} and
-the belonging dual problem. For the verification of the correctness, the introduced \textit{Strong Duality Theorem}
+the belonging dual problem from the dealers' smart contract. For the verification of the correctness, the introduced \textit{Strong Duality Theorem}
 in section \ref{sec:strong_duality_theorem} is applied. 
 Due to this, it is possible to verify if the solution of the dealer is optimal, without solving the corresponding
 \textit{market matching problem}.
+To apply the \textit{Strong Duality Theorem}, the solution of the primal problem (represented by variable \verb|primal_solution|) is calculated
+on the one hand, and the solution of the dual problem (represented by variable \verb|dual_solution|) on the other hand.
+Additionally, both solutions will be rounded to one decimal place. This procedure is implemented due to the issues and limitations of 
+floating point arithmetic \footnote{https://docs.python.org/2/tutorial/floatingpoint.html}. 
+We want to make sure that correct trades are not rejected on the basis of those limitations.
+Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type \verb|boolean| will be
+set to \verb|True|, otherwise to \verb|False|.
+
+Likewise, the class provides a function to notify the dealers' smart contract if the respective trade is accepted or not.
+The implementation of this function is shown in listing \ref{lst:accept_trade}.
+
+\begin{lstlisting}[float=htbp, label=lst:accept_trade, caption=Notification of trade acceptance, language=Python]
+    def accept_trade(self):
+        if(self._accept_trade):
+            trade = self._dealer_contract.contract.functions.acceptTrade(self._accept_trade).call({'from': self._account_address})
+            self._trade = utils.prepare_for_storing(trade)
+
+        self._dealer_contract.contract.functions.acceptTrade(self._accept_trade).transact({'from': self._account_address})
+
+\end{lstlisting}
+
+If the verification of the \textit{Strong Duality Theorem} was successful and the variable \verb|acccept_trade| was thus set to the value \verb|True|,
+the function retrieves the trade and stores it in the class attribute \verb|trade|. Besides, before the trade is stored, it will be 
+prepared for storing. This is due to the already mentioned work around that shift the decimal place two digits to the right before 
+sending values to the dealers' smart contract. When retrieving and storing values, exactly the opposite is done and we shift the decimal place 
+two digits to the left. 
+
+Furthermore, as you can see in the listing \ref{lst:accept_trade} above, an almost identical function invocation of the dealers' smart contract 
+function \verb|acceptTrade()| is indicated twice. 
+The difference lies in the expressions \verb|call()| and \verb|transact()|. 
+The \verb|call()| method of the Web3.py library enables to invoke any smart contract function on a read-only basis
+and returns values sent by the smart contract return statement. 
+Those read-only invocations run much faster than transactions that require network verification.
+On the contrary, the \verb|transact()| method submits a verified transaction that potentially change the state 
+of the blockchain. 
+Hence, network verification is needed that causes a significant  delay due to the mining procedure.
+Consequently, this method does not return values of the smart contract return statements,
+but the transaction hash of the submitted verified transaction.
+
+
+\begin{comment}
+    Callers can invoke any contract function on a local read-only basis with the call() method Web3 attaches 
+    to every contract function. This relies on local resources, and returns values sent by contract return statements.
+
+    Read-only invocations, whether hard-coded at the contract level or requested with the client-side “call()” method, 
+    run much faster than transactions that require network verification.
+
+    Verified transactions that potentially change the state are sent to the network for verification. 
+    Consequently, senders don’t receive return values. Instead, they receive a transaction hash and 
+    must wait for the transaction to be mined. Even then, the return results won’t be returned and 
+    they must inspect the logs or call other functions to discover what happened.
+\end{comment}
+
+
 
 \subsubsection{Smart contract dealer}
 
