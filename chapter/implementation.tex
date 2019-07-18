@@ -5,7 +5,7 @@ This section deals with the technical implementation of the LEM simulation
 and gives insights into the developed source code.
 First, a brief introduction to the applied software 
 technologies and libraries is given.
-Next, the individual components and their attributes are presented. 
+Next, the individual components and their attributes and functions are presented. 
 Finally, the whole simulation process is outlined and the 
 implementation of the fundamental parts 
 of the simulation process are described in detail. 
@@ -78,7 +78,7 @@ Furthermore, each agent is assigned an Ethereum blockchain account defined by th
 receive transactions via the blockchain.
 Moreover, the variable \verb|web3| represents the Python library for interacting with a Ethereum blockchain, which is already introduced in section \ref{sec:applied_technologies}.
 The last variable which is initialized on instantiation is the \verb|dealer_contract|. 
-This variable contains a object of the smart contract dealer. This object knows all implemented functions of the dealers' smart contract.
+This variable contains a object of the smart contract dealer. This object knows all implemented functions of the dealer's smart contract.
 Hence, this variable is needed to call the functions of the smart contract out of this Python class.
 All other class attributes are set immediately after the instantiation or during the running simulation. 
 
@@ -118,7 +118,7 @@ This is reflected in the definition of the class attribute \verb|bid|. The true 
 is the current \verb|objective| minus the objective of the optimization problem with the resources of the \verb|bundle_set|.
 In this case, the minus sign reflects the fact that we are minimizing costs.
 After presenting the determination of all necessary bundle attributes, the submitment of an order will be shown in the listing \ref{lst:set_order} below.
-First of all, the variables \verb|bundle_set| and \verb|bid| will be prepared for sending to the dealers' smart contract.
+First of all, the variables \verb|bundle_set| and \verb|bid| will be prepared for sending to the dealer's smart contract.
 In Solidity, fixed point numbers are not fully supported yet. It is possible to declare them, but they cannot be assigned to or from \shortcite{solidity_fixed_point}.
 
 \begin{lstlisting}[float=htbp, label=lst:set_order, caption=Submitment of order, language=Python]
@@ -144,7 +144,7 @@ Therefore the value of \verb|prepayment| will be set equally to the value of var
 This procedure is implemented to prevent the strategic placing of orders and to ensure that the financial resources are available.
 If it is a sell order, no payment in advance is required and the value of \verb|prepayment| will be set to zero.
 
-Finally, the already introduced class attribute \verb|dealer_contract| is used to call the function of the dealers' smart contract which is
+Finally, the already introduced class attribute \verb|dealer_contract| is used to call the function of the dealer's smart contract which is
 responsible for setting the orders.
 
 Furthermore, the class provide a function to evaluate the published market prices of the dealer. 
@@ -167,7 +167,7 @@ correctly.
 
 The related source code of this function can be seen in the listing \ref{lst:verify_trade} above. 
 To begin with, the function retrieves the values of the primal \textit{market matching problem} and
-the belonging dual problem from the dealers' smart contract. For the verification of the correctness, the introduced \textit{Strong Duality Theorem}
+the belonging dual problem from the dealer's smart contract. For the verification of the correctness, the introduced \textit{Strong Duality Theorem}
 in section \ref{sec:strong_duality_theorem} is applied. 
 Due to this, it is possible to verify if the solution of the dealer is optimal, without solving the corresponding
 \textit{market matching problem}.
@@ -179,7 +179,7 @@ We want to make sure that correct trades are not rejected on the basis of those 
 Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type \verb|boolean| will be
 set to \verb|True|, otherwise to \verb|False|.
 
-Likewise, the class provides a function to notify the dealers' smart contract if the respective trade is accepted or not.
+Likewise, the class provides a function to notify the dealer's smart contract if the respective trade is accepted or not.
 The implementation of this function is shown in listing \ref{lst:accept_trade}.
 
 \begin{lstlisting}[float=htbp, label=lst:accept_trade, caption=Notification of trade acceptance, language=Python]
@@ -195,10 +195,10 @@ The implementation of this function is shown in listing \ref{lst:accept_trade}.
 If the verification of the \textit{Strong Duality Theorem} was successful and the variable \verb|acccept_trade| was thus set to the value \verb|True|,
 the function retrieves the trade and stores it in the class attribute \verb|trade|. Besides, before the trade is stored, it will be 
 prepared for storing. This is due to the already mentioned work around that shift the decimal place two digits to the right before 
-sending values to the dealers' smart contract. When retrieving and storing values, exactly the opposite is done and we shift the decimal place 
+sending values to the dealer's smart contract. When retrieving and storing values, exactly the opposite is done and we shift the decimal place 
 two digits to the left. 
 
-Furthermore, as you can see in the listing \ref{lst:accept_trade} above, an almost identical function invocation of the dealers' smart contract 
+Furthermore, as you can see in the listing \ref{lst:accept_trade} above, an almost identical function invocation of the dealer's smart contract 
 function \verb|acceptTrade()| is indicated twice. 
 The difference lies in the expressions \verb|call()| and \verb|transact()|. 
 The \verb|call()| method of the Web3.py library enables to invoke any smart contract function on a read-only basis
@@ -206,27 +206,104 @@ and returns values sent by the smart contract return statement.
 Those read-only invocations run much faster than transactions that require network verification.
 On the contrary, the \verb|transact()| method submits a verified transaction that potentially change the state 
 of the blockchain. 
-Hence, network verification is needed that causes a significant  delay due to the mining procedure.
+Hence, network verification is needed that causes a significant delay due to the mining procedure.
 Consequently, this method does not return values of the smart contract return statements,
 but the transaction hash of the submitted verified transaction.
+Regarding the implementation, the first invocation only serves to preserve the respective bundle,
+whereas the second call of the function serves to notify the dealer whether the trade has been accepted or not.
+For this reason, the first call of the dealer's smart contract 
+function \verb|acceptTrade()| is only executed if the trade is accepted. 
 
+Finally, a last class function is described. This function adds the received trade to the shared resources
+as it is defined in the \textit{BTM}, introduced in the section \ref{sec:market_clearing_mechanism}.
 
-\begin{comment}
-    Callers can invoke any contract function on a local read-only basis with the call() method Web3 attaches 
-    to every contract function. This relies on local resources, and returns values sent by contract return statements.
+\begin{lstlisting}[float=htbp, label=lst:add_trade_to_shared_resources, caption=Adding of trade to shared resources, language=Python]
+    def add_trade_to_shared_resources(self):
+        if(self._accept_trade):
+            self._optimization_problem.shared_resources = np.add(self._optimization_problem.shared_resources, self._trade)
+            self._objective = self._optimization_problem.solve().fun  
+            self._wealth = self.balance + abs(self._objective)
+\end{lstlisting}
 
-    Read-only invocations, whether hard-coded at the contract level or requested with the client-side “call()” method, 
-    run much faster than transactions that require network verification.
-
-    Verified transactions that potentially change the state are sent to the network for verification. 
-    Consequently, senders don’t receive return values. Instead, they receive a transaction hash and 
-    must wait for the transaction to be mined. Even then, the return results won’t be returned and 
-    they must inspect the logs or call other functions to discover what happened.
-\end{comment}
+As shown in the listing \ref{lst:add_trade_to_shared_resources} above, the code of the function 
+is only executed if the trade has been accepted. 
+In addition, the new \verb|objective| of the linear programming model will be calculated after getting the new resources.
+Since a new \verb|objective| has been calculated, the class attribute \verb|wealth| is also recalculated accordingly.
 
 
 
 \subsubsection{Smart contract dealer}
+
+In this part, the dealer's smart contract is introduced. 
+As already mentioned, the contract is implemented by the programming language Solidity. 
+First of all, attributes of the contract are presented in the following listing \ref{lst:contract_attributes}.
+
+\begin{lstlisting}[float=htbp, label=lst:contract_attributes, caption=Attributes of Smart Contract, language=Java]
+    contract Dealer{
+        // general attributes
+        address private _owner;
+        int256[] public resource_inventory;
+        int256[] public mkt_prices;
+
+        // attributes for order management
+        uint32 public order_count;
+        uint32[] public order_indices;
+        mapping(uint32 => Order) public orders;
+
+        // attributes for trade management
+        mapping (address => uint256) account_index; 
+        address[] public trades_accounts;
+        mapping(address => int256[]) public trades;
+        mapping(address => uint256) public bills;
+        mapping(address => uint256) public prepayments;
+        mapping(address => uint256) public refunds;
+\end{lstlisting}
+
+First, general attributes are declared. As you can see, the contract contains an attribute called \verb|owner|.
+This variable will be set in the constructor of the contract and initialized with the address of the contract creator,
+which is in this case the off-chain dealer.  
+It is being used in a modifier which ensures that certain functions can only be executed by the owner of the contract.
+Moreover, a modifier can be seen as an extension of a function and is mainly used to 
+to check if certain conditions are met before executing the rest of the source code in the body of a function.
+
+In addition, attributes for managing the orders and trades of the agents are declared. 
+The orders, trades and additional properties of the trades are predominantly managed in mappings.
+A mapping is a collection of key value pairs. All of the keys have to be of the same data type, and 
+all values must be of the same data type. However, Solidity does not provide an iteration
+function to retrieve all the lists that stored in a mapping. 
+That is to say, it is not possible to read the values from the mapping without knowing the respective key.
+Therefore, we developed a work around and store the keys of mappings in an additional array which serves 
+as a look up table.
+With reference to the listing \ref{lst:contract_attributes}, the array \verb|order_indices| functions as a 
+look up table for the mapping \verb|orders|, and the array \verb|trades_accounts| for the mapping 
+\verb|trades| and all other trades related mappings.
+
+Next, some of the most important functions of the dealer's smart contract are introduced and explained.
+
+To begin with, the function for receiving the agents orders is outlined in the listing \ref{lst:set_order_contract}.
+The function header contains on the one hand the built-in modifier \verb|payable|, and on the other hand, the custom
+modifier \verb|checkPrepayment|.
+
+\begin{lstlisting}[float=htbp, label=lst:set_order_contract, caption=Receiving agents orders, language=Java]
+    function setOrder(int256[] _bundle, uint256 _bid, uint256 _prepayment) public payable checkPrepayment(_prepayment) {
+
+        Order memory new_order = Order(
+            msg.sender,
+            _bundle,
+            _bid
+        );
+        orders[order_count] = new_order;
+        order_indices.push(order_count);
+
+        // increment order count
+        order_count ++;
+    }
+\end{lstlisting}
+
+\begin{comment}
+    
+\end{comment}
+
 
 \subsubsection{Off-chain dealer}
 
