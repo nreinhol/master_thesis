@@ -270,10 +270,10 @@ In addition, attributes for managing the orders and trades of the agents are dec
 The orders, trades and additional properties of the trades are predominantly managed in mappings.
 A mapping is a collection of key value pairs. All of the keys have to be of the same data type, and 
 all values must be of the same data type. However, Solidity does not provide an iteration
-function to retrieve all the lists that stored in a mapping. 
-That is to say, it is not possible to read the values from the mapping without knowing the respective key.
-Therefore, we developed a work around and store the keys of mappings in an additional array which serves 
-as a look up table.
+function to retrieve all the lists that are stored in a mapping. 
+That is to say, it is not possible to read the values from the mapping without knowing the respective keys.
+Therefore, we developed a work around and store the keys of mappings in additional arrays which serves 
+as look up tables.
 With reference to the listing \ref{lst:contract_attributes}, the array \verb|order_indices| functions as a 
 look up table for the mapping \verb|orders|, and the array \verb|trades_accounts| for the mapping 
 \verb|trades| and all other trades related mappings.
@@ -340,11 +340,11 @@ the trades.
     }
 \end{lstlisting}
 
-Next, the function \verb|addToArray()| is called and variable \verb|account| is passed. 
+Next, the function \verb|addToArray()| is called and the variable \verb|account| is passed. 
 This function checks whether the account to which the trade belongs is already contained in the array \verb|trades_account|.
 If not, the function adds the account to the array, which again serves as the look up table for the
 mapping \verb|trades| and all other trades related mappings.
-Concluding, all the information required for a trade is placed in the corresponding mappings. In all
+Concluding, all the required informations for a trade are placed in the corresponding mappings. In all
 mappings the account address is used as the key.
 
 At the end, a last function of the dealer's smart contract is introduced.
@@ -363,7 +363,21 @@ and can be seen as a kind of collection point for the trades.
     }
 \end{lstlisting}
 
+The function enables agents to receive or reject their trades. 
+In case of an acceptance, the function pay the agents their refund
+and returns their belonging granted trade.
+As explained earlier, the agents prepay the true value of the entire requested bundle.
+However, the agents often only get shares of their requested bundles due to the solution of the 
+\textit{market matching problem}.
+For this reason, the agents have often prepaid more than they have to pay, which leads to 
+excess payments. Because of this, the dealer calculates the difference between the prepayment 
+and the price of the granted trade and refunds it.
+In case of a rejection, the dealer refund the whole prepayment and deletes the granted trade.
+The deletion of a rejected trade is necessary to calculate the dealer's resource inventory correctly
+after the settlement process.
+
 \begin{comment}
+
 \end{comment}
 
 
