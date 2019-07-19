@@ -176,7 +176,7 @@ on the one hand, and the solution of the dual problem (represented by variable \
 Additionally, both solutions will be rounded to one decimal place. This procedure is implemented due to the issues and limitations of 
 floating point arithmetic \footnote{https://docs.python.org/2/tutorial/floatingpoint.html}. 
 We want to make sure that correct trades are not rejected on the basis of those limitations.
-Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type \verb|boolean| will be
+Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type boolean will be
 set to \verb|True|, otherwise to \verb|False|.
 
 Likewise, the class provides a function to notify the dealer's smart contract if the respective trade is accepted or not.
@@ -281,8 +281,12 @@ look up table for the mapping \verb|orders|, and the array \verb|trades_accounts
 Next, some of the most important functions of the dealer's smart contract are introduced and explained.
 
 To begin with, the function for receiving the agents orders is outlined in the listing \ref{lst:set_order_contract}.
-The function header contains on the one hand the built-in modifier \verb|payable|, and on the other hand, the custom
-modifier \verb|checkPrepayment|.
+The function header contains on the one hand the Solidity built-in modifier \verb|payable|, and on the other hand, the custom
+modifier \verb|checkPrepayment|. A function declared with \verb|payable| is one that can accept incoming payments. 
+Without the declaration, the function would reject payments and throw an exception. In this case, the modifier is required 
+to receive the prepayments of the agents. 
+Further, we developed the second modifier \verb|checkPrepayment| to verify whether the incoming payment match the amount
+of required prepayment.
 
 \begin{lstlisting}[float=htbp, label=lst:set_order_contract, caption=Receiving agents orders, language=Java]
     function setOrder(int256[] _bundle, uint256 _bid, uint256 _prepayment) public payable checkPrepayment(_prepayment) {
@@ -300,8 +304,66 @@ modifier \verb|checkPrepayment|.
     }
 \end{lstlisting}
 
+Hence, if the prepayment is not sufficient, the function call of the agents is rejected and 
+the order will not be accepted.
+
+Next, an \verb|Order| object will be declared and initialized. The order object is implemented by the data type
+struct. It is a user-defined data container for grouping variables.
+This data type is well suited to bundle and manage all necessary information regarding an order.
+In this case, the object \verb|Order| contains the variables \verb|msg.sender|, \verb|bundle| and \verb|bid|.
+The variables \verb|bundle| and \verb|bid| are passed as function parameters.
+Besides, when a contract is executed, it has access to a small set of global objects. 
+One of these objects represents the \verb|msg| object. It is the transaction call that launched the contract execution.
+Thereofore, the account address of the agent who executed the function call can be reached via the \verb|msg.sender| variable
+contained in the \verb|msg| object.
+
+Finally, the \verb|Order| object is added to the mapping \verb|orders|.
+The variable \verb|order_count| is an incremental number which serves as the key for 
+the mapping \verb|orders|. After each incoming order this number is increased by one. 
+Additionally, the variable \verb|order_count| will be added to the array \verb|oder_indices|
+that serves as a look up table as mentioned earlier.
+
+Furthermore, the contract function which serves to set the trades of the agents is introduced in listing \ref{lst:set_trade_contract}.
+With reference to the function header, the modifier \verb|onlyByOwner()| is applied.
+This custom modifier examines if the caller of the function is also the owner of the contract. This means, that 
+only the owner of the contract has the permission to call this function.
+The owner of the contract is the off-chain dealer. Accordingly, the applied modifier ensures that no one else can set 
+the trades. 
+
+\begin{lstlisting}[float=htbp, label=lst:set_trade_contract, caption=Setting the trades, language=Java]
+    function setTrade(address _account, int256[] _trade, uint256 _prepayment, uint256 _bill, uint256 _refund) public onlyByOwner() {
+        addToArray(_account);
+        trades[_account] = _trade;
+        bills[_account] = _bill;
+        prepayments[_account] = _prepayment;
+        refunds[_account] = _refund;
+    }
+\end{lstlisting}
+
+Next, the function \verb|addToArray()| is called and variable \verb|account| is passed. 
+This function checks whether the account to which the trade belongs is already contained in the array \verb|trades_account|.
+If not, the function adds the account to the array, which again serves as the look up table for the
+mapping \verb|trades| and all other trades related mappings.
+Concluding, all the information required for a trade is placed in the corresponding mappings. In all
+mappings the account address is used as the key.
+
+At the end, a last function of the dealer's smart contract is introduced.
+The implementation of the function is shown in listing \ref{lst:accept_trade_contract} above
+and can be seen as a kind of collection point for the trades.
+
+\begin{lstlisting}[float=htbp, label=lst:accept_trade_contract, caption=Collection point of trades, language=Java]
+    function acceptTrade(bool accept_trade) public returns (int256[]) {
+        if(accept_trade) {
+            msg.sender.transfer(refunds[msg.sender]);
+            return trades[msg.sender];
+        } else {
+            msg.sender.transfer(prepayments[msg.sender]);
+            delete trades[msg.sender];
+        }
+    }
+\end{lstlisting}
+
 \begin{comment}
-    
 \end{comment}
 
 
