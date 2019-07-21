@@ -45,6 +45,7 @@ that interact with each other during the runtime of the simulation.
 However, the individual components are considered in isolation in this subsection.
 
 \subsubsection{Agent}
+\label{sec:agent_class}
 The agents are implemented by a Python class. Moreover, the naming is oriented on the proposed \textit{BTM} and,
 as mentioned earlier in section \ref{sec:concept_of_lem}, the agents represent the respective household 
 in the LEM simulation.
@@ -233,7 +234,7 @@ Since a new \verb|objective| has been calculated, the class attribute \verb|weal
 
 
 \subsubsection{Smart contract dealer}
-
+\label{sec:smart_contract_dealer}
 In this part, the dealer's smart contract is introduced. 
 As already mentioned, the contract is implemented by the programming language Solidity. 
 First of all, attributes of the contract are presented in the following listing \ref{lst:contract_attributes}.
@@ -376,12 +377,93 @@ In case of a rejection, the dealer refund the whole prepayment and deletes the g
 The deletion of a rejected trade is necessary to calculate the dealer's resource inventory correctly
 after the settlement process.
 
-\begin{comment}
-
-\end{comment}
-
 
 \subsubsection{Off-chain dealer}
+We mentioned earlier in the section \ref{sec:concept_of_lem} that the 
+dealer is implemented by a smart contract and a conventional software client.
+In the previous subsection \ref{sec:smart_contract_dealer}, the 
+dealer's smart contract was described. In turn, 
+this subsection deals with the counterpart, the off-chain dealer. 
+
+Firstly, the off-chain dealer is implemented by a Python class and the 
+class attributes are introduced and presented in the listing \ref{lst:offchain_class_attributes} below.
+The variables \verb|account_address|, \verb|web3|, 
+\verb|dealer_contract|, \verb|shared_resource_size| and \verb|mkt_prices| 
+are initialized when the class is instantiated.
+Again, the variables \verb|account_address|, \verb|web3| and 
+\verb|dealer_contract| have the same purpose as those used in the class implementation of 
+the agents, introduced in subsection \ref{sec:agent_class}.
+Further, the variable \verb|shared_resource_size| is required to determine the size 
+of the vector of the traded bundles and the related market price vector. 
+Additionally, the market price vector is initialized using the \verb|shared_resource_size|
+and presented by the variable \verb|mkt_prices|.
+All other class attributes are set immediately after 
+the instantiation or during the running simulation.
+
+\begin{lstlisting}[float=htbp, label=lst:offchain_class_attributes, caption=Overview of the off-chain dealer's class attributes, language=Python]
+    class Dealer(object):
+
+        def __init__(self, account_address, web3, dealer_contract, shared_resource_size):
+            self._account_address = account_address
+            self._web3 = web3
+            self._dealer_contract = dealer_contract
+            self._resource_inventory = None
+            self._trade = None
+            self._shared_resource_size = shared_resource_size
+            self._mkt_prices = np.zeros(self._shared_resource_size)
+            self._order_handler = None
+\end{lstlisting}
+
+Next, some of the most important functions of the class are introduced and explained.
+To begin with, the function to retrieve the orders of the agents from the dealer's 
+smart contract is introduced in the listing \ref{lst:offchain_get_orders}.
+
+\begin{lstlisting}[float=htbp, label=lst:offchain_get_orders, caption=Overview of the off-chain dealer's class attributes, language=Python]
+    def get_orders(self):
+        self._order_handler = utils.OrderHandler()
+        order_indices = self.get_order_indices()
+
+        # get all orders from contract and store in order handler
+        for order_id in order_indices:
+            order = self._dealer_contract.contract.functions.getOrder(order_id).call()
+            self._order_handler.add_order(order_id, order)
+\end{lstlisting}
+
+The variable \verb|order_handler| is initialized with an object of the class \verb|OrderHandler|.
+We developed the class \verb|OrderHandler| to store and manage the orders of the agents' more easily
+on the part of the off-chain dealer.
+It contains a pool for the account adresses of the agents and the 
+respective orders. In addition, the object provides functions to 
+calculate all relevant attributes regarding the trades of the belonging orders, 
+like the prepayment and the refunds.
+Then, the function of the smart contract is called to retrieve the order indices,
+which is stored in the variable of the same name. This variable is used to 
+access the individual orders of the smart contract.
+Afterwards, all orders from the contract are retrieved iterative and stored in the \verb|order_handler|.
+
+Finally, the function to set the trades of the agents in the contract is presented in the listing \ref{lst:offchain_set_trades}
+
+\begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Submitment of trades, language=Python]
+    def set_trades(self):
+        self.set_trade_share()
+        self.initiate_trade_calculation()
+        self.initiate_prepayment_calculation()
+        self.initiate_bill_calculation()
+        self.initiate_refund_calculation()
+
+        for order in self._order_handler.get_all_orders():
+            account, trade, prepayment, bill, refund = order.get_trade_information()
+            prepayment = utils.from_ether_to_wei(prepayment)
+            bill = utils.from_ether_to_wei(bill)
+            refund = utils.from_ether_to_wei(refund)
+
+            self._dealer_contract.contract.functions.setTrade(account, trade, prepayment, bill, refund).transact({'from': self._account_address})
+\end{lstlisting}
+
+\begin{comment}
+    
+\end{comment}
+
 
 \subsubsection{Blockchain}
 
