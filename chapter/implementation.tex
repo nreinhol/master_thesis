@@ -40,6 +40,7 @@ It is used to implement the smart contract dealer.
 \clearpage
 %--------------------------------------
 \subsection{Components}
+\label{sec:components_of_simulation}
 To start off, this subsection presents the respective main components 
 that interact with each other during the runtime of the simulation.
 However, the individual components are considered in isolation in this subsection.
@@ -95,7 +96,7 @@ of the setter is shown.
         self._wealth = self.balance + abs(self._objective)
 \end{lstlisting}
 
-As you can see in the listing, after setting the optimization problem, the class attributes \verb|objective| and \verb|wealth| will be determined.
+As you can see in the listing, after setting the optimization problem, the class attributes \verb|objective| and \verb|wealth| are determined.
 In this case, the attribute \verb|wealth| is defined as the sum of the current \verb|balance| of the account and the absolute value of the current \verb|objective|.
 Equally, it is defined in the \textit{BTM}, outlined in section \ref{sec:btm}.
 However, \verb|balance| is not a class attribute, but a class function. It uses the class attributes \verb|web3| and \verb|account_address| to retrieve the current
@@ -110,16 +111,16 @@ In addtion, the function for determining the improving bundle set and the associ
         self._bid = self._objective - result.fun
 \end{lstlisting}
 
-As shown in the listing, first the bundle determination problem will be solved.
-It is solved in a separate function depending on the optimization problem and the current market prices.
-Due to the high complexity, this function is not shown here. Further, the class attributes \verb|bundle_set| and \verb|bid| are initialized.
+As shown in the listing, first the bundle determination problem is solved.
+It is solved in a separate function which requires the optimization problem and the current market prices as parameters.
+Further, the class attributes \verb|bundle_set| and \verb|bid| are initialized.
 We stated in section \ref{sec:agent_bidding} that the applied market mechanism implemented nonstrategic bidding and pricing, wherefore 
-an agent will always submit a limit price equal to the valuation of the bundle. 
+an agent always submits a limit price equal to the valuation of the bundle. 
 This is reflected in the definition of the class attribute \verb|bid|. The true value of the improving \verb|bundle_set| 
 is the current \verb|objective| minus the objective of the optimization problem with the resources of the \verb|bundle_set|.
 In this case, the minus sign reflects the fact that we are minimizing costs.
-After presenting the determination of all necessary bundle attributes, the submitment of an order will be shown in the listing \ref{lst:set_order} below.
-First of all, the variables \verb|bundle_set| and \verb|bid| will be prepared for sending to the dealer's smart contract.
+After presenting the determination of all necessary bundle attributes, the submitment of an order is shown in the listing \ref{lst:set_order} below.
+First of all, the variables \verb|bundle_set| and \verb|bid| are prepared for sending to the dealer's smart contract.
 In Solidity, fixed point numbers are not fully supported yet. It is possible to declare them, but they cannot be assigned to or from \shortcite{solidity_fixed_point}.
 
 \begin{lstlisting}[float=htbp, label=lst:set_order, caption=Submitment of order, language=Python]
@@ -141,9 +142,15 @@ so that you receive integer values.
 Additionally, the variable \verb|prepayment| is assigned. 
 The condition that \verb|bid| is greater than zero identifies if this order represents a buy order.
 In case of a buy order, the agents have to pay in advance.
-Therefore the value of \verb|prepayment| will be set equally to the value of variable \verb|bid|. 
+Therefore the value of \verb|prepayment| is set equally to the value of variable \verb|bid|. 
 This procedure is implemented to prevent the strategic placing of orders and to ensure that the financial resources are available.
-If it is a sell order, no payment in advance is required and the value of \verb|prepayment| will be set to zero.
+If it is a sell order, no payment in advance is required and the value of \verb|prepayment| is set to zero.
+Furthmore, before the value of \verb|prepayment| is equated with the value of \verb|bid|, a function is called 
+that converts the value of \verb|bid|. This function converts the input values from the unit Ether to the unit
+Wei. 
+The implementation of this function is required because Wei is the base unit for currency in Solidity
+and all monetary values within a contract are given in it. However, on the client side we decided to specify all monetary values in Ether
+for better clarity.
 
 Finally, the already introduced class attribute \verb|dealer_contract| is used to call the function of the dealer's smart contract which is
 responsible for setting the orders.
@@ -174,10 +181,10 @@ Due to this, it is possible to verify if the solution of the dealer is optimal, 
 \textit{market matching problem}.
 To apply the \textit{Strong Duality Theorem}, the solution of the primal problem (represented by variable \verb|primal_solution|) is calculated
 on the one hand, and the solution of the dual problem (represented by variable \verb|dual_solution|) on the other hand.
-Additionally, both solutions will be rounded to one decimal place. This procedure is implemented due to the issues and limitations of 
+Additionally, both solutions are rounded to one decimal place. This procedure is implemented due to the issues and limitations of 
 floating point arithmetic \footnote{https://docs.python.org/2/tutorial/floatingpoint.html}. 
 We want to make sure that correct trades are not rejected on the basis of those limitations.
-Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type boolean will be
+Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type boolean is
 set to \verb|True|, otherwise to \verb|False|.
 
 Likewise, the class provides a function to notify the dealer's smart contract if the respective trade is accepted or not.
@@ -194,7 +201,7 @@ The implementation of this function is shown in listing \ref{lst:accept_trade}.
 \end{lstlisting}
 
 If the verification of the \textit{Strong Duality Theorem} was successful and the variable \verb|acccept_trade| was thus set to the value \verb|True|,
-the function retrieves the trade and stores it in the class attribute \verb|trade|. Besides, before the trade is stored, it will be 
+the function retrieves the trade and stores it in the class attribute \verb|trade|. Besides, before the trade is stored, it is 
 prepared for storing. This is due to the already mentioned work around that shift the decimal place two digits to the right before 
 sending values to the dealer's smart contract. When retrieving and storing values, exactly the opposite is done and we shift the decimal place 
 two digits to the left. 
@@ -228,7 +235,7 @@ as it is defined in the \textit{BTM}, introduced in the section \ref{sec:market_
 
 As shown in the listing \ref{lst:add_trade_to_shared_resources} above, the code of the function 
 is only executed if the trade has been accepted. 
-In addition, the new \verb|objective| of the linear programming model will be calculated after getting the new resources.
+In addition, the new \verb|objective| of the linear programming model is calculated after getting the new resources.
 Since a new \verb|objective| has been calculated, the class attribute \verb|wealth| is also recalculated accordingly.
 
 
@@ -261,7 +268,7 @@ First of all, attributes of the contract are presented in the following listing 
 \end{lstlisting}
 
 First, general attributes are declared. As you can see, the contract contains an attribute called \verb|owner|.
-This variable will be set in the constructor of the contract and initialized with the address of the contract creator,
+This variable is set in the constructor of the contract and initialized with the address of the contract creator,
 which is in this case the off-chain dealer.  
 It is being used in a modifier which ensures that certain functions can only be executed by the owner of the contract.
 Moreover, a modifier can be seen as an extension of a function and is mainly used to 
@@ -306,9 +313,9 @@ of required prepayment.
 \end{lstlisting}
 
 Hence, if the prepayment is not sufficient, the function call of the agents is rejected and 
-the order will not be accepted.
+the order is not accepted.
 
-Next, an \verb|Order| object will be declared and initialized. The order object is implemented by the data type
+Next, an \verb|Order| object is declared and initialized. The order object is implemented by the data type
 struct. It is a user-defined data container for grouping variables.
 This data type is well suited to bundle and manage all necessary information regarding an order.
 In this case, the object \verb|Order| contains the variables \verb|msg.sender|, \verb|bundle| and \verb|bid|.
@@ -321,7 +328,7 @@ contained in the \verb|msg| object.
 Finally, the \verb|Order| object is added to the mapping \verb|orders|.
 The variable \verb|order_count| is an incremental number which serves as the key for 
 the mapping \verb|orders|. After each incoming order this number is increased by one. 
-Additionally, the variable \verb|order_count| will be added to the array \verb|oder_indices|
+Additionally, the variable \verb|order_count| is added to the array \verb|oder_indices|
 that serves as a look up table as mentioned earlier.
 
 Furthermore, the contract function which serves to set the trades of the agents is introduced in listing \ref{lst:set_trade_contract}.
@@ -393,8 +400,8 @@ are initialized when the class is instantiated.
 Again, the variables \verb|account_address|, \verb|web3| and 
 \verb|dealer_contract| have the same purpose as those used in the class implementation of 
 the agents, introduced in subsection \ref{sec:agent_class}.
-Further, the variable \verb|shared_resource_size| is required to determine the size 
-of the vector of the traded bundles and the related market price vector. 
+Further, the variable \verb|shared_resource_size| is required to determine the vectorsize 
+of the traded bundles and the related market price vector. 
 Additionally, the market price vector is initialized using the \verb|shared_resource_size|
 and presented by the variable \verb|mkt_prices|.
 All other class attributes are set immediately after 
@@ -418,7 +425,7 @@ Next, some of the most important functions of the class are introduced and expla
 To begin with, the function to retrieve the orders of the agents from the dealer's 
 smart contract is introduced in the listing \ref{lst:offchain_get_orders}.
 
-\begin{lstlisting}[float=htbp, label=lst:offchain_get_orders, caption=Overview of the off-chain dealer's class attributes, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:offchain_get_orders, caption=Retrievement of orders, language=Python]
     def get_orders(self):
         self._order_handler = utils.OrderHandler()
         order_indices = self.get_order_indices()
@@ -439,9 +446,22 @@ like the prepayment and the refunds.
 Then, the function of the smart contract is called to retrieve the order indices,
 which is stored in the variable of the same name. This variable is used to 
 access the individual orders of the smart contract.
-Afterwards, all orders from the contract are retrieved iterative and stored in the \verb|order_handler|.
+Afterwards, all orders from the contract are retrieved iteratively and stored in the \verb|order_handler|.
 
-Finally, the function to set the trades of the agents in the contract is presented in the listing \ref{lst:offchain_set_trades}
+Furthermore, the class also provides functions for creating and solving the \textit{market matching problem}.
+Due to the focus on the architectural design and implementation of the simulation and the high complexity
+of this functions, they are not presented in detail. However, the corresponding source code can be found in the appendix \ref{appendix:additional_offchain}.
+
+Finally, the function to set the trades of the agents in the contract is presented in the listing \ref{lst:offchain_set_trades}.
+At the beginning, several function are invoked which initiate the calculation of trades and their related attributes.
+All these calculations take place in the object \verb|OrderHandler|, which has already been presented.
+First, the calculation of the trade share is called. As stated earlier, due to the solution of the 
+\textit{market matching problem}, the agents often just get shares of their requested bundles. In this step,
+these shares for each settled order are set. Then, the calculation of the respective trades is initiated.
+Then again, the calculation of the remaining attributes, such as the prepayment, the bill, and the refund,
+is initiated. 
+After that, all required attributes of the trades are calculated.
+
 
 \begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Submitment of trades, language=Python]
     def set_trades(self):
@@ -460,20 +480,115 @@ Finally, the function to set the trades of the agents in the contract is present
             self._dealer_contract.contract.functions.setTrade(account, trade, prepayment, bill, refund).transact({'from': self._account_address})
 \end{lstlisting}
 
-\begin{comment}
-    
-\end{comment}
+Finally, the respective orders are set iteratively in the dealer's smart contract. For each existing order, the related values of 
+\verb|prepayment|, \verb|bill| and \verb|refund| are again converted from Ether to Wei. Then, the object of the smart 
+contract dealer is used to invoke the contracts function to set the trades.
 
 
 \subsubsection{Blockchain}
+In this part the used blockchain is described. At the beginning, in section \ref{sec:applied_technologies}, we already
+stated that we used a personal blockchain called Ganache. 
+This personal Ethereum blockchain acts like a full client, which are described in section \ref{sec:nodes}.
+However, Ganache has even more features that allows you to customize the properties of the Blockchain.
+First, you can specify the number of generated accounts and the assigned amount of ether.
+Further, it is possible to adjust the blocktime. The blocktime defines the time it takes to mine a new block. 
+Additionally, it provides the feature to instantly mine a new block for every transaction. 
+This is very useful for testing and debugging applications like the developed simulation.
+Likewise, it is possible to specify the price of gas in Wei and the gas limit of a block. 
+Hence, the used blockchain Ganache allows you to recreate many scenarios of different blockchain behavior
+and is therefore perfectly suited for the application of a simulation.
+
+
+
 
 %--------------------------------------
 \subsection{Simulation process}
+To begin with, this subsection presents the whole simulation process. 
+In contrast to the previous subsection \ref{sec:components_of_simulation}, that 
+considered the individual components in isolation, this subsection focus 
+on the interaction of the various components.
+
+Further, we divided the simulation process into 
+the two parts \textit{Initial Setup}, and \textit{Main simulation loop},
+which are described in the following.
 
 \subsubsection{Initial setup}
+Above all, the initial setup part is shown in the listing \ref{lst:initial_setup}.
+The displayed source code is executed directly before the source code from listing \ref{lst:main_simulation_loop}.
 
-\subsubsection{Agent bidding}
+\begin{lstlisting}[float=htbp, label=lst:initial_setup, caption=Initial setup of the simulation, language=Python]
+    # general setup of simulation
+    var = mem.Variables()
+    lp.decompose(var)
 
-\subsubsection{Dealer's market clearing mechanism}
+    # set initial inventory and market prices
+    var.dealer.set_resource_inventory()
+    var.dealer.set_mkt_prices()  
+\end{lstlisting}
 
-\subsubsection{Agent trade verification}
+Firstly, an object of the class \verb|Variables| is instantiated. 
+This class object can be seen as a kind of global memory.
+It contains all fundamental variables which are required to run the simulation.
+These variables are described in more detail in the following list.
+
+\begin{description}
+	\item[\texttt{central\_problem}:]
+	\item[\texttt{web3}:]
+	\item[\texttt{dealer\_contract}:]
+    \item[\texttt{dealer}:]
+    \item[\texttt{agent\_pool}:] 
+\end{description}
+
+\subsubsection{Main simulation loop}
+First of all, the source code of the main simulation loop is outlined in the listing \ref{lst:main_simulation_loop}.
+These loop represents the main process of the simulation and is intented to give an initial overview of their
+implementation. It takes place after the part \textit{Initial Setup}.
+
+\begin{lstlisting}[float=htbp, label=lst:main_simulation_loop, caption=Main loop of the simulation, language=Python]
+    while(not equal_market_prices):
+        
+        # agent bidding
+        for agent in var.agent_pool:
+            agent.get_mkt_prices()  # call
+            agent.determine_bundle_attributes()
+            agent.set_order()  # transact
+
+        utils.wait_for_new_block(var)
+
+        # dealers market matching mechanism
+        var.dealer.get_orders()  # call
+        var.dealer.create_mmp()
+        var.dealer.solve_mmp()
+        var.dealer.set_trades()  # transact
+        var.dealer.delete_order()  # transact
+        var.dealer.set_mkt_prices()  # transact
+        var.dealer.set_mmp_attributes()  # transact
+
+        utils.wait_for_new_block(var)
+
+        # agent trade verification
+        for agent in var.agent_pool:
+            agent.verify_strong_duality()  # call
+            agent.accept_trade()  # transact
+            agent.add_trade_to_shared_resources()
+
+        utils.wait_for_new_block(var)
+
+        var.dealer.recalculate_resource_inventory() # transact        
+\end{lstlisting}
+
+
+
+
+
+
+
+\begin{comment}
+To start off, this subsection presents the respective main components 
+that interact with each other during the runtime of the simulation.
+However, the individual components are considered in isolation in this subsection
+
+the whole simulation process is outlined and the 
+implementation of the fundamental parts 
+of the simulation process are described in detail
+\end{comment}
