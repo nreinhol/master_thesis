@@ -386,6 +386,7 @@ after the settlement process.
 
 
 \subsubsection{Off-chain dealer}
+\label{sec:off_chain_component}
 We mentioned earlier in the section \ref{sec:concept_of_lem} that the 
 dealer is implemented by a smart contract and a conventional software client.
 In the previous subsection \ref{sec:smart_contract_dealer}, the 
@@ -532,17 +533,52 @@ It contains all fundamental variables which are required to run the simulation.
 These variables are described in more detail in the following list.
 
 \begin{description}
-	\item[\texttt{central\_problem}:]
-	\item[\texttt{web3}:]
-	\item[\texttt{dealer\_contract}:]
-    \item[\texttt{dealer}:]
-    \item[\texttt{agent\_pool}:] 
+	\item[\texttt{central\_problem}:] Represents the specified central optimization problem of the presented \textit{BTM}.
+    It is divided into subproblems and distributed to the existing agents. It is important 
+    to note that the number of variables present in the problem can be exactly divided by the number of agents.
+    Otherwise an exception is thrown.
+	\item[\texttt{web3}:] Represents the object of the Python library, which enables the interaction with an
+	Ethereum blockchain. It is the same object that is passed to the agent classes and the off-chain dealer class.
+    \item[\texttt{dealer\_contract}:] Represents the object of the dealer's smart contract. 
+    It is the same object that is passed to the agent classes and the off-chain dealer class. It contains all
+    implemented functions of the dealer's smart contract. When the contract is deployed and thus anchored in the blockchain, a JSON file is created. 
+    This file is denoted as the Contract Application Binary Interface (ABI). The Contract ABI is used to instantiate the Python object.  
+    \item[\texttt{agent\_pool}:] Represents a list containing all existing agent objects. 
+    Therefore all existing accounts are read from the blockchain and used to instantiate the agents.
+    \item[\texttt{dealer}:] Represents the object of the off-chain dealer, which is instantiated with the 
+    remaining account.
 \end{description}
 
+Next, the function for decomposing the central problem is called. The class object \verb|Variables| is passed to it as parameter.
+This is needed to reach the central problem, the agent pool and thus the amount of all existing agents, and the object of the
+off-chain dealer. 
+Then, the central problem is decomposed into subproblems which are distributed among the agents. 
+The distrituion step also includes the distribution of the shared resources. 
+Further, the allocation of the shared resources is implemented in such a way that all parties receive equal shares.
+
+Furthermore, the off-chain dealer sets the initial values of the resource inventory and the market prices in the dealer's
+smart contract. As stated before, the the initial resource inventory is calculated in the decomposition step of the central problem. 
+We also mentioned earlier in \ref{sec:off_chain_component}, that the market price vector is initialized when instantiating the off-chain dealer class.
+The size of the market price vector is equal to the size of the shared resources and is initially specified with zeros.
+
+Finally, a few simulation parameter are set, which are needed to determine the termination of the simulation.
+These are self-explanatory and not essential for understanding the simulation process, wherefore they are not shown in the listing \ref{lst:initial_setup}.
+Afterwards, the mail simulation begins.
+
+
+
+
 \subsubsection{Main simulation loop}
-First of all, the source code of the main simulation loop is outlined in the listing \ref{lst:main_simulation_loop}.
-These loop represents the main process of the simulation and is intented to give an initial overview of their
-implementation. It takes place after the part \textit{Initial Setup}.
+First of all, the source code of the \textit{Main simulation loop} is outlined in the listing \ref{lst:main_simulation_loop}.
+These loop represents the main process of the simulation and takes place after the part \textit{Initial Setup}.
+The simulation loop is implemented by a while loop, which only terminates if the 
+market prices from the previous round are equal to the market prices of the current round.
+Conversely, this means that the simulation runs as long as the market prices of the last two rounds are different.
+Additionally, there are comments in the source code of listing \ref{lst:main_simulation_loop}.
+The inline comments to the right of the function calls indicate if the invoked function constitutes
+a \verb|call()| or a \verb|transact()| method. As described earlier, the \verb|call()| method invokes 
+a smart contract function on a read-only basis, whereas the \verb|transact()| method submits a verified transaction 
+that change the state of the blockchain.
 
 \begin{lstlisting}[float=htbp, label=lst:main_simulation_loop, caption=Main loop of the simulation, language=Python]
     while(not equal_market_prices):
@@ -577,18 +613,40 @@ implementation. It takes place after the part \textit{Initial Setup}.
         var.dealer.recalculate_resource_inventory() # transact        
 \end{lstlisting}
 
+The behavior of a blockchain differs from that of a conventional client-server architecture.
+In a blockchain environment, the process of a \verb|transact()| method call is not immediately completed.
+The network verification requires some time due to the mining procedure. 
+Consequently, before the values written into the blockchain by a \verb|transact()| method are accessible, a certain time passes.
+Hence, it is important to take this into account if you want to read certain values 
+from the blockchain that you set in previous steps. 
+Therefore, we implemented a function called \verb|wait_for_new_block()|. This function
+simply waits for the generation (mining) of a new block and 
+is invoked whenever it is needed to wait for new values to be finally anchored in the blockchain.
 
+In addition, the \textit{Main simulation loop} can be divided into the three main actions 
+\textit{agent bidding}, \textit{dealer's market matching mechanism}, and \textit{agent trade verification},
+which are also marked with a comment in the listing \ref{lst:main_simulation_loop}. 
+Besides, the above described function \verb|wait_for_new_block()| is called between these main actions
+to ensure an faultless process. 
+In the following each of the three main actions are described.
 
+\paragraph{Agent bidding: } 
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
+\paragraph{Dealer's market clearing mechanism: }
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
+\paragraph{Agent trade verification: }
+Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
 
 
 \begin{comment}
-To start off, this subsection presents the respective main components 
-that interact with each other during the runtime of the simulation.
-However, the individual components are considered in isolation in this subsection
+The difference lies in the expressions \verb|call()| and \verb|transact()|. 
+The \verb|call()| method of the Web3.py library enables to invoke any smart contract function on a read-only basis
+and returns values sent by the smart contract return statement. 
+Those read-only invocations run much faster than transactions that require network verification.
+On the contrary, the \verb|transact()| method submits a verified transaction that potentially change the state 
+of the blockchain. 
+Hence, network verification is needed that causes a significant delay due to the mining procedure.
 
-the whole simulation process is outlined and the 
-implementation of the fundamental parts 
-of the simulation process are described in detail
 \end{comment}
