@@ -500,9 +500,6 @@ Hence, the used blockchain Ganache allows you to recreate many scenarios of diff
 and is therefore perfectly suited for the application of a simulation.
 
 
-
-
-%--------------------------------------
 \subsection{Simulation process}
 To begin with, this subsection presents the whole simulation process. 
 In contrast to the previous subsection \ref{sec:components_of_simulation}, that 
@@ -565,9 +562,6 @@ Finally, a few simulation parameter are set, which are needed to determine the t
 These are self-explanatory and not essential for understanding the simulation process, wherefore they are not shown in the listing \ref{lst:initial_setup}.
 Afterwards, the mail simulation begins.
 
-
-
-
 \subsubsection{Main simulation loop}
 First of all, the source code of the \textit{Main simulation loop} is outlined in the listing \ref{lst:main_simulation_loop}.
 These loop represents the main process of the simulation and takes place after the part \textit{Initial Setup}.
@@ -623,30 +617,126 @@ Therefore, we implemented a function called \verb|wait_for_new_block()|. This fu
 simply waits for the generation (mining) of a new block and 
 is invoked whenever it is needed to wait for new values to be finally anchored in the blockchain.
 
-In addition, the \textit{Main simulation loop} can be divided into the three main actions 
+In addition, the \textit{Main simulation loop} can be divided into the three main activities 
 \textit{agent bidding}, \textit{dealer's market matching mechanism}, and \textit{agent trade verification},
-which are also marked with a comment in the listing \ref{lst:main_simulation_loop}. 
-Besides, the above described function \verb|wait_for_new_block()| is called between these main actions
+which are also marked with a comment in the listing \ref{lst:main_simulation_loop}.
+These main activities are thematically summarised function calls.
+Besides, the above described function \verb|wait_for_new_block()| is called between these activities
 to ensure an faultless process. 
-In the following each of the three main actions are described.
+In the following each of the three activities are described.
 
-\paragraph{Agent bidding: } 
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\paragraph{Agent bidding:}
+To start with, this activity refers to the section \ref{sec:agent_bidding} of the same name and represents
+the technical implementation. Further, a sequence of all function 
+calls for this activity is provided in figure \ref{figure:agent_bidding_figure}.
 
-\paragraph{Dealer's market clearing mechanism: }
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Above all, the steps described below are performed for all existing agents. 
+This is indicated by the specified for-loop, shown in the beginning of listing \ref{lst:main_simulation_loop}.
 
-\paragraph{Agent trade verification: }
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.8\linewidth]{./figures/agent_bidding.png}
+	\caption{Sequence of agent bidding}
+	\label{figure:agent_bidding_figure}
+\end{figure}
+
+First, the agent get the current market prices from the dealer's smart contract.
+To obtain the market prices, the function \verb|getMktPrices()| of the dealer's smart contract is utilized.
+The market prices are required for the determination of the prefered bundle set.
+
+Next, the agent solves the bundle determination and initialize the class attributes
+\verb|bundle_set| and \verb|bid|.
+In turn, they are required for the next function call.
+The corresponding implementation of this function is presented in listing \ref{lst:determine_bundle}.
+
+Finally, the agent sets the order in the dealer's smart contract.
+To place the order in the contract, the function \verb|setOrder()| of the contract is utilized.
+The implementation of the dealer's smart contract function is shown in the listing \ref{lst:set_order_contract}.
+Moreover, the implementation of the function \verb|set_order()| of the agent is 
+also introduced in the listing \ref{lst:set_order}.
+
+\paragraph{Dealer's market clearing mechanism:}
+To begin with, this activity refers to the section \ref{sec:market_clearing_mechanism} and can be seen as
+the technical implementation. Further, a sequence of all function 
+calls for this activity is provided in figure \ref{figure:dealers_mmp}.
+
+First, the off-chain dealer gets the orders from the dealer's smart contract.
+Therefore, the function \verb|get_orders()| of the agent (introduced in listing \ref{lst:offchain_get_orders})
+utilizes the function \verb|getOrder()| of the contract.
+
+Then, the off-chain dealer creates and solves the market matching problem.
+The implementation of both functions is outlined in appendix \ref{appendix:additional_offchain}.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.8\linewidth]{./figures/dealers_mmp.png}
+	\caption{Sequence of dealer's market matching mechanism}
+	\label{figure:dealers_mmp}
+\end{figure}
+
+After solving the market matching problem and the calculation of the respective 
+trades, the off-chain dealer sets the trades in the dealer's smart contract.
+Therefore, the function \verb|set_trade()| of the off-chain dealer (introduced in listing \ref{lst:offchain_set_trades})
+utilizes the function \verb|setTrade()| of the dealer's smart contract.
+
+Afterwards, the off-chain dealer deletes the settled orders out of the dealer's
+smart contract. 
+To do this, the function \verb|delete_order()| of the off-chain dealer
+utilizes the function \verb|deleteOrder()| of the dealer's smart contract.
+
+In addition, the off-chain dealer sets the new market prices in the dealer's smart contract.
+To set the new market prices, the function \verb|set_mkt_prices()| of the off-chain dealer 
+utilizes the function \verb|setMktPrices()| of the dealer's smart contract.
+
+Finally, the values of the market matching problem are set in the dealer's smart contract. 
+They are used by the agents to verify the correctness of the calculated market prices.
+Therefore, the function \verb|set_mmp_attributes()| of the off-chain dealer
+utilizes the function \verb|setMMPAttributes()| of the dealer's smart contract.
+
+\paragraph{Agent trade verification:}
+To start off, this activity covers the entire trade verification step of the agent. 
+Likewise, a sequence of all function 
+calls for this activity is provided in figure \ref{figure:agents_trade_verification}.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.8\linewidth]{./figures/trade_verification.png}
+	\caption{Sequence of agents trade verification}
+	\label{figure:agents_trade_verification}
+\end{figure}
+
+First, the agent verifies if the conditions of the \textit{Strong Duality Theorem}
+are filfilled.
+Therefore, the function \verb|verify_strong_duality()| of the agent
+(introduced in listing \ref{lst:verify_trade})
+utilizes the function \verb|getMMPAttributes()| of the dealer's smart contract.
+As mentioned ealier in section \ref{sec:agent_bidding}, this function 
+determine the class variable \verb|accept_trade| of type boolean,
+which indicates whether the trade is accepted or not.
+
+Afer that, the agent informs the dealer's smart contract whether 
+the trade is accepted or rejected.
+For this, the function \verb|accept_trade()| of the agent
+(introduced in listing \ref{lst:accept_trade})
+utilizes the function \verb|acceptTrade()| of the dealer's smart contract
+(introduced in listing \ref{lst:accept_trade_contract}).
+In case of acceptance, the dealer's smart contract transfer the refunds 
+to the agents and returns the respective bundle. Otherwise, in case of  
+rejection, dealer's smart contract transfer the whole prepayment 
+and deletes the respective trade.
+
+Finally, the agent adds the trade to the shared resources. The invokation
+of this function only has an effect if the trade was previously accepted. \newline
+
+At the end of each iteration, the resource inventory of the dealer is recalculated.
+Therefore the off-chain dealer calculates how much of the inventory is used for
+the trades and settles this with the previous inventory.
+Finally, the new calculated inventory is set in the dealer's smart contract.
+
 
 
 \begin{comment}
-The difference lies in the expressions \verb|call()| and \verb|transact()|. 
-The \verb|call()| method of the Web3.py library enables to invoke any smart contract function on a read-only basis
-and returns values sent by the smart contract return statement. 
-Those read-only invocations run much faster than transactions that require network verification.
-On the contrary, the \verb|transact()| method submits a verified transaction that potentially change the state 
-of the blockchain. 
-Hence, network verification is needed that causes a significant delay due to the mining procedure.
-
+Finally, it is examined if both solutions are identical. 
+If this is the case, the class variable \verb|accept_trade| of type boolean is
+set to \verb|True|, otherwise to \verb|False|.
 \end{comment}
