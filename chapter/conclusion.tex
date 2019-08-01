@@ -88,7 +88,7 @@ Second, the implementation of an
 auction mechanism by a blockchain causes 
 difficulties regarding privacy. Every on-chain data 
 is publicly available. 
-In case of an auction mechanism, this can result in competitve advantages
+In case of an auction mechanism, this can result in competitive advantages
 for those who submit their orders later on. 
 In an environment where all orders submitted at the same time and written 
 into the same block, this would not be an issue. 
@@ -100,6 +100,21 @@ in the area of agent bidding to avoid those issues.
 
 Finally, as described in this reasearch, we implemented no strategic
 actions in the bundle selection and pricing. 
+However, \shortciteA{guo2012computational} represent various 
+forms of agent strategic behavior regarding bundle selection 
+and bundle pricing.
+In their proposals, agents use forecasted market prices 
+to determine the prefered bundles
+instead of the most recently observed market prices. 
+These approaches could be adopted by future work and implemented
+into the presented LEM simulation.
+In addition, \shortciteA{guo2012computational} also introduce two
+different inventory policies of the dealer to examine if 
+holding intertemporal inventory can facilitate real-time trades 
+in the BTM environment. The implementation of those inventory policies
+into the presented simulation and the adaption of these policies
+into the context of LEM could be also of interest for future work.  
+
 
 
 
@@ -108,15 +123,5 @@ actions in the bundle selection and pricing.
 
 
 \begin{comment}
-
-Accordingly, a rational agent will choose an improving bundle for trading, 
-which leaves his wealth level on the same level or better off. 
-In addition, the basic market mechanism of \shortciteA{guo2007market} assume no 
-strategic actions in the bundle selection and pricing. However, strategic actions 
-can be relaxed and \shortciteA{guo2012computational} also incorporate strategic factors
-in their extended \textit{BTM}. 
-Nevertheless, the applied market mechanism in the developed open blockchain-based
-LEM simulation implemented nonstrategic bidding, wherefore an agents bundle selection 
-can be defined as the following \textit{bundle determination problem:}
 
 \end{comment}
