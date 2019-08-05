@@ -1,8 +1,8 @@
 \section{Conclusion}
 In this research, we described the difficulties of integrating distributes RES into 
 the existing electric grid and presented Peer-to-Peer (P2P) energy trading in local energy markets (LEM)
-as a possible solution to the technical and market problems. Further, we pointed out that central
-management in P2P energy trading is challeging due to the need of advanced communication and data exchanges,
+as a possible solution to technical and market problems. Further, we pointed out that central
+management in P2P energy trading is challenging due to the need for advanced communication and data exchanges,
 wherefore local distributed control and management techniques are more suitable.
 Therefore, we introduced the Ethereum-based blockchain as a new and innovative information communication
 technology (ICT), which fulfills the need for distributed control and management techniques.
@@ -16,45 +16,42 @@ Finally, this research presented the technical implementation of the conceptuali
 LEM simulation, using the introduced BTM as the market mechanism and 
 the Ethereum-based blockchain as the underlying ICT.
 
-In the following section, we investigate whether the developed simulation contains all 
-components for an efficient operation of a blockchain-based LEM, which are introduced in section \ref{sec:components_of_local_energy_markets}. 
+In the following section, we investigate whether the developed simulation contains all components for the efficient operation of a blockchain-based LEM, which are introduced in section \ref{sec:components_of_local_energy_markets}. 
 Then, we outline the contribution of this research. Finally, we examine further areas of research.
 
 \subsection{Compliance of LEM Components}
 \label{sec:compliance_of_components}
 
-In this subsection we examine if the seven components for an efficient operation of a LEM,
+In this subsection, we examine if the seven components for the efficient operation of a LEM,
  elaborated by \shortcite{mengelkamp2018designing}, can be 
 provided by the developed simulation platform.
-Referring to the microgrid setup (C1), an explicit objective, a definition of the market participants 
-and a definition of the form of the traded energy is required. The developed simulation 
-is able to meet these requirements. The explicit objective can be defined by the researcher itself by 
-setting up a central problem. It is possible to define the market participants and the form of the traded energy bundles
+Referring to the microgrid setup (C1), an explicit objective, a definition of the market participants and a definition of the form of the traded energy is required. The developed simulation can meet these requirements. The explicit objective can be defined by the researcher itself by setting up a central problem. It is possible to define the market participants and the form of the traded energy bundles
 according to your requirements.
 Referring to the grid connection (C2), well defined connection points to the superordinate main grid are required.
-We have not implemented these connection points. An implementation by an integration into the inventory 
-policy of the dealer would be possible. 
+We have not implemented these connection points. 
+The implementation of these connection points into the dealer's smart contract would be possible. 
+It would be conceivable to integrate these into the inventory policy of the dealer.
 As for the information system (C3), the requirements are fulfilled due to the usage of blockchain as the ICT.
-Moreover, the applied BTM constitutes an appropriate market mechanism (C4). The BTM defines a clear bidding 
-strategy and the overall objective of the applied framework is to provide an optimal allocation in near real-time. 
+Moreover, the applied BTM constitutes an appropriate market mechanism (C4). The BTM defines a clear bidding strategy and the overall objective of the applied framework is to provide an optimal allocation in near real-time. 
 Additionally, the BTM determines the respective prices by calculating the dual variables.
 Therefore, the developed simulation also includes a pricing mechanism (C5) that supports an efficient allocation.
 Likewise, a suitable energy management trading system (C6) is provided by the applied BTM. 
-It ensures automatically the energy supply and aims to minimize the energy costs.
-Finally, the developed simulation lacks the definition of how a LEM fit into 
-the current energy policy and how taxes and fees are distributed and billed. 
+It ensures automatically the energy supply and aims to minimize energy costs.
+Finally, the developed simulation lacks the definition of how a LEM fit into the current energy policy and how taxes and fees are distributed and billed. 
 That is why the component regulation (C7) is not fulfilled. 
-In conclusion, the developed simulation provides five of seven components for an efficient operation of a LEM. 
+In conclusion, the developed simulation provides five of seven components for the efficient operation of a LEM. 
 Besides, it allows the integration of the missing two components.
-That represents a appropriate and valuable basis for a substantial and significant simulation of a LEM. 
+That represents an appropriate and valuable basis for a substantial and significant simulation of a LEM. 
 
 \subsection{Contribution}
 The conducted research provides two core contributions:
 
 First, the decentralized implementation of the proposed BTM. 
-We successfully implemented the BTM with a blockchain and the included smart contracts 
-as the applied ICT. 
-Due to the application of the blockchain technology, the technical implementation
+We successfully implemented the BTM with a blockchain as the applied ICT. 
+The objectives of the implemented agents correspond to the 
+objectives of agents of the numerical example in the work of \shortciteA{guo2007market}.
+Besides, a log of an executed simulation is provided in appendix \ref{appendix:log_output}.
+Further, due to the application of blockchain technology, the technical implementation
 is publicly accessible.
 Therefore, more transparency is provided and the required level of trust in the BTM
 is reduced. Additionally, the blockchain contains cryptographic encryption methods,
@@ -63,57 +60,53 @@ Concluding, a secure and decentralized market-based optimization algorithm for d
 been developed.
 
 Second, we conceptualized a LEM simulation based on the implemented
-BTM. We proposed an examplary linear programming problem in terms of energy efficient 
-demand side management of household to embed the BTM into the topic of LEM.
-Moreover, the conducted research removed the technical barriers of using complex 
-distributed ledger technologies for researchers.
-Therefore, it incentivises researchers 
+BTM. We proposed an exemplary linear programming problem in terms of energy efficient demand side management of households to embed the BTM into the topic of LEM.
+Moreover, the conducted research removes technical barriers.
+The section \ref{sec:implementation} provides a detailed 
+explanation of the implementation and deals with the special features 
+of the blockchain functionality.
+Hence, the usage of complex distributed ledger technologies for researchers
+is simplified. 
+In addition, the programming language Python is very 
+friendly for beginners and eases the entry into the use of the simulation.
+Therefore, it incentivizes researchers 
 to design and test their artifacts by using the developed simulation.
 Furthermore, due to the customizability of the blockchain properties 
-the developed simulation allows to test different scenarios and thus to get a
-better understandig of the dynamics of a decentralized LEM.
+the developed simulation allows us to test different scenarios and thus 
+to get a better understanding of the dynamics of a decentralized LEM.
 
 \subsection{Future Work}
-The conducted research offers potential for future work in many areas.
+The conducted research offers the potential for future work in many areas.
 
 First, we stated in section \ref{sec:market_clearing_mechanism}, that we
 applied a synchronous call market, where submitted orders to the system
-will be accumulated and processed simulationously at periodic intervalls.
-In a real world application, it would be more appropriate to clear 
-the market every time a new orders arrives. Therefore,
-the implementation from the synchronous to the introduced ansynchronous market trading 
-environment of \shortciteA{guo2012computational} would be reasonable. 
+will be accumulated and processed simultaneously at periodic intervals.
+In a real-world application, it would be more appropriate to clear the market every time new orders arrive. Therefore,
+the implementation from the synchronous to the introduced asynchronous market trading environment of \shortciteA{guo2012computational} would be reasonable. 
 
-Second, the implementation of an 
-auction mechanism by a blockchain causes 
-difficulties regarding privacy. Every on-chain data 
-is publicly available. 
+Second, the implementation of an auction mechanism by a blockchain causes difficulties regarding privacy. Every on-chain data is publicly available. 
 In case of an auction mechanism, this can result in competitive advantages
 for those who submit their orders later on. 
-In an environment where all orders submitted at the same time and written 
-into the same block, this would not be an issue. 
+In an environment where all orders submitted at the same time and written into the same block, this would not be an issue. 
 Otherwise, some participants will have a competitive advantage.
-In a real world application, it is more likely that the orders would be submitted at different
+In a real-world application, it is more likely that the orders would be submitted at different
 times and would not be written into the same block. 
 As a result, future work could address the implementation of commitment schemes
 in the area of agent bidding to avoid those issues.
 
-Finally, as described in this reasearch, we implemented no strategic
+Finally, as described in this research, we implemented no strategic
 actions in the bundle selection and pricing. 
 However, \shortciteA{guo2012computational} represent various 
 forms of agent strategic behavior regarding bundle selection 
 and bundle pricing.
-In their proposals, agents use forecasted market prices 
-to determine the prefered bundles
+In their proposals, agents use forecasted market prices to determine the preferred bundles
 instead of the most recently observed market prices. 
 These approaches could be adopted by future work and implemented
 into the presented LEM simulation.
 In addition, \shortciteA{guo2012computational} also introduce two
-different inventory policies of the dealer to examine if 
-holding intertemporal inventory can facilitate real-time trades 
-in the BTM environment. The implementation of those inventory policies
+different inventory policies of the dealer to examine if holding intertemporal inventory can facilitate real-time trades in the BTM environment. The implementation of those inventory policies
 into the presented simulation and the adaption of these policies
-into the context of LEM could be also of interest for future work.  
+into the context of LEM could be also of interest for future work. 
 
 
 

@@ -1,11 +1,9 @@
-% everything of the following originate from the book 'Market Design' from Martin Bichler
-
 \section{Linear Programming}
 \label{sec:linear_progamming}
 This section will give an introduction into the basics of mathematical linear programming
 and linear programming duality.
 It will present the purpose and necessity of optimization models and will give
-an example how an optimization model is constructed. 
+an example of how an optimization model is constructed. 
 
 To begin with, optimization models try to define in mathematical terms, the goal
 of solving a problem in the best or optimal way. 
@@ -90,7 +88,7 @@ the representation by \shortciteA{bichler2017market} is considered:
 \end{equation}
 
 
-Next, the motivation of the duality theory can explained by the issue of trying to find 
+Next, the motivation of the duality theory can be explained by the issue of trying to find 
 bounds on the value of the optimal solution to a linear programming problem. 
 If the \textit{primal} is a minimization problem, the \textit{dual} represents a lower bound
 on the value of the optimal solution, otherwise, if the \textit{primal} is a maximization problem,
@@ -102,10 +100,10 @@ the objective coefficients represent the profits linked to the production of tho
 In this case, the objective in the \textit{primal} describes directly the relation between a change
 in the production of the products and profit. Whereas, the constraints in the \textit{primal} 
 describe the availability of raw materials. Consequently, an increase in the availability of 
-raw materials needed for the production of the consumer products, enables an increase in production,
+raw materials needed for the production of the consumer products enables an increase in production,
 and finally an increase in the overall profit. 
 However, the \textit{primal} problem does not outline this relationship reasonable. Hence, one of 
-the benefit of the \textit{dual} is to properly show the effect of changes in the constraints on the
+the benefits of the \textit{dual} is to properly show the effect of changes in the constraints on the
 value of the objective. Due to this, the variables in a \textit{dual} linear program often called 
 \textit{shadow prices}, since they describe the hidden costs associated with the constraints. 
 
@@ -146,7 +144,7 @@ of the \textit{Weak Duality Theorem}:
 \label{sec:strong_duality_theorem}
 Concerning to corollary \ref{strong_duality_corollary}, it is possible to verify if 
 the points x and y are optimal solutions, without solving the corresponding linear programs. 
-Furthermore, this corolary is also used in the proof of strong duality \shortcite{griva2009linear}. 
+Furthermore, this corollary is also used in the proof of strong duality \shortcite{griva2009linear}. 
 The \textit{Strong Duality Theorem} describes, that for linear programming there 
 is never a gap between the \textit{primal} and the \textit{dual} 
 optimal objective values \shortcite{vanderbei2015linear}.
@@ -173,7 +171,7 @@ However, the algorithm was able to assert itself due to its efficiency. \shortci
 In general, the \textit{simplex-method} is an iterative algorithm, used to solve 
 linear programming models \shortcite{griva2009linear}. To apply the algorithm to a model, 
 it must be in standard form \shortcite{Luenberger2008}. According to \shortciteA{griva2009linear}, 
-we consider the following linear progamming model:
+we consider the following linear programming model:
 
 \begin{equation*}
     \begin{array}{ll@{}ll}
@@ -186,7 +184,7 @@ we consider the following linear progamming model:
 \end{equation*}
 
 Next, we give an example to illustrate how to convert a linear program into standard form.
-To achieve that, the so called \textit{slack variables} will be added, which represents the 
+To achieve that, the so-called \textit{slack variables} will be added, which represents the 
 difference between the right-hand side and the left-hand side. 
 
 \begin{equation*}
@@ -200,35 +198,16 @@ difference between the right-hand side and the left-hand side.
 \end{equation*}
 
 
-Finally, with the linear progamming model in standard form, the idea of the \textit{simplex-method}
+Finally, with the linear programming model in standard form, the idea of the \textit{simplex-method}
 is to iteratively proceed from one basic feasible solution to another \shortcite{Luenberger2008}.
-Thereby, it always looks for a feasible solution which is better then the one before. 
-The definition of better in this case depends on the nature of the linear problem. 
+Thereby, it always looks for a feasible solution which is better than the one before. 
+The definition of better, in this case, depends on the nature of the linear problem. 
 The process is performed until a solution is reached which cannot 
 be improved anymore. In the end, this final solution is then an optimal solution \shortcite{vanderbei2015linear}. 
 
+
 \clearpage
-\begin{comment}
 
-
-
-# market design
-Mathematical Optimization plays a central role in the design and analysis of multi-object 
-markets and also provides a central foundation for theoretical models of mulit-object markets. 
-
-However, market design is more than mathematical programming, as it takes into consideration bidding
-strategies and human behavior. Ignoring bidding strategies and different types of manipulation 
-in market-based resource allocation is like optimizing a problem with the wrong parameters. 
-
-Overall, makret design aims at design principles and rules for market institutions which are robust
-against manupulation and allow bidders to express their preferences, so that the designer can aim 
-for good or even optimal allocations. This is similar to network security, where designers aim 
-for secure network protocols that are hard to tamper with, 
-knowing that there is no absolute security
-
-# closed order book
-
-\end{comment}
 
 
 
