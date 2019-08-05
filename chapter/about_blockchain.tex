@@ -2,9 +2,9 @@
 \label{sec:about_blockchain}
 
 To begin with, in section \ref{sec:lem} we stated that the implementation of a LEM
-needs local distributed control and management techniques. Furhter, we emphasises
+needs local distributed control and management techniques. Further, we emphasise
 that the blockchain technology as an emerging ICT offers new opportunities for decentralized
-market designs and helps adressing the challenges faced by decentralized energy systems. 
+market designs and helps addressing the challenges faced by decentralized energy systems. 
 In conclusion, this research will use a blockchain in the developed LEM simulation platform 
 as the underlying ICT. 
 
@@ -12,15 +12,43 @@ Hence, this chapter will give an overview of the general purpose,
 the contained components and the fundamental functionality of a blockchain. 
 
 \subsection{General Purpose}
-In general, a blockchain can be described as a digital data structure that can be understand as a shared and distributed database, containing a continuous expanding and chronological log of transactions \shortcite{andoni2019blockchain}. Besides, various types like digital transactions, data records and executables can be stored in this digital data structure. The data transmission in a blockchain is comparable with copying data from one computer to another. However, the resulting challenge is that the system needs to ensure that the data is copied just once \shortcite{andoni2019blockchain}. For example, in the domain of cryptocurrencies, this is equal to sending a coin from one wallet to another. In this case, the system needs to validate that this coin is spended just once and there is no double-spending. A conventional solution for this problem is a third intermediary. To come back to the stated example, the third intermediary is represented by a traditional bank, which store, protect and continuously update the valid state of the ledger \shortcite{andoni2019blockchain}. But, in some cases central management is not practicable or reasonable. Reasons for this are possible intermediary costs or a high degree of trust of the users into the intermediary who operates the system. Further, central management has a significant disadvantage because of a single point of failure. Hence, the centralized system is fragile to technical problems as well to external malicious attacks \shortcite{andoni2019blockchain}.
-Consequently, the main reason of bockchain technologies is the removal of such third trusted intermediaries through a distributed network of various users, who cooperating together to verify transactions and protect the validity of the ledger
+In general, a blockchain can be described as a digital data structure that can be understood as a shared and 
+distributed database, containing a continuously expanding and chronological log of transactions \shortcite{andoni2019blockchain}. 
+Besides, various types like digital transactions, data records and executables can be stored in this digital data structure. 
+The data transmission in a blockchain is comparable with copying data from one computer to another. However, the resulting challenge 
+is that the system needs to ensure that the data is copied just once \shortcite{andoni2019blockchain}. 
+For example, in the domain of cryptocurrencies, this is equal to sending a coin from one wallet to another. 
+In this case, the system needs to validate that this coin is spent just once and there is no double-spending. 
+A conventional solution for this problem is a third intermediary. To come back to the stated example, the third 
+intermediary is represented by a traditional bank, which store, protect and continuously update the valid state of 
+the ledger \shortcite{andoni2019blockchain}. But, in some cases, central management is not practicable or reasonable. 
+Reasons for this are possible intermediary costs or a high degree of trust of the users into the intermediary who operates 
+the system. Further, central management has a significant disadvantage because of a single point of failure. 
+Hence, the centralized system is fragile to technical problems as well as to external malicious attacks \shortcite{andoni2019blockchain}.
+Consequently, the main reason for blockchain technologies is the removal of such third 
+trusted intermediaries through a distributed network of various users, who cooperating 
+to verify transactions and protect the validity of the ledger.
 
 \subsection{Components}
-This subsection covers the architectural design of a blockchain and presents the contained components in detail. Due to the plurality of the blockchain technologies, each of the technology slightly differs in design and components. The following explanations are oriented torwards the Ethereum blockchain implementation, which is also used as the underlying ICT to implement the open simulation platform.
+This subsection covers the architectural design of a blockchain and presents the 
+contained components in detail. Due to the plurality of the blockchain technologies, 
+each of the technology slightly differs in design and components. 
+The following explanations are oriented towards the Ethereum blockchain 
+implementation, which is also used as the underlying ICT to implement 
+the open simulation platform.
 
 \subsubsection{World State}
 \label{sec:world_state}
-Referring to the \textit{Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereum can be seen as a transaction-based state machine. What does that mean? At the beginning, Ethereums state machine starting with a so called \textit{"genesis state"}. This is analogous to a blank sheet. On this state, no transactions have happened on the network. Next, transactions are executed and the state of the Ethereum world changes into a new state. Further, transactions are executed incrementally and morph it into some final state. Consequently, the final state is accepted as the canonical version of the world of Ethereum and represents at any times the current state.
+Referring to the \textit{Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereum 
+can be seen as a transaction-based state machine. What does that mean? 
+In the beginning, Ethereums state machine starting with a so-called 
+\textit{"genesis state"}. This is analogous to a blank sheet. 
+In this state, no transactions have happened on the network. 
+Next, transactions are executed and the state of the Ethereum world 
+changes into a new state. Further, transactions are executed incrementally 
+and morph it into some final state. Consequently, the final state 
+is accepted as the canonical version of the world of Ethereum and 
+represents at any time the current state.
 
 \begin{figure}[htbp]
 	\centering
@@ -29,10 +57,29 @@ Referring to the \textit{Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereu
 	\label{figure:state_transition}
 \end{figure}
 
-In more detail, the world state arises out of a mapping of a key value pair for every account which exists on the Ethereum network \shortcite{wood2014ethereum}. The key constitutes the address of an Ethereum account and the value presents the account's state, which contains detailed information of this account. 
-However, the world state is not stored on the blockchain itself. This mapping is stored and maintained in a modified data structure called a \textit{Merkle Patricia tree}. This tree is stored off-chain in a simple database backend (i.e. on a computer running an Ethereum client), also known as the \textit{state database} in the Ethereum world \shortcite{wood2014ethereum}. To get a better understanding of the operating principles of the blockchain, it is necessary to get an idea of how a \textit{Merkle Patricia tree} works. A \textit{Merkle Patricia tree} is a type of binary tree, which consists of a set of nodes. It has a large amount of 
-\textit{leaf nodes}, containing the underlying data. Further, a set of intermediate nodes, where each node is the hash of its two children, and finally, one single root node, representing the top of the tree which is also build out of its two child nodes \shortcite{buterin2013next} \shortcite{wood2014ethereum}.
-As mentioned before, the \textit{leaf nodes} contain the stored data by splitting these data into chunks. Afterwards, these chunks are splitted into buckets. Then, each bucket gets hashed and the same process repeats, traversing upwards the tree, until the total number of hashes remaining becomes only one and the root node is reached \shortcite{ethereum_blog}. 
+In more detail, the world state arises out of a mapping of a key-value pair for every account which exists 
+on the Ethereum network \shortcite{wood2014ethereum}. 
+The key constitutes the address of an Ethereum account and the value presents 
+the account's state, which contains detailed information of this account. 
+However, the world state is not stored on the blockchain itself. 
+This mapping is stored and maintained in a modified data structure 
+called a \textit{Merkle Patricia tree}. This tree is stored off-chain 
+in a simple database backend (i.e. on a computer running an Ethereum client), 
+also known as the \textit{state database} in the Ethereum world \shortcite{wood2014ethereum}. 
+To get a better understanding of the operating principles of the blockchain, 
+it is necessary to get an idea of how a \textit{Merkle Patricia tree} works. 
+A \textit{Merkle Patricia tree} is a type of binary tree, which consists 
+of a set of nodes. It has a large amount of 
+leaf nodes, containing the underlying data. 
+Further, a set of intermediate nodes, where each node is 
+the hash of its two children, and finally, one single root node, 
+representing the top of the tree that is also built out of its 
+two child nodes \shortcite{buterin2013next} \shortcite{wood2014ethereum}.
+As mentioned before, the leaf nodes contain the stored data 
+by splitting these data into chunks. Afterwards, these chunks are split into buckets. 
+Then, each bucket gets hashed and the same process repeats, traversing 
+upwards the tree until the total number of hashes remaining becomes 
+only one and the root node is reached \shortcite{ethereum_blog}. 
 
 \begin{figure}[htbp]
 	\centering
@@ -41,7 +88,11 @@ As mentioned before, the \textit{leaf nodes} contain the stored data by splittin
 	\label{figure:merkle_tree}
 \end{figure}
 
-Therefore, any change to the underlying data, stored in a \textit{leaf node}, causes a change of the hash of the node. Each parent's node hash depend on the data of its children. Due to this, any change to the data of a child node causes the parent hash to change. This procedure repeats traversing upwards until the root node. Hence, any change to the data at the leaf nodes effects the root hash \shortcite{ethereum_wiki}. 
+Therefore, any change to the underlying data, stored in a \textit{leaf node}, causes a change
+of the hash of the node. Each parent's node hash depends on the data of its children. 
+Due to this, any change to the data of a child node causes the parent hash to change. 
+This procedure repeats traversing upwards until the root node. 
+Hence, any change to the data at the leaf nodes affects the root hash \shortcite{ethereum_wiki}. 
 
 \begin{figure}[htbp]
 	\centering
@@ -50,20 +101,34 @@ Therefore, any change to the underlying data, stored in a \textit{leaf node}, ca
 	\label{figure:merkle_tree_change}
 \end{figure}
 
-Because of this characteristic, it is not necessary to compare the data of the entire tree. It is sufficient to compare the single root hash to ensure that all the data are the same. This property is very important, because it makes it possible to store only the hash of the root node to represent a state of the Ethereum world. 
+Because of this characteristic, it is not necessary to compare the data of the entire tree. 
+It is sufficient to compare the single root hash to ensure that all the data are the same. 
+This property is very important because it makes it possible to store only the hash of 
+the root node to represent a state of the Ethereum world. 
 
 \subsubsection{Block} 
 \label{sec:block}
-As described in section \ref{sec:world_state}, whenever transactions are executed, the state of the Ethereum world changes into a new state. Every state and the belonging transactions, which transform the prior state into the new state, is cumulated in a so called block. That means, states are represented by blocks. As you can see in figure \ref{figure:state_transition}, the history of the Ethereum world is a linkage of states, or in other words, blocks. That is where the name blockchain comes from. A blockchain is a sequence of blocks, which holds a complete list of transaction records \shortcite{zheng2017overview}. 
-Moreover, a block is a collection of different relevant informations and consists of the \textit{block header} and the \textit{block body}, which contains the list of transactions. Following \textit{Ethereums Yellow Paper} by \shortciteA{wood2014ethereum}, the subsequent pieces of information are contained in the \textit{block header}:
+As described in section \ref{sec:world_state}, whenever transactions are executed, 
+the state of the Ethereum world changes into a new state. 
+Every state and the belonging transactions, which transform the prior state into 
+the new state, is cumulated in a so-called block. That means states are represented 
+by blocks. As you can see in figure \ref{figure:state_transition}, the history of 
+the Ethereum world is a linkage of states, or in other words, blocks. 
+That is where the name blockchain comes from. A blockchain is a sequence 
+of blocks, which holds a complete list of transaction records \shortcite{zheng2017overview}. 
+Moreover, a block is a collection of different relevant informations and 
+consists of the \textit{block header} and the \textit{block body}, 
+which contains the list of transactions. Following \textit{Ethereums Yellow Paper} 
+by \shortciteA{wood2014ethereum}, the subsequent pieces of information are 
+contained in the \textit{block header}:
 
 \begin{description}
-	\item[Parent Hash:] This is the hash of the parents block's header. Therefore, every block points to his ancestor. Due to this contained attribute, a chain arises out of the single blocks.
+	\item[Parent Hash:] This is the hash of the parents' block's header. Therefore, every block points to his ancestor. Due to this contained attribute, a chain arises out of the single blocks.
 	\item[Beneficiary:] The miners address to which all block rewards from the successful mining of a block are transferred.
-	\item[State Root:] This is the hash of the root node of the state tree, after a block and its transactions are finalized. As mentioned in section 
-	\ref{sec:world_state}, the state tree is the one and only global state in the Ethereum world. It is used as a secure unqiue identifier for the state and the state root node is cryptographically dependent on all internal state tree data.
-	\item[Transactions Root:] This is the hash of the root node of the transaction tree. This tree contains all transactions in the block body. In contrast to the state tree, there is a separate transactions tree for every block. 
-	\item[Receipts Root:] Every time a transaction is executed, Ethereum generates a transaction receipt that contains information about the transaction execution. This field is the hash of the root node of the transactions receipt tree and like the transaction tree, there is a seperate receipt tree for every block.
+	\item[State Root:] This is the hash of the root node of the state tree after a block and its transactions are finalized. As mentioned in section 
+	\ref{sec:world_state}, the state tree is the unambiguous global state in the Ethereum world. It is used as a secure unique identifier for the state and the state root node is cryptographically dependent on all internal state tree data.
+	\item[Transactions Root:] This is the hash of the root node of the transaction tree. This tree contains all transactions in the block body. In contrast to the state tree, there is a separate transaction tree for every block. 
+	\item[Receipts Root:] Every time a transaction is executed, Ethereum generates a transaction receipt that contains information about the transaction execution. This field is the hash of the root node of the transactions receipt tree and as the transaction tree, there is a separate receipt tree for every block.
 	\item[Difficulty:] This is a measure of how hard it was to mine this block – a quantity calculated from the previous block’s difficulty and its timestamp
 	\item[Number:] This is a quantity equal to the number of blocks that precede the current block in the blockchain.
 	\item[Gas Limit:] This is a quantity equal to the current maximum gas expenditure per block. Each transaction consumes gas. The gas limit specifies the maximum gas that can be used by the transactions included in the block. It is a way to limit the number of transactions in a block.
@@ -72,38 +137,51 @@ Moreover, a block is a collection of different relevant informations and consist
 	\item[Nonce:] This is an 8-byte hash that verifies a sufficient amount of computation has been done on this block. Further, it is a number added to a hashed block that, when rehashed, meets the difficulty level restrictions. The nonce is the number that blockchain miners are solving for.
 \end{description}
 
-So far, we introduced Ethereum as a transaction-based state machine, transforming one state into another through the execution of transactions. Further, we explained how these individual states are stored and emphasises the meaning of these storage. Moreover, we pointed out that an Ethereum state is represented by blocks and described all relevant informations contained in it.
-However, we didn't introduce how many transactions be part of a block and who build and validate a block? To answer this, we introduce the transaction object and his life cycle in depth.
+So far, we introduced Ethereum as a transaction-based state machine, transforming 
+one state into another through the execution of transactions. Further, we explained 
+how these individual states are stored and emphasizes the meaning of this storage. 
+Moreover, we pointed out that an Ethereum state is represented by blocks and described 
+all relevant information contained in it.
+However, we didn't introduce how many transactions be part 
+of a block and who build and validate a block? To answer this, 
+we introduce the transaction object and his life cycle in-depth.
 
 
 \subsubsection{Transaction}
 \label{sec:transaction}
-To start with, a transaction is the basic method for Ethereum accounts to interact with each other. Further, in the Ethereum world exists two different types of transactions. Those, which result in a so called \textit{message call}, which can be seen as a traditional transaction, and those which result in a \textit{contract creation} \shortcite{wood2014ethereum}. 
+To start with, a transaction is a basic method for Ethereum accounts to interact with each other. 
+Further, in the Ethereum world exists two different types of transactions. 
+Those, which result in a so called \textit{message call}, which can be seen as a 
+traditional transaction, and those which result in a \textit{contract creation} \shortcite{wood2014ethereum}. 
 Though, both different types of transaction share the following common attributes \shortcite{wood2014ethereum}:
 
 \begin{description}
-	\item[Nonce: ] This attribute is discontiguous of the block attribute. In contrast to the block attribute, the nonce of a transaction keep track of the total number of transactions that an account has executed. 
+	\item[Nonce: ] This attribute is discontiguous of the block attribute. In contrast to the block attribute, the nonce of a transaction keeps track of the total number of transactions that an account has executed. 
 	\item[Gas Price: ] As mentioned in section \ref{sec:block}, each transaction consume gas. Gas can be seen as fees. This attribute presents the price per unit of gas for a transaction \footnote{A website to see current gas prices: https://ethgasstation.info/index.php}. 
-	\item[Gas Limit: ] This attribute is similiar to the block attribute of the same name. In this case, it is a quantity equal to the current maximum gas expenditure per transaction.  
+	\item[Gas Limit: ] This attribute is similar to the block attribute of the same name. In this case, it is a quantity equal to the current maximum gas expenditure per transaction.  
 	\item[To: ] In case of a \textit{message call}, this attribute contains the address of the recipient. Otherwise, in case of a \textit{contract creation} this value remains empty. 
-	\item[Value: ] In case of a \textit{message call}, this attribute contains the amount of Wei, which will be transferred to the recipient. In the case of a \textit{contract creation}, this value contains the amount of Wei as a intial endowment of the contract.
+	\item[Value: ] In case of a \textit{message call}, this attribute contains the amount of Wei, which will be transferred to the recipient. In case of a \textit{contract creation}, this value contains the amount of Wei as an intial endowment of the contract.
 \end{description}
 
 \subsubsection{Transaction Life Cycle}
 \label{sec:transaction_lifecycle}
-Next, the life cycle of a transaction will be outlined. We will take a simple \textit{message call} as an example and will pass through the entire flow of how this transaction gets executed and permanently stored on the blockchain. During this process, many basic concepts of a blockchain will be introduced. 
+Next, the life cycle of a transaction will be outlined. 
+We will take a simple \textit{message call} as an example 
+and will pass through the entire flow of how this transaction 
+gets executed and permanently stored on the blockchain. 
+During this process, many basic concepts of a blockchain will be introduced. 
 
-To begin with, someone want to send an abitrary amount of ether to someone else. 
+To begin with, someone wants to send an arbitrary amount of ether to someone else. 
 Consequently, a transaction with the respective attributes, which are stated 
 in section \ref{sec:transaction}, will be created. As a first step, this transaction 
-will be signed. That means, the one who wants to execute the transaction needs to proof the 
+will be signed. That means the one who wants to execute the transaction needs to prove the 
 ownership of the account. Otherwise, someone else could execute a transaction on your behalf. 
-The way to proof this is by signing the transaction with the corresponding private
+The way to prove this is by signing the transaction with the corresponding private
 key of this account \shortcite{transaction_life_cycle}. 
 Next, the signed transaction is submitted to the related Ethereum node. 
 Then, the node will validate the signed transaction. 
-After a successful validation, the node will send the transaction to 
-it's peer nodes, who again send it to their 
+After successful validation, the node will send the transaction to 
+its peer nodes, who again send it to their 
 peer nodes and so on \shortcite{transaction_life_cycle}. 
 As soon as the transaction is broadcast to the network, 
 the related node will declare a transaction id, which is the hash 
@@ -119,7 +197,7 @@ status of the transaction \footnote{A Website to track transactions: https://eth
 
 \clearpage
 
-Further, figure \ref{figure:node_network} describes a Ethereum network. 
+Further, figure \ref{figure:node_network} describes an Ethereum network. 
 As you can see, it contains a mix of miner nodes and non miner nodes. 
 The non miner nodes can be distinguished into different types of nodes with different 
 behavior, which are explained in detail in section \ref{sec:nodes}. 
@@ -127,8 +205,8 @@ The miner nodes are the ones who processing transactions into blocks \shortcite{
 
 Mining nodes contain and maintain a pool of transactions where they collect incoming transactions. 
 They sort the transactions by gas price. 
-However, there are no specific rules how the nodes sort the transactions. 
-A common configuration is to sort the transaction by gas price in a descending order to 
+However, there are no specific rules on how the nodes sort the transactions. 
+A common configuration is to sort the transaction by gas price in descending order to 
 optimize for a higher pay \shortcite{transaction_life_cycle}.
 
 \begin{longtable}{c|c}
@@ -148,14 +226,14 @@ optimize for a higher pay \shortcite{transaction_life_cycle}.
 Further, the mining node takes transactions from the pool and processes them into a pending block. 
 Moreover, a block can only contain a certain number of transactions due to the block 
 attribute \textit{gas limit}, mentioned in section \ref{sec:block}. 
-That means, the mining node can only process so many transactions into one 
+That means the mining node can only process so many transactions into one 
 block until the gas limit is reached \footnote{A website to see 
 current attributes: https://ethstats.net/}. For example, 
 imagine that the current \textit{gas limit} of a block is 28 Gwei. 
 Next, we look at the transaction pool of a mining node in 
 table \ref{table:sorted_gas_prices}. As you can see, two blocks are 
 required to process all transactions from the pool. The first two transactions 
-are contained in the first block. Furhtermore, the second block contains the remaining 
+are contained in the first block. Furthermore, the second block contains the remaining 
 three transactions. 
 So far, it is described how a pending block will be created and the transaction 
 limit of a block is explained. In the next section \ref{sec:mining}, 
@@ -172,20 +250,20 @@ The emerging question is, which node build the new block and how will the newly
 generated block accepted by the remaining network members? 
 This process is called \textit{consensus mechanism}.
 It exists a lot of various consensus algorithms, each of them provides different features,
-advantages and disadvantages. 
+advantages, and disadvantages. 
 
-To a large extent, the key perfomance drivers of a blockchain
+To a large extent, the key performance drivers of a blockchain
 like transaction speed, scalability and security depending on the embedded consensus algorithm \shortcite{andoni2019blockchain}. 
 In this section, we will expound the \textit{Proof of Work (PoW)} mechanism, 
 which is at the time of this writing the current strategy in the Ethereum blockchain 
 implementation for reaching consensus. 
-\textit{Proof of Work} enables a high scalability in terms of the number 
-of nodes and clients \shortcite{vukolic2015quest}, whereas it provides a poor transaction speed and a high 
+\textit{Proof of Work} enables high scalability in terms of the number 
+of nodes and clients \shortcite{vukolic2015quest}, whereas it provides a poor transaction speed and high 
 power consumption due to the solving of a cryptographical puzzle, which requires 
 significant computational effort \shortcite{andoni2019blockchain}. 
 
 % erklärung crypthograpgical puzzle
-The \textit{PoW} is a random process which is not predictable and therefore only solvable through a 
+The \textit{PoW} is a random process that is not predictable and therefore only solvable through a 
 trial and error approach \shortcite{bitcoin_wiki_pow}. 
 All mining nodes compete with each other and the goal is to achieve a hash output that 
 is lower than a given specified target \shortcite{andoni2019blockchain}.
@@ -221,7 +299,7 @@ by recalculating the hash output and verifying if it is lower then the target va
 If the block is validated through all other mining nodes, all nodes will append this new block to their own blockchains \shortcite{zheng2017overview}.  
 
 % erklärung multiple chains
-Considering, the network is decentralised and the simultaneous generation of valid blocks is possible when multiple nodes find 
+Considering, the network is decentralized and the simultaneous generation of valid blocks is possible when multiple nodes find 
 the suitable \textit{Nonce} at a nearly same time \shortcite{zheng2016blockchain}. In this case, branches will be generated as shown in figure \ref{figure:blockchain_branches}
 
 \begin{figure}[htbp]
@@ -243,13 +321,13 @@ the longer branch \shortcite{zheng2017overview}.
 
 To sum up, this section joins and completes the previous section \ref{sec:transaction_lifecycle}.
 The consensus mechanism \textit{PoW} is described and outlined in pseudocode, whereby
-the validation process of new generated blocks is explained and illustrated.
+the validation process of newly generated blocks is explained and illustrated.
 \clearpage
 
 \subsubsection{Ethereum Clients}
 \label{sec:nodes}
 
-First of all, the expressions Ethereum client and Ethereum node can be used interchangeable. 
+First of all, the expressions Ethereum client and Ethereum node can be used interchangeably. 
 As mentioned earlier in the previous section \ref{sec:transaction_lifecycle} 
 and illustrated in the figure \ref{figure:node_network}, clients can be distinguished into different types. 
 This section will describe the concept of an Ethereum client in general and will give a brief overview of the different
@@ -257,10 +335,9 @@ types.
 
 In general, an Ethereum client is a software application 
 that implements the Ethereum specification, which is specified in the Ethereum yellow paper \shortcite{wood2014ethereum}.
-A client communicates over the peer-to-peer network with other Ethereum clients.
+A client communicates over the P2P network with other Ethereum clients.
 Although these clients can be implemented in different programming languages, they all communicate through
-the standardized Ethereum protocol, wherefore they are able 
-to operate and interact with the same Ethereum network. \shortcite{antonopoulos2018mastering}. 
+the standardized Ethereum protocol, wherefore they can operate and interact with the same Ethereum network. \shortcite{antonopoulos2018mastering}. 
 
 Since the Ethereum blockchain is not officially implemented in a particular programming language, 
 following a list of the current main implementations of the Ethereum protocol:
@@ -275,20 +352,20 @@ following a list of the current main implementations of the Ethereum protocol:
 
 However, while all clients differ from each other, they share some fundamental features \shortcite{ethereum_clients}.
 
-First, each is able to join the peer-to-peer Ethereum network. 
+First, each client can join the peer-to-peer Ethereum network. 
 Next, they all synchronizing a local copy of the blockchain.
 There are a few modes of synchronizing, which comes with miscellaneous advantages and disadvantages, 
 which will be outlined later on. Moreover, it makes a significant difference 
-for the health and resilience of the decentralised network. 
+in the health and resilience of the decentralized network. 
 Lastly, each client is also capable of broadcasting new transactions to the network and creating and 
 managing accounts \shortcite{ethereum_clients}.
 
-As mentioned above, there are differences in client behavior regarding to the synchronizing modes. 
-In general, the clients can be distinguished into two different types, the so called \textit{full node} and 
+As mentioned above, there are differences in client behavior regarding the synchronizing modes. 
+In general, the clients can be distinguished into two different types, the so-called \textit{full node} and 
 \textit{light node}. 
 
 \paragraph{Full Node:} A full node will download all history data peer-to-peer from
-another full node. This requires a significant amount of hardware and bandwith resources \shortcite{antonopoulos2018mastering}.
+another full node. This requires a significant amount of hardware and bandwidth resources \shortcite{antonopoulos2018mastering}.
 Afterwards, it will simulate every transaction in the ledger
 and execute the whole deployed source code to recalculate the state of each existing block \shortcite{ethereum_clients}.
 Therefore, the amount of independently operating and geographically dispersed full nodes 
@@ -302,7 +379,7 @@ to participate in the mining competition, an additional software called \textit{
 run a full node. The difference lies in the \textit{light} mode for synchronization. 
 In contrast to a full node, a light node only synchronize the block headers and the 
 current state of the chain \shortcite{ethereum_light_node}.
-Anyway, a light node lacks the ability to run transactions throughout the history of the 
+Anyway, a light node cannot run transactions throughout the history of the 
 whole blockchain. For this reason, it does not contribute to the health and resilience of 
 the network like a full node and traditionally cannot act as a mining node \shortcite{ethereum_clients}. 
 In addition, a light node has some further limitations. For instance, they are not 
@@ -315,34 +392,34 @@ a light node relies on requests to full nodes, whereby they can be far slower to
 \label{sec:smart_contract}
 This section deals with smart contracts in the Ethereum world and based 
 entirely on the book \textit{Mastering Ethereum} by \shortciteA{antonopoulos2018mastering}.
-First of all, the term smart contract is a bit misleading, since Ethereum smarts contract 
-are neither smart nor legal contracts. However, how can a Ethereum smart contract be defined?
-A Ethereum smart contract is an immutable comuputer program that runs deterministically in the context of an
-Ethereum Virtual Machine (EVM) as part of the networkprotocol. To go into the definition in more detail, 
+First of all, the term smart contract is a bit misleading, since the Ethereum smarts contract 
+are neither smart nor legal contracts. However, how can an Ethereum smart contract be defined?
+An Ethereum smart contract is an immutable computer program that runs deterministically in the context of an
+Ethereum Virtual Machine (EVM) as part of the network protocol. To go into the definition in more detail, 
 immutable means, that once the contract is deployed into the blockchain, it is not possible to make any
 changes in the source code. The only way to modify the contract is to deploy a whole new instance. 
 Further, deterministic means that the result of the execution is the same for all who run it, 
 depending on the context of the transaction that initiated its execution and the state of the blockchain
 at the moment of execution.
 As already mentioned in section \ref{sec:transaction}, in the Ethereum world exists two different types of transactions.
-Those which result in a message call, and those which result in a contract creation. 
-That means, smart contracts are deployed through special contract creation transactions into the blockchain. 
+Those which result in a message call, and those which result in contract creation. 
+That means smart contracts are deployed through special contract creation transactions into the blockchain. 
 The special thing about these transactions is that the recipient of the transaction remains empty, whereby the transaction
-will be send to a special destination address called \textit{zero address (0x0)}. Each contract is identified and reachable via
+will be sent to a special destination address called \textit{zero address (0x0)}. Each contract is identified and reachable via
 a common Ethereum address, which can be used in a transaction as the recipient to send funds to the contract or to call 
 one of the contract functions. Anyway, in contrast to an externally owned account, there are no keys associated with 
 an account of a smart contract. For this reason, the creator of a smart contract does not have any special rights at the 
 protocol level. Although, it is possible to get those special rights if you explicitly 
-specified them in the source code of the contract.
-Furhtermore, contracts are only active and run if they called by a transaction. 
-A contract is able to call another contract and so on, but nevertheless, 
-the first call have always come from an externally owned account. 
+specify them in the source code of the contract.
+Furthermore, contracts are only active and run if they called by a transaction. 
+A contract can call another contract and so on, but, 
+the first call has always come from an externally owned account. 
 A contract will never run on his own or in the background. Additionally, contracts are not executed in parallel.
-They will always executed consecutively, hence the Ethereum blockchain can be considered as a single-threaded machine. 
+They always execute consecutively, hence the Ethereum blockchain can be considered as a single-threaded machine. 
 Finally, it should be noted that transactions are atomic regardless of how many contracts they call. Transactions execute in
-their entirety and any changes in the global state are only recorded if all executions terminates successfully. 
-If the executions fails, all the changes in state are reverted as if the transaction never ran. Anyhow, a failed
-execution of a transaction is recorded as having been attempted. Moreover, the gas fees spent for the execution is withdrawn
+their entirety and any changes in the global state are only recorded if all executions terminate successfully. 
+If the executions fail, all the changes in state are reverted as if the transaction never ran. Anyhow, a failed
+execution of a transaction is recorded as having been attempted. Moreover, the gas fees spent for the execution are withdrawn
 from the originating account.
 
 \clearpage
