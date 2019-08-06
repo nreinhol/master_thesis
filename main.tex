@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+\usepackage{acronym}
 \usepackage{longtable}
 \usepackage{hyperref}
 \usepackage{caption}
@@ -133,6 +134,21 @@ is provided by the emerging blockchain technology.
 \lstlistoflistings
 \clearpage
 
+\section*{List of Abbreviations} \markboth{LIST OF ABBREVIATIONS}{}
+\begin{acronym}[GCRM]
+        \acro{BTM}{Bundle Trading Market Framework}
+        \acro{CB}{Competitive Benchmarking}
+        \acro{DLT}{Distributed Ledger Technology}
+        \acro{ICT}{Information Communication Technology}
+        \acro{LEM}{Local Energy Markets}
+        \acro{LP}{Linear Program}
+        \acro{MMP}{Market Matching Problem}
+        \acro{PoW}{Proof of Work}
+        \acro{P2P}{Peer-to-Peer}
+        \acro{RES}{Renewabe Energy Sources}
+\end{acronym}
+\clearpage
+
 \pagenumbering{arabic}
 
 
@@ -171,12 +187,16 @@ is provided by the emerging blockchain technology.
 \appendix
 \renewcommand*{\thesection}{\Alph{section}}\textbf{}
 
-% APPENDIX A
+% APPENDIX
+\input{appendices/additional_agent.tex}
+
 \input{appendices/additional_offchain_dealer.tex}
 
 \input{appendices/flowchart_btm.tex}
 
 \input{appendices/log_file.tex}
+
+\input{appendices/installation_guide.tex}
 
 
 

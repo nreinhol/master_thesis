@@ -2,9 +2,9 @@
 \label{sec:about_blockchain}
 
 To begin with, in section \ref{sec:lem} we stated that the implementation of a LEM
-needs local distributed control and management techniques. Further, we emphasise
+needs local distributed control and management techniques. Further, we emphasize
 that the blockchain technology as an emerging ICT offers new opportunities for decentralized
-market designs and helps addressing the challenges faced by decentralized energy systems. 
+market designs and helps to address the challenges faced by decentralized energy systems. 
 In conclusion, this research will use a blockchain in the developed LEM simulation platform 
 as the underlying ICT. 
 
@@ -39,7 +39,7 @@ the open simulation platform.
 
 \subsubsection{World State}
 \label{sec:world_state}
-Referring to the \textit{Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereum 
+Referring to the \textit{Ethereum Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereum 
 can be seen as a transaction-based state machine. What does that mean? 
 In the beginning, Ethereums state machine starting with a so-called 
 \textit{"genesis state"}. This is analogous to a blank sheet. 
@@ -63,12 +63,12 @@ The key constitutes the address of an Ethereum account and the value presents
 the account's state, which contains detailed information of this account. 
 However, the world state is not stored on the blockchain itself. 
 This mapping is stored and maintained in a modified data structure 
-called a \textit{Merkle Patricia tree}. This tree is stored off-chain 
+called a \textit{Patricia Merkle tree}. This tree is stored off-chain 
 in a simple database backend (i.e. on a computer running an Ethereum client), 
 also known as the \textit{state database} in the Ethereum world \shortcite{wood2014ethereum}. 
 To get a better understanding of the operating principles of the blockchain, 
-it is necessary to get an idea of how a \textit{Merkle Patricia tree} works. 
-A \textit{Merkle Patricia tree} is a type of binary tree, which consists 
+it is necessary to get an idea of how a Patricia Merkle tree works. 
+A Patricia Merkle tree is a type of binary tree, which consists 
 of a set of nodes. It has a large amount of 
 leaf nodes, containing the underlying data. 
 Further, a set of intermediate nodes, where each node is 
@@ -118,9 +118,8 @@ That is where the name blockchain comes from. A blockchain is a sequence
 of blocks, which holds a complete list of transaction records \shortcite{zheng2017overview}. 
 Moreover, a block is a collection of different relevant information and 
 consists of the \textit{block header} and the \textit{block body}, 
-which contains the list of transactions. Following \textit{Ethereums Yellow Paper} 
-by \shortciteA{wood2014ethereum}, the subsequent pieces of information are 
-contained in the \textit{block header}:
+which contains the list of transactions. Following \shortciteA{wood2014ethereum}, 
+the subsequent pieces of information are contained in the block header:
 
 \begin{description}
 	\item[Parent Hash:] This is the hash of the parents' block's header. Therefore, every block points to his ancestor. Due to this contained attribute, a chain arises out of the single blocks.
@@ -159,14 +158,14 @@ Though, both different types of transaction share the following common attribute
 	\item[Nonce: ] This attribute is discontiguous of the block attribute. In contrast to the block attribute, the nonce of a transaction keeps track of the total number of transactions that an account has executed. 
 	\item[Gas Price: ] As mentioned in section \ref{sec:block}, each transaction consume gas. Gas can be seen as fees. This attribute presents the price per unit of gas for a transaction \footnote{A website to see current gas prices: https://ethgasstation.info/index.php}. 
 	\item[Gas Limit: ] This attribute is similar to the block attribute of the same name. In this case, it is a quantity equal to the current maximum gas expenditure per transaction.  
-	\item[To: ] In case of a \textit{message call}, this attribute contains the address of the recipient. Otherwise, in case of a \textit{contract creation} this value remains empty. 
-	\item[Value: ] In case of a \textit{message call}, this attribute contains the amount of Wei, which will be transferred to the recipient. In case of a \textit{contract creation}, this value contains the amount of Wei as an intial endowment of the contract.
+	\item[To: ] In case of a message call, this attribute contains the address of the recipient. Otherwise, in case of a contract creation this value remains empty. 
+	\item[Value: ] In case of a message call, this attribute contains the amount of Wei, which will be transferred to the recipient. In case of a contract creation, this value contains the amount of Wei as an initial endowment of the contract.
 \end{description}
 
 \subsubsection{Transaction Life Cycle}
 \label{sec:transaction_lifecycle}
 Next, the life cycle of a transaction will be outlined. 
-We will take a simple \textit{message call} as an example 
+We will take a simple message call as an example 
 and will pass through the entire flow of how this transaction 
 gets executed and permanently stored on the blockchain. 
 During this process, many basic concepts of a blockchain will be introduced. 
@@ -198,8 +197,8 @@ status of the transaction \footnote{A Website to track transactions: https://eth
 \clearpage
 
 Further, figure \ref{figure:node_network} describes an Ethereum network. 
-As you can see, it contains a mix of miner nodes and non miner nodes. 
-The non miner nodes can be distinguished into different types of nodes with different 
+As you can see, it contains a mix of miner nodes and non-miner nodes. 
+The non-miner nodes can be distinguished into different types of nodes with different 
 behavior, which are explained in detail in section \ref{sec:nodes}. 
 The miner nodes are the ones who processing transactions into blocks \shortcite{transaction_life_cycle}. 
 
@@ -210,17 +209,16 @@ A common configuration is to sort the transaction by gas price in descending ord
 optimize for a higher pay \shortcite{transaction_life_cycle}.
 
 \begin{longtable}{c|c}
-	\hline
-	Signed Transaction & Gas Price \\
+	\caption{Transaction Pool of Mining Node} 
+	\label{table:sorted_gas_prices}
+	\\
+	\textbf{Signed Transaction} & \textbf{Gas Price} \\
 	\hline
 	hashOfTransaction1 & 15 Gwei \\
 	hashOfTransaction2 & 13 Gwei \\
 	hashOfTransaction3 & 11 Gwei \\
 	hashOfTransaction4 & 10 Gwei \\
 	hashOfTransaction5 & 7 Gwei \\
-	\hline
-	\caption{Transaction Pool of Mining Node}
-	\label{table:sorted_gas_prices}
 \end{longtable} 
 
 Further, the mining node takes transactions from the pool and processes them into a pending block. 
@@ -229,7 +227,7 @@ attribute \textit{gas limit}, mentioned in section \ref{sec:block}.
 That means the mining node can only process so many transactions into one 
 block until the gas limit is reached \footnote{A website to see 
 current attributes: https://ethstats.net/}. For example, 
-imagine that the current \textit{gas limit} of a block is 28 Gwei. 
+imagine that the current gas limit of a block is 28 Gwei. 
 Next, we look at the transaction pool of a mining node in 
 table \ref{table:sorted_gas_prices}. As you can see, two blocks are 
 required to process all transactions from the pool. The first two transactions 
@@ -257,22 +255,22 @@ like transaction speed, scalability and security depending on the embedded conse
 In this section, we will expound the \textit{Proof of Work (PoW)} mechanism, 
 which is at the time of this writing the current strategy in the Ethereum blockchain 
 implementation for reaching consensus. 
-\textit{Proof of Work} enables high scalability in terms of the number 
+PoW enables high scalability in terms of the number 
 of nodes and clients \shortcite{vukolic2015quest}, whereas it provides a poor transaction speed and high 
 power consumption due to the solving of a cryptographical puzzle, which requires 
 significant computational effort \shortcite{andoni2019blockchain}. 
 
 % erklärung crypthograpgical puzzle
-The \textit{PoW} is a random process that is not predictable and therefore only solvable through a 
+PoW is a random process that is not predictable and therefore only solvable through a 
 trial and error approach \shortcite{bitcoin_wiki_pow}. 
 All mining nodes compete with each other and the goal is to achieve a hash output that 
 is lower than a given specified target \shortcite{andoni2019blockchain}.
 The hash output includes and comprises out of the \textit{Parent Hash}, \textit{Transaction Root} and
 \textit{Nonce}, which are all part of the block headers data, mentioned in \ref{sec:block}.
-However, the \textit{Parent Hash} and \textit{Transaction Root} are given and immutable, thus the \textit{Nonce}
+However, the Parent Hash and Transaction Root are given and immutable, thus the Nonce
 is the value that all the mining nodes are solving for \footnote{A interactive blockchain demo: https://anders.com/blockchain/}.
-Consequently, the mining nodes modify the \textit{Nonce} until the hash output is lower than the required target \shortcite{andoni2019blockchain}.
-The following pseudocode in listing \ref{lst:pow_mechanism} will illustrate the \textit{PoW} procedure:
+Consequently, the mining nodes modify the Nonce until the hash output is lower than the required target \shortcite{andoni2019blockchain}.
+The following pseudocode in listing \ref{lst:pow_mechanism} will illustrate the PoW procedure:
 
 \vspace{7mm}
 \begin{lstlisting}[label={lst:pow_mechanism}, caption={Pseudocode for PoW mechanism}]
@@ -293,14 +291,14 @@ The following pseudocode in listing \ref{lst:pow_mechanism} will illustrate the 
 \end{lstlisting}
 \clearpage
 
-Finally, when one mining node successfully calculated the \textit{Nonce} and therefore reaches the target value, 
+Finally, when one mining node successfully calculated the Nonce and therefore reaches the target value, 
 it broadcasts the block to all other mining nodes in the network. Now, all other nodes mutually validate the correctness of the hash value
 by recalculating the hash output and verifying if it is lower then the target value. 
 If the block is validated through all other mining nodes, all nodes will append this new block to their own blockchains \shortcite{zheng2017overview}.  
 
 % erklärung multiple chains
 Considering, the network is decentralized and the simultaneous generation of valid blocks is possible when multiple nodes find 
-the suitable \textit{Nonce} at a nearly same time \shortcite{zheng2016blockchain}. In this case, branches will be generated as shown in figure \ref{figure:blockchain_branches}
+the suitable Nonce at a nearly same time \shortcite{zheng2016blockchain}. In this case, branches will be generated as shown in figure \ref{figure:blockchain_branches}
 
 \begin{figure}[htbp]
 	\centering
@@ -310,17 +308,17 @@ the suitable \textit{Nonce} at a nearly same time \shortcite{zheng2016blockchain
 \end{figure}
 
 Nevertheless, it is unlikely that two competing branches will generate the next block simultaneously again. 
-In the \textit{PoW} protocol, the longer branch is judged as the authentic one. 
+In the PoW protocol, the longer branch is judged as the authentic one. 
 In figure \ref{figure:blockchain_branches}, two branches arised out of 
-two simultaneous valided blocks \textit{Block 4a} and \textit{Block 4b}. 
+two simultaneous valided blocks Block 4a and Block 4b. 
 After that, all mining nodes accept both branches and start working on 
 the next consecutive block until a longer branch is found \shortcite{andoni2019blockchain}. 
-As you can see in figure \ref{figure:blockchain_branches}, \textit{Block 4b} and \textit{Block 5} forms the longer 
-chain, therefore all miners on the branch with \textit{Block 4a} will switch to 
+As you can see in figure \ref{figure:blockchain_branches}, Block 4b and Block 5 forms the longer 
+chain, therefore all miners on the branch with Block 4a will switch to 
 the longer branch \shortcite{zheng2017overview}. 
 
 To sum up, this section joins and completes the previous section \ref{sec:transaction_lifecycle}.
-The consensus mechanism \textit{PoW} is described and outlined in pseudocode, whereby
+The consensus mechanism PoW is described and outlined in pseudocode, whereby
 the validation process of newly generated blocks is explained and illustrated.
 \clearpage
 
@@ -376,7 +374,7 @@ to participate in the mining competition, an additional software called \textit{
  is needed \footnote{GPU Mining Worker: https://github.com/ethereum-mining/ethminer}
 
 \paragraph{Light Node:} To begin with, a light node is not a separate piece of software from the clients that 
-run a full node. The difference lies in the \textit{light} mode for synchronization. 
+run a full node. The difference lies in the light mode for synchronization. 
 In contrast to a full node, a light node only synchronize the block headers and the 
 current state of the chain \shortcite{ethereum_light_node}.
 Anyway, a light node cannot run transactions throughout the history of the 

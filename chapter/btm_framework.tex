@@ -59,16 +59,17 @@ In the table below, the applied variables in the stated equations are described:
 
 
 \begin{longtable}{c|l}
+    \caption{Applied variables in BTM Framework}
+    \label{table:applied_variables_in_btm}
+    \\
+    \textbf{Variable} & \textbf{Description} \\
 	\hline
     $d_{j} \in R^{b_{j}}$ & vector of agents $j's$ costs \\
     $x_{j} \in R^{b_{j}}$ & decision variables controlled by agent j \\
     $N_{j} \in R^{a_{j} \times b_{j}}$ & activity matrix \\
     $C_{j} \in R^{m \times b_{j}}$ & activity matrix \\
-    $n_{j} \in R^{a_{j}}$ & capacity vector of agent $j's$ independent resources that are managed locally \\
-    $c_{j} \in R^{m}$ & agent $j's$ vector of shared resources that can be exchanged with other agents \\
-	\hline
-	\caption{Applied variables in BTM Framework}
-	\label{table:applied_variables_in_btm}
+    $n_{j} \in R^{a_{j}}$ & capacity vector of agent $j's$ independent resources \\
+    $c_{j} \in R^{m}$ & agent $j's$ vector of shared resources \\
 \end{longtable} 
 
 Further, the overall objective of the central problem is to minimize the operating costs of the overall system. The minimization of the central problem
@@ -204,7 +205,7 @@ Next, agents submit sealed bids to the dealer. The dealer maintains an individua
 on the other hand, the set for unlimited orders $H_{j}$.
 If an agent submits orders and no trade is executed, the orders are collected and accumulated for the respective agent. Otherwise, any trade from an agent will clear the respective order book. 
 Lastly, to determine the maximal trade surplus the dealer solves 
-the following \textit{market matching problem}:
+the following \textit{market matching problem (MMP)}:
 
 \paragraph*{Market Matching Problem}
 
@@ -222,7 +223,7 @@ the following \textit{market matching problem}:
  \end{array}
 \end{equation}
 
-The objective of the \textit{market matching problem} maximizes the trade surplus. 
+The objective of the MMP maximizes the trade surplus. 
 
 Considering the first set of constraints, if $c_{0} = 0$, it is required that any buy amounts be met by sell amounts. 
 On the opposite, if $c_{0} \neq 0$, the dealer supplies additional resources from the inventory
@@ -231,9 +232,9 @@ to meet buys.
 With respect to the second set of constraints, it is indicated that the market handles limited and unlimited bundles differently. The trades of unlimited bundles in $H_{j}$ are unrestricted, whereas limited bundles in $I_{j}$
 are restricted. In that case, limited trades are restricted to be convex combinations of bundles in $I_{j}$.
 
-Besides, the \textit{market matching problem} always has a solution, because setting all variables to zero 
+Besides, the MMP always has a solution, because setting all variables to zero 
 is always a feasible solution. As described by \shortciteA{guo2007market}, the market closes when no trade takes place 
-and the market prices remain unchanged. Finally, if the \textit{market matching problem} has a nonzero solution for
+and the market prices remain unchanged. Finally, if the MMP has a nonzero solution for
  $y_{j}^{i^{*}}$, for $i \in I_{j}$ and $t_{j}^{h^{*}}$, for $h \in H_{j}$, then agent $j$ will have traded the following:
 
  \begin{equation*}
@@ -244,7 +245,8 @@ and the market prices remain unchanged. Finally, if the \textit{market matching 
  \end{array}
 \end{equation*}
 
-Thus, the market clearing prices $p \in R^{m}$ are derived from the dual values of the first set of constraints in the \textit{market matching problem}. To remember, the concept of duality is explained in section \ref{sec:duality_theory}.
+Thus, the market clearing prices $p \in R^{m}$ are derived from the dual values of the first set of constraints in the MMP. 
+To remember, the concept of duality is explained in section \ref{sec:duality_theory}.
 Consequently, the settlement price for an agent who have traded resources are the following:
 
 \begin{equation*}
@@ -297,10 +299,10 @@ framework is presented in the appendix \ref{appendix:flowchart_btm}.
  \textit{bundle determination problem} and adds new limited bundle orders to $I_{j}$ and 
  unlimited bundle orders to $H_{j}$.
  \item[Step 2] \hfill \\
- The dealer solves the \textit{market matching problem} ($w_{j}^{*}$ represents a matched bundle for agent $j$). 
+ The dealer solves the MMP ($w_{j}^{*}$ represents a matched bundle for agent $j$). 
  \item[Step 3] \hfill \\
  If no nonzero solution exists, this step will be skipped and continued with \textit{Step 4}.
- If a nonzero solution to the \textit{market matching problem} exists and the trades include items from at least one agent and the dealer, the settlement takes place. 
+ If a nonzero solution to the MMP exists and the trades include items from at least one agent and the dealer, the settlement takes place. 
  The dealer publishes the shadow prices $p$ as the new market prices.
  The new allocations are calculated as follows:
  $c_{j} \leftarrow c_{j} + w_{j}^{*}$, for $j=1,...,k$ and $c_{0} \leftarrow c_{0} + \sum\limits_{j=1}^{k} w_{j}^{*}$.
@@ -309,7 +311,7 @@ framework is presented in the appendix \ref{appendix:flowchart_btm}.
  Reset $I_{j} = \emptyset$ and $H_{j} = \emptyset$ for each agent $j$ with $w_{j}^{*} \neq 0$.
  Now, go to \textit{Step 1}. 
  \item[Step 4] \hfill \\
- The dual values of the clearing constraints from the \textit{market matching problem} form the new market prices $p$. 
+ The dual values of the clearing constraints from the MMP form the new market prices $p$. 
  If the new market prices $p \neq \pi$ , go to \textit{Step 1}, otherweise, stop.
 \end{description}
 

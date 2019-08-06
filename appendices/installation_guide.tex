@@ -1,0 +1,34 @@
+\section{Installation Guide}
+
+Above all, you can find the repository of the developed simulation under the following link: \\
+\url{https://github.com/nreinhol/lem_sim}
+
+\vspace{0.7cm}
+
+To start, open your terminal and go into the \verb|lem_sim| directory by typping the following
+expression: \\
+- \verb|cd /path/to/lem_sim|
+
+
+
+\begin{enumerate}
+    \item First of all, we have to start the local blockchain. For this type in: \\
+            - \verb|docker-compose up ganache|
+    \item After that, we need to deploy the smart contract into the running local blockchain. Therefore, we open another terminal window and change the directory to: \\
+            - \verb|cd /path/to/lem_sim/dealer|
+    \item To deploy the smart contract, type in the following expression: \\
+            - \verb|truffle migrate --network development|
+    \item After these steps, the blockchain and the smart contract are ready for communication. 
+    Now, we move to the python application. Therefore, change the directory to: \\
+            - \verb|cd path/to/lem_sim/pyapp|
+    \item Now, you need to set up the python virtual environment. Therefore, type in the following expression: \\
+            - \verb|make requirements|
+    \item This expression will create a virtual environment in the folder ```pyapp/env``` and install all required python packages into this virtual environment.
+    After the successful set up, type in the following expression to run the python simulation: \\
+            - \verb|make simulate|
+\end{enumerate}
+
+\paragraph{Hint:} To redeploy contracts without making any changes in the code base, use the following command: \\
+- \verb|truffle migrate --reset --network development| \\
+Otherwise, you have to restart the local blockchain and deploy the contract.
+

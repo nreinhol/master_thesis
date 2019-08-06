@@ -15,7 +15,8 @@ Above all, this subsection give a brief introduction
 to the used software technologies and libraries.
 
 \paragraph{Python}
-An interpreted, object-oriented, high-level programming language with dynamic semantics. Additionally, it is simple and comes with an easy to learn syntax \footnote{https://www.python.org/}.
+An interpreted, object-oriented, high-level programming language with dynamic semantics. 
+Additionally, it is simple and comes with an easy to learn syntax \footnote{https://www.python.org/}.
 The programming language of choice, which is used to develop the 
 respective components that communicate via the blockchain.
 
@@ -43,7 +44,7 @@ However, the individual components are considered in isolation in this subsectio
 
 \subsubsection{Agent}
 \label{sec:agent_class}
-The agents are implemented by a Python class. Moreover, the naming is oriented on the proposed \textit{BTM} and,
+The agents are implemented by a Python class. Moreover, the naming is oriented on the proposed BTM and,
 as mentioned earlier in section \ref{sec:concept_of_lem}, the agents represent the respective household 
 in the LEM simulation.
 To begin with, the class attributes are presented. 
@@ -81,7 +82,8 @@ Hence, this variable is needed to call the functions of the smart contract out o
 All other class attributes are set immediately after the instantiation or during the running simulation. 
 
 Next, some of the most important functions of the class are introduced and explained.
-After the instantiation, each agent gets their optimization problem. In the listing \ref{lst:lp_setter} below, the implementation 
+After the instantiation, each agent receives its optimization problem. 
+In the listing \ref{lst:lp_setter} below, the implementation 
 of the setter is shown.
 
 \begin{lstlisting}[label=lst:lp_setter, caption=Setter of optimization problem, language=Python]
@@ -94,7 +96,7 @@ of the setter is shown.
 
 As you can see in the listing, after setting the optimization problem, the class attributes \verb|objective| and \verb|wealth| are determined.
 In this case, the attribute \verb|wealth| is defined as the sum of the current \verb|balance| of the account and the absolute value of the current \verb|objective|.
-Equally, it is defined in the \textit{BTM}, outlined in section \ref{sec:btm}.
+Equally, it is defined in the BTM, outlined in section \ref{sec:btm}.
 However, \verb|balance| is not a class attribute, but a class function. It uses the class attributes \verb|web3| and \verb|account_address| to retrieve the current
 balance of the account from the blockchain.
 
@@ -109,6 +111,7 @@ In addition, the function for determining the improving bundle set and the assoc
 
 As shown in the listing, first the bundle determination problem is solved.
 It is solved in a separate function which requires the optimization problem and the current market prices as parameters.
+The associated source code of the function can be found in the appendix \ref{appendix:additional_agent}.
 Further, the class attributes \verb|bundle_set| and \verb|bid| are initialized.
 We stated in section \ref{sec:agent_bidding} that the applied market mechanism implemented nonstrategic bidding and pricing, wherefore 
 an agent always submits a limit price equal to the valuation of the bundle. 
@@ -169,17 +172,17 @@ correctly.
 \end{lstlisting}
 
 The related source code of this function can be seen in the listing \ref{lst:verify_trade} above. 
-To begin with, the function retrieves the values of the primal \textit{market matching problem} and
+To begin with, the function retrieves the values of the primal MMP and
 the belonging dual problem from the dealer's smart contract. For the verification of the correctness, the introduced \textit{Strong Duality Theorem}
 in section \ref{sec:strong_duality_theorem} is applied. 
 Due to this, it is possible to verify if the solution of the dealer is optimal, without solving the corresponding
-\textit{market matching problem}.
+MMP.
 To apply the \textit{Strong Duality Theorem}, the solution of the primal problem (represented by variable \verb|primal_solution|) is calculated
 on the one hand, and the solution of the dual problem (represented by variable \verb|dual_solution|) on the other hand.
 Additionally, both solutions are rounded to one decimal place. This procedure is implemented due to the issues and limitations of 
 floating point arithmetic \footnote{https://docs.python.org/2/tutorial/floatingpoint.html}. 
 We want to make sure that correct trades are not rejected based on those limitations.
-Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type boolean is
+Finally, it is examined if both solutions are identical. If this is the case, the class variable \verb|accept_trade| of type Boolean is
 set to \verb|True|, otherwise to \verb|False|.
 
 Likewise, the class provides a function to notify the dealer's smart contract if the respective trade is accepted or not.
@@ -218,7 +221,7 @@ For this reason, the first call of the dealer's smart contract function \verb|ac
 is only executed if the trade is accepted. 
 
 Finally, a last class function is described. This function adds the received trade to the shared resources
-as it is defined in the \textit{BTM}, introduced in the section \ref{sec:market_clearing_mechanism}.
+as it is defined in the BTM, introduced in the section \ref{sec:market_clearing_mechanism}.
 
 \begin{lstlisting}[float=htbp, label=lst:add_trade_to_shared_resources, caption=Adding of trade to shared resources, language=Python]
     def add_trade_to_shared_resources(self):
@@ -371,7 +374,7 @@ In case of an acceptance, the function pay the agents their refund
 and returns their belonging granted trade.
 As explained earlier, the agents prepay the true value of the entire requested bundle.
 However, the agents often only get shares of their requested bundles due to the solution of the 
-\textit{market matching problem}.
+MMP.
 For this reason, the agents have often prepaid more than they have to pay, which leads to 
 excess payments. Because of this, the dealer calculates the difference between the prepayment 
 and the price of the granted trade and refunds it.
@@ -444,7 +447,7 @@ which is stored in the variable of the same name. This variable is used to
 access the individual orders of the smart contract.
 Afterwards, all orders from the contract are retrieved iteratively and stored in the \verb|order_handler|.
 
-Furthermore, the class also provides functions for creating and solving the \textit{market matching problem}.
+Furthermore, the class also provides functions for creating and solving the MMP.
 Due to the focus on the architectural design and implementation of the simulation and the high complexity
 of these functions, they are not presented in detail. However, the corresponding source code can be found in the appendix \ref{appendix:additional_offchain}.
 
@@ -452,7 +455,7 @@ Finally, the function to set the trades of the agents in the contract is present
 In the beginning, several functions are invoked which initiate the calculation of trades and their related attributes.
 All these calculations take place in the object \verb|OrderHandler|, which has already been presented.
 First, the calculation of the trade share is called. As stated earlier, due to the solution of the 
-\textit{market matching problem}, the agents often just get shares of their requested bundles. In this step,
+MMP, the agents often just get shares of their requested bundles. In this step,
 these shares for each settled order are set. Then, the calculation of the respective trades is initiated.
 Then again, the calculation of the remaining attributes, such as the prepayment, the bill, and the refund,
 is initiated. 
@@ -525,7 +528,7 @@ It contains all fundamental variables which are required to run the simulation.
 These variables are described in more detail in the following list.
 
 \begin{description}
-	\item[\texttt{central\_problem}:] Represents the specified central optimization problem of the presented \textit{BTM}.
+	\item[\texttt{central\_problem}:] Represents the specified central optimization problem of the presented BTM.
     It is divided into subproblems and distributed to the existing agents. It is important 
     to note that the number of variables present in the problem can be exactly divided by the number of agents.
     Otherwise, an exception is thrown.
@@ -659,7 +662,7 @@ First, the off-chain dealer gets the orders from the dealer's smart contract.
 Therefore, the function \verb|get_orders()| of the agent (introduced in listing \ref{lst:offchain_get_orders})
 utilizes the function \verb|getOrder()| of the contract.
 
-Then, the off-chain dealer creates and solves the market matching problem.
+Then, the off-chain dealer creates and solves the MMP.
 The implementation of both functions is outlined in appendix \ref{appendix:additional_offchain}.
 
 \begin{figure}[htbp]
@@ -669,7 +672,7 @@ The implementation of both functions is outlined in appendix \ref{appendix:addit
 	\label{figure:dealers_mmp}
 \end{figure}
 
-After solving the market matching problem and the calculation of the respective 
+After solving the MMP and the calculation of the respective 
 trades, the off-chain dealer sets the trades in the dealer's smart contract.
 Therefore, the function \verb|set_trade()| of the off-chain dealer (introduced in listing \ref{lst:offchain_set_trades})
 utilizes the function \verb|setTrade()| of the dealer's smart contract.
@@ -683,7 +686,7 @@ In addition, the off-chain dealer sets the new market prices in the dealer's sma
 To set the new market prices, the function \verb|set_mkt_prices()| of the off-chain dealer 
 utilizes the function \verb|setMktPrices()| of the dealer's smart contract.
 
-Finally, the values of the market matching problem are set in the dealer's smart contract. 
+Finally, the values of the MMP are set in the dealer's smart contract. 
 They are used by the agents to verify the correctness of the calculated market prices.
 Therefore, the function \verb|set_mmp_attributes()| of the off-chain dealer
 utilizes the function \verb|setMMPAttributes()| of the dealer's smart contract.
@@ -706,7 +709,7 @@ Therefore, the function \verb|verify_strong_duality()| of the agent
 (introduced in listing \ref{lst:verify_trade})
 utilizes the function \verb|getMMPAttributes()| of the dealer's smart contract.
 As mentioned ealier in section \ref{sec:agent_bidding}, this function 
-determine the class variable \verb|accept_trade| of type boolean,
+determine the class variable \verb|accept_trade| of type Boolean,
 which indicates whether the trade is accepted or not.
 
 Afer that, the agent informs the dealer's smart contract whether 
@@ -727,3 +730,5 @@ At the end of each iteration, the resource inventory of the dealer is recalculat
 Therefore the off-chain dealer calculates how much of the inventory is used for
 the trades and settles this with the previous inventory.
 Finally, the new calculated inventory is set in the dealer's smart contract.
+
+\clearpage
