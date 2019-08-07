@@ -1,7 +1,7 @@
 \section{Implementation}
 \label{sec:implementation}
 
-This section deals with the technical implementation of the LEM simulation
+This section deals with the technical implementation of the blockchain-based LEM simulation
 and gives insights into the developed source code.
 First, a brief introduction to the applied software 
 technologies and libraries are given.
@@ -11,7 +11,7 @@ of the fundamental parts of the simulation process are described in detail.
 
 \subsection{Applied technologies}
 \label{sec:applied_technologies}
-Above all, this subsection give a brief introduction 
+Above all, this subsection gives a brief introduction 
 to the used software technologies and libraries.
 
 \paragraph{Python}
@@ -40,7 +40,7 @@ It is used to implement the smart contract dealer.
 \label{sec:components_of_simulation}
 To start, this subsection presents the respective main components 
 that interact with each other during the runtime of the simulation.
-However, the individual components are considered in isolation in this subsection.
+However, in this subsection the individual components are considered in isolation.
 
 \subsubsection{Agent}
 \label{sec:agent_class}
@@ -76,7 +76,7 @@ Therefore a more understandable name for each agent is established.
 Furthermore, each agent is assigned an Ethereum blockchain account defined by the variable \verb|account_address|. It is required to submit and 
 receive transactions via the blockchain.
 Moreover, the variable \verb|web3| represents the Python library for interacting with an Ethereum blockchain, which is already introduced in section \ref{sec:applied_technologies}.
-The last variable which is initialized on instantiation is the \verb|dealer_contract|. 
+The last variable that is initialized on instantiation is the \verb|dealer_contract|. 
 This variable contains an object of the smart contract dealer. This object knows all the implemented functions of the dealer's smart contract.
 Hence, this variable is needed to call the functions of the smart contract out of this Python class.
 All other class attributes are set immediately after the instantiation or during the running simulation. 
@@ -109,7 +109,7 @@ In addition, the function for determining the improving bundle set and the assoc
         self._bid = self._objective - result.fun
 \end{lstlisting}
 
-As shown in the listing, first the bundle determination problem is solved.
+As shown in the listing, the bundle determination problem is solved first.
 It is solved in a separate function which requires the optimization problem and the current market prices as parameters.
 The associated source code of the function can be found in the appendix \ref{appendix:additional_agent}.
 Further, the class attributes \verb|bundle_set| and \verb|bid| are initialized.
@@ -118,6 +118,7 @@ an agent always submits a limit price equal to the valuation of the bundle.
 This is reflected in the definition of the class attribute \verb|bid|. The true value of the improving \verb|bundle_set| 
 is the current \verb|objective| minus the objective of the optimization problem with the resources of the \verb|bundle_set|.
 In this case, the minus sign reflects the fact that we are minimizing costs.
+
 After presenting the determination of all necessary bundle attributes, the submitting of an order is shown in the listing \ref{lst:set_order} below.
 First of all, the variables \verb|bundle_set| and \verb|bid| are prepared for sending to the dealer's smart contract.
 In Solidity, fixed point numbers are not fully supported yet. It is possible to declare them, but they cannot be assigned to or from \shortcite{solidity_fixed_point}.
@@ -135,7 +136,7 @@ In Solidity, fixed point numbers are not fully supported yet. It is possible to 
         self._dealer_contract.contract.functions.setOrder(bundle_set, bid, prepayment).transact({'from': self._account_address, 'value': prepayment})
 \end{lstlisting}
 
-Therefore, we developed a workaround that shift the decimal place two digits to the right and cuts off the remainder,
+Therefore, we developed a workaround that shifts the decimal place two digits to the right and cuts off the remainder,
 so that you receive integer values. 
 
 Additionally, the variable \verb|prepayment| is assigned. 
@@ -173,11 +174,11 @@ correctly.
 
 The related source code of this function can be seen in the listing \ref{lst:verify_trade} above. 
 To begin with, the function retrieves the values of the primal MMP and
-the belonging dual problem from the dealer's smart contract. For the verification of the correctness, the introduced \textit{Strong Duality Theorem}
+the belonging dual problem from the dealer's smart contract. For the verification of the correctness, the introduced Strong Duality Theorem
 in section \ref{sec:strong_duality_theorem} is applied. 
 Due to this, it is possible to verify if the solution of the dealer is optimal, without solving the corresponding
 MMP.
-To apply the \textit{Strong Duality Theorem}, the solution of the primal problem (represented by variable \verb|primal_solution|) is calculated
+To apply the Strong Duality Theorem, the solution of the primal problem (represented by variable \verb|primal_solution|) is calculated
 on the one hand, and the solution of the dual problem (represented by variable \verb|dual_solution|) on the other hand.
 Additionally, both solutions are rounded to one decimal place. This procedure is implemented due to the issues and limitations of 
 floating point arithmetic \footnote{https://docs.python.org/2/tutorial/floatingpoint.html}. 
@@ -198,7 +199,7 @@ The implementation of this function is shown in listing \ref{lst:accept_trade}.
 
 \end{lstlisting}
 
-If the verification of the \textit{Strong Duality Theorem} was successful and the variable \verb|acccept_trade| was thus set to the value \verb|True|,
+If the verification of the Strong Duality Theorem was successful and the variable \verb|acccept_trade| was thus set to the value \verb|True|,
 the function retrieves the trade and stores it in the class attribute \verb|trade|. Besides, before the trade is stored, it is 
 prepared for storing. This is due to the already mentioned workaround that shift the decimal place two digits to the right before 
 sending values to the dealer's smart contract. When retrieving and storing values, exactly the opposite is done and we shift the decimal place 
@@ -242,7 +243,7 @@ Since a new \verb|objective| has been calculated, the class attribute \verb|weal
 \label{sec:smart_contract_dealer}
 In this part, the dealer's smart contract is introduced. 
 As already mentioned, the contract is implemented by the programming language Solidity. 
-First of all, attributes of the contract are presented in the following listing \ref{lst:contract_attributes}.
+First of all, the attributes of the contract are presented in the following listing \ref{lst:contract_attributes}.
 
 \begin{lstlisting}[float=htbp, label=lst:contract_attributes, caption=Attributes of Smart Contract, language=Java]
     contract Dealer{
@@ -267,8 +268,8 @@ First of all, attributes of the contract are presented in the following listing 
 
 First, general attributes are declared. As you can see, the contract contains an attribute called \verb|owner|.
 This variable is set in the constructor of the contract and initialized with the address of the contract creator,
-which is, in this case, the off-chain dealer.  
-It is being used in a modifier which ensures that certain functions can only be executed by the owner of the contract.
+who is, in this case, the off-chain dealer.  
+It is being used in a modifier that ensures that certain functions can only be executed by the owner of the contract.
 Moreover, a modifier can be seen as an extension of a function and is mainly used to 
 to check if certain conditions are met before executing the rest of the source code in the body of a function.
 
@@ -281,12 +282,12 @@ That is to say, it is not possible to read the values from the mapping without k
 Therefore, we developed a workaround and store the keys of mappings in additional arrays which serves 
 as look up tables.
 With reference to the listing \ref{lst:contract_attributes}, the array \verb|order_indices| functions as a 
-lookup table for the mapping \verb|orders|, and the array \verb|trades_accounts| for the mapping 
+look up table for the mapping \verb|orders|, and the array \verb|trades_accounts| for the mapping 
 \verb|trades| and all other trades related mappings.
 
 Next, some of the most important functions of the dealer's smart contract are introduced and explained.
 
-To begin with, the function for receiving the order of the agents is outlined in the listing \ref{lst:set_order_contract}.
+To begin with, the function for receiving the orders of the agents is outlined in the listing \ref{lst:set_order_contract}.
 The function header contains, on the one hand, the Solidity built-in modifier \verb|payable|, and on the other hand, the custom
 modifier \verb|checkPrepayment|. A function declared with \verb|payable| is one that can accept incoming payments. 
 Without the declaration, the function would reject payments and throw an exception. In this case, the modifier is required 
@@ -319,15 +320,15 @@ This data type is well suited to bundle and manage all necessary information reg
 In this case, the object \verb|Order| contains the variables \verb|msg.sender|, \verb|bundle| and \verb|bid|.
 The variables \verb|bundle| and \verb|bid| are passed as function parameters.
 Besides, when a contract is executed, it has access to a small set of global objects. 
-One of these objects represents the \verb|msg| object. It is the transaction call that launched the contract execution.
+One of these objects represents the object \verb|msg|. It is the transaction call that launched the contract execution.
 Therefore, the account address of the agent who executed the function call can be reached via the \verb|msg.sender| variable
-contained in the \verb|msg| object.
+contained in the object \verb|msg|.
 
 Finally, the \verb|Order| object is added to the mapping \verb|orders|.
 The variable \verb|order_count| is an incremental number that serves as the key for 
 the mapping \verb|orders|. After each incoming order, this number is increased by one. 
 Additionally, the variable \verb|order_count| is added to the array \verb|oder_indices|
-that serves as a lookup table as mentioned earlier.
+that serves as a look up table as mentioned earlier.
 
 Furthermore, the contract function which serves to set the trades of the agents is introduced in listing \ref{lst:set_trade_contract}.
 With reference to the function header, the modifier \verb|onlyByOwner()| is applied.
@@ -348,7 +349,7 @@ the trades.
 
 Next, the function \verb|addToArray()| is called and the variable \verb|account| is passed. 
 This function checks whether the account to which the trade belongs is already contained in the array \verb|trades_account|.
-If not, the function adds the account to the array, which again serves as the lookup table for the
+If not, the function adds the account to the array, which again serves as the look up table for the
 mapping \verb|trades| and all other trades related mappings.
 Concluding, all the required information for a trade is placed in the corresponding mappings. In all
 mappings the account address is used as the key.
@@ -537,7 +538,7 @@ These variables are described in more detail in the following list.
     \item[\texttt{dealer\_contract}:] Represents the object of the dealer's smart contract. 
     It is the same object that is passed to the agent classes and the off-chain dealer class. It contains all the
     implemented functions of the dealer's smart contract. When the contract is deployed and thus anchored in the blockchain, a JSON file is created. 
-    This file is denoted as the Contract Application Binary Interface (ABI). The Contract ABI is used to instantiate the Python object.  
+    This file is denoted as the \textit{Contract Application Binary Interface (ABI)}. The ABI is used to instantiate the Python object.  
     \item[\texttt{agent\_pool}:] Represents a list containing all existing agent objects. 
     Therefore all existing accounts are read from the blockchain and used to instantiate the agents.
     \item[\texttt{dealer}:] Represents the object of the off-chain dealer, which is instantiated with the 
@@ -703,7 +704,7 @@ calls for this activity is provided in figure \ref{figure:agents_trade_verificat
 	\label{figure:agents_trade_verification}
 \end{figure}
 
-First, the agent verifies if the conditions of the \textit{Strong Duality Theorem}
+First, the agent verifies if the conditions of the Strong Duality Theorem
 are fulfilled.
 Therefore, the function \verb|verify_strong_duality()| of the agent
 (introduced in listing \ref{lst:verify_trade})

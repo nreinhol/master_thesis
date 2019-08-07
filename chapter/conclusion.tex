@@ -1,15 +1,15 @@
 \section{Conclusion}
 In this research, we described the difficulties of integrating distributes RES into 
-the existing electric grid and presented Peer-to-Peer (P2P) energy trading in local energy markets (LEM)
+the existing electric grid and presented P2P energy trading in LEM
 as a possible solution to technical and market problems. Further, we pointed out that central
 management in P2P energy trading is challenging due to the need for advanced communication and data exchanges,
 wherefore local distributed control and management techniques are more suitable.
-Therefore, we introduced the Ethereum-based blockchain as a new and innovative information communication
-technology (ICT), which fulfills the need for distributed control and management techniques.
-Moreover, we presented a market-based optimization algorithm (BTM), which solves a distributed system
+Therefore, we introduced the Ethereum-based blockchain as a new and innovative ICT, 
+which fulfills the need for distributed control and management techniques.
+Moreover, we presented the BTM, which solves a distributed system
 optimization problem by self-interested agents that iteratively trading bundled resources in a double
 auction market run by a dealer. 
-In the end, we brought all introduced topics together and proposed a concept for a software 
+In the end, we brought all introduced topics together and proposed a concept for an open blockchain-based 
 LEM simulation.
 
 Finally, this research presented the technical implementation of the conceptualized blockchain-based
@@ -22,7 +22,7 @@ Then, we outline the contribution of this research. Finally, we examine further 
 \subsection{Compliance of LEM Components}
 \label{sec:compliance_of_components}
 
-In this subsection, we examine if the seven components for the efficient operation of a LEM,
+In this subsection, we examine if the seven components for the efficient operation of LEM,
  elaborated by \shortcite{mengelkamp2018designing}, can be 
 provided by the developed simulation platform.
 Referring to the microgrid setup (C1), an explicit objective, a definition of the market participants and a definition of the form of the traded energy is required. The developed simulation can meet these requirements. The explicit objective can be defined by the researcher itself by setting up a central problem. It is possible to define the market participants and the form of the traded energy bundles
@@ -35,16 +35,16 @@ As for the information system (C3), the requirements are fulfilled due to the us
 Moreover, the applied BTM constitutes an appropriate market mechanism (C4). The BTM defines a clear bidding strategy and the overall objective of the applied framework is to provide an optimal allocation in near real-time. 
 Additionally, the BTM determines the respective prices by calculating the dual variables.
 Therefore, the developed simulation also includes a pricing mechanism (C5) that supports an efficient allocation.
-Likewise, a suitable energy management trading system (C6) is provided by the applied BTM. 
+Likewise, a suitable EMTS (C6) is provided by the applied BTM. 
 It ensures automatically the energy supply and aims to minimize energy costs.
-Finally, the developed simulation lacks the definition of how a LEM fit into the current energy policy and how taxes and fees are distributed and billed. 
+Finally, the developed simulation lacks the definition of how LEM fit into the current energy policy and how taxes and fees are distributed and billed. 
 That is why the component regulation (C7) is not fulfilled. 
-In conclusion, the developed simulation provides five of seven components for the efficient operation of a LEM. 
+In conclusion, the developed simulation provides five of seven components for the efficient operation of LEM. 
 Besides, it allows the integration of the missing two components.
-That represents an appropriate and valuable basis for a substantial and significant simulation of a LEM. 
+That represents an appropriate and valuable basis for a substantial and significant simulation of LEM. 
 
 \subsection{Contribution}
-The conducted research provides two core contributions:
+The conducted research provides two core contributions.
 
 First, the decentralized implementation of the proposed BTM. 
 We successfully implemented the BTM with a blockchain as the applied ICT. 

@@ -136,13 +136,16 @@ is provided by the emerging blockchain technology.
 
 \section*{List of Abbreviations} \markboth{LIST OF ABBREVIATIONS}{}
 \begin{acronym}[GCRM]
+        \acro{ABI}{Contract Application Binary Interface}
         \acro{BTM}{Bundle Trading Market Framework}
         \acro{CB}{Competitive Benchmarking}
         \acro{DLT}{Distributed Ledger Technology}
+        \acro{EMTS}{Energy Management Trading System}
         \acro{ICT}{Information Communication Technology}
         \acro{LEM}{Local Energy Markets}
         \acro{LP}{Linear Program}
         \acro{MMP}{Market Matching Problem}
+        \acro{PV}{Photovoltaic Systems}
         \acro{PoW}{Proof of Work}
         \acro{P2P}{Peer-to-Peer}
         \acro{RES}{Renewabe Energy Sources}
@@ -186,8 +189,13 @@ is provided by the emerging blockchain technology.
 \clearpage
 \appendix
 \renewcommand*{\thesection}{\Alph{section}}\textbf{}
+\renewcommand\thefigure{\thesection.\arabic{figure}}
+\renewcommand*\thelstlisting{\Alph{section}.\arabic{lstlisting}}
 
 % APPENDIX
+\setcounter{figure}{0}
+\setcounter{lstlisting}{0}
+
 \input{appendices/additional_agent.tex}
 
 \input{appendices/additional_offchain_dealer.tex}

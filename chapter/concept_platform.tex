@@ -2,7 +2,7 @@
 \label{sec:concept_of_lem}
 To start off, this section brings together the previous sections \ref{sec:about_blockchain} and \ref{sec:btm},
 and explains how the BTM and a blockchain interact to implement a simulation 
-of LEM, which are introduced in section \ref{sec:lem}.
+of LEM.
 Finally, this section gives an example of a LP in terms of energy efficient demand side management of households. 
 
 First, in the presented market mechanism in section \ref{sec:btm}, independent, self-interested agents trading bundled resources
@@ -17,10 +17,10 @@ As already mentioned earlier, the implementation of LEM needs
 local distributed control and management techniques, which can be addressed by the blockchain technology.
 This implies that the respective households submit and receive all relevant data, information, and payments via a blockchain. 
 Moreover, the double-auction market which enables households to trade their energy bundles is operated by a dealer.
-In turn, the dealer is implemented by a smart contract, which is introduced in section \ref{sec:smart_contract}, and a conventional software client. 
-The dealers' smart contract contains all relevant information regarding the market mechanism, like submitted orders, trades, 
-dealers' inventory, and market prices. 
-Therefore, households exclusively communicate with the dealers' smart contract. 
+In turn, the dealer is implemented by a smart contract and a conventional software client. 
+The dealer's smart contract contains all relevant information regarding the market mechanism, like submitted orders, trades, 
+dealer's inventory, and market prices. 
+Therefore, households exclusively communicate with the dealer's smart contract. 
 
 \begin{figure}[htbp]
     \centering
@@ -29,48 +29,49 @@ Therefore, households exclusively communicate with the dealers' smart contract.
     \label{figure:concept_lem}
 \end{figure}
 
-With reference to figure \ref{figure:concept_lem}, the households submit their orders to the dealers' smart contract. 
-Afterwards, the dealers' conventional software client, designated as \textit{off-chain} dealer in the figure, fetches all existing orders contained in the smart contract
-and solves the \textit{market matching problem}, which is introduced in section \ref{sec:market_clearing_mechanism}.
-Secondly, the \textit{off-chain} dealer updates all relevant information in the smart contract, for instance 
-the settled orders, the trades, the new market prices, and the inventory.
-Finally, the households get their respective trades from the dealers' smart contract. 
+With reference to figure \ref{figure:concept_lem}, the households submit their orders to the dealer's smart contract. 
+Afterwards, the dealer's conventional software client, designated as \textit{off-chain} dealer in the figure, fetches all existing orders contained in the smart contract
+and solves the MMP.
+Secondly, the off-chain dealer updates all relevant information in the smart contract, for instance 
+the settled orders, the trades, the new market prices, and the resource inventory.
+Finally, the households get their respective trades from the dealer's smart contract. 
 
-Anyway, the \textit{off-chain dealer} is necessary due to the complex and costly calculation of the \textit{market matching problem}. 
-As mentioned in section \ref{sec:transaction}, each transaction consume gas. Additionally, each mathematical operation in a smart contract
-increases the amount of gas to be paid for the respective transaction. As a consequence, implementation and execution of the \textit{market matching problem}
+Anyway, the off-chain dealer is necessary due to the complex and costly calculation of the MMP.
+As mentioned in section \ref{sec:transaction}, each transaction consumes gas. Additionally, each mathematical operation in a smart contract
+increases the amount of gas to be paid for the respective transaction. As a consequence, implementation and execution of the MMP
 in the smart contract itself would be hard to realize and associated with high transaction costs. 
 
-Hence, a well-designed smart contract should move computational complexity \textit{off-chain} 
-and focus more on updating state in the contract \shortcite{calculate_cost_eth}. A balance between \textit{on-chain}
-and \textit{off-chain} complexity should be found.
+Hence, a well-designed smart contract should move computational complexity off-chain
+and focus more on updating state in the contract \shortcite{calculate_cost_eth}. A balance between on-chain
+and off-chain complexity should be found.
 
 In addition, we mentioned in section \ref{sec:btm} that the developed open blockchain-based LEM platform applied a synchronous
-call market. That means, the dealer only executes the \textit{market matching problem} after all agents have submitted their orders.
+call market. That means, the dealer only executes the MMP after all agents have submitted their orders.
 Likewise, we mentioned in section \ref{sec:smart_contract} that smart contracts are only active and run if they called by a transaction.
 They will never run on his own or in the background. For this reason, a mechanism is necessary which triggers the execution of the 
-\textit{market matching problem}. The implementation of an \textit{off-chain} dealer is also suitable for this.
+MMP. The implementation of an off-chain dealer is also suitable for this.
 
 So far, this section presented the basic idea and concept of the developed open blockchain-based LEM platform
 and explained the necessity of all existing components. In the following section \ref{sec:implementation}, the setup and technical implementation of the simulation will be described in detail. 
 
-However, we stated earlier in this section that the agents of the \textit{BTM} represent households
-and that these households trading bundles of energy resources to minimize the monetary expense. 
-In section \ref{sec:btm_problem_overview}, we introduced the individual linear programs of the agents.
+However, we stated earlier in this section that the agents of the BTM represent households
+that trade bundles of energy resources to minimize the monetary expense. 
+In section \ref{sec:btm_problem_overview}, we introduced the individual LPs of the agents.
 Further, we explained in section \ref{sec:agent_bidding} that a rational agent will choose an improving bundle for 
 trading which leaves his wealth level on the same level or better off and defined the selection of such a bundle 
 as the bundle determination problem.
 Finally, to embed the BTM into the topic of LEM, we need to define 
-a linear programming problem which depicts the energy efficient demand side management of households.
+a LP which depicts the energy efficient demand side management of households.
 
 \subsection{Demand side management of a household}
 This subsection will embed the BTM into the topic of LEM. 
-Therefore, we will develop an exemplary and simplified linear programming problem in terms of energy efficient demand side management of households. 
+Therefore, we develop an exemplary and simplified LP in terms of energy efficient demand side management of households. 
 That means the objective of the respective households is to minimize their monetary expense regarding energy consumption.
-However, the minimization of the costs due to energy consuming depends on several constraints. 
-It must be ensured that sufficient energy can be provided at all times.
+However, the minimization of the costs depends on several constraints.
+The sufficient provision of energy must be ensured at all times.
 
-\shortciteA{Chen2013} developed such a linear programming model for demand side management of households, on which the following
+
+\shortciteA{Chen2013} developed such a LP for demand side management of households, on which the following
 presented model is based. 
 
 First, we introduce all relevant variables. Let $a$ denotes an appliance, and $A$ the set of all existing appliances in a household.
@@ -79,15 +80,15 @@ Next, the variable $x_{a}$ denotes the energy consumed by an appliance $a$ to a 
 Further, each appliance $a \in A$ has a maximum energy level that is defined as rated power and described by $P_{a}$.
 Additionally, it exists a limit on the total energy consumed by various appliances of a household. This total energy consumption limit is described by $L_{A}$. In case the total energy consumption limit is exceeded, the power network of the household will be tripped out.
 Moreover, a household consumes, on the one hand, solar energy from
-photovoltaic systems (PV) and on the other hand energy from the electrical grid. 
+\textit{photovoltaic systems (PV)} and on the other hand energy from the electrical grid. 
 If households do not consume solar energy directly, they have the opportunity to 
 store it in batteries, or export it back to the main power grid if the battery is full.
-Let $e_{g}$ denote the energy used from the electrical grid, and $e_{s}$ the energy produced by the photovoltaic systems.
+Let $e_{g}$ denote the energy used from the electrical grid, and $e_{s}$ the energy produced by the PV.
 In addition, let $p_{g}$ and $p_{s}$ denote the unit price of the energy from the electrical grid and solar energy.
 Furthermore, we describe the solar energy used by all appliances of a household as $y_{s}$, the consumed battery energy 
 as $y_{b}$ and the remaining solar energy which is not used by the household appliances and stored in the battery as $z_{b}$.
 
-Finally, we developed the following linear program for optimization of the household monetary expense.
+Finally, we developed the following LP for optimization of the household monetary expense.
 
 \begin{equation}
  \begin{array}{ll@{}ll}
@@ -100,10 +101,10 @@ Finally, we developed the following linear program for optimization of the house
 \end{equation}
 
 \clearpage
-In the table below, all applied variables of the developed linear program are listed:
+In the table below, all applied variables of the developed LP are listed:
 
 \begin{longtable}{c|l}
-	\caption{Applied variables in linear program for optimization of the household monetary expense} 
+	\caption{Applied variables in LP for optimization of the household monetary expense} 
 	\label{table:applied_variables_lp} 
 	\\
 	\textbf{Variable} & \textbf{Description} \\
@@ -126,7 +127,7 @@ As mentioned earlier,
 the objective of the respective households is to minimize
 their monetary expense regarding energy consumption.
 The term $p_{g} \cdot e_{g}$ denotes the costs for energy from the electrical
-grid, whereas the term $p_{s} \cdot e_{s}$ denotes the costs for energy from photovoltaic systems. 
+grid, whereas the term $p_{s} \cdot e_{s}$ denotes the costs for energy from PV. 
 
 Besides, the first constraint ensures that the total energy consumption of all energy consuming
 appliances of a household does not exceed the limit of $L_{A}$. 
@@ -142,7 +143,7 @@ Finally, the fourth constraint describes that the solar energy produced by the P
 At times when the battery is fully charged and the energy consumption of the 
 appliances are covered by solar energy, it is possible to sell the surplus of 
 wasted solar energy.
-Referring to the \textit{BTM}, the first two constraints of the proposed linear
+Referring to the BTM, the first two constraints of the proposed linear
 programming model constitutes the independent resources that are managed locally.
 The shared resources are represented by 
 the energy resources $e_{g}$ and $e_{s}$.
@@ -156,8 +157,7 @@ e_{s}
   \end{pmatrix}
 \]
 
-Consequently, the objective of the linear programming 
-model is written in matrix-vector notation.
+Consequently, the objective of the LP is written in matrix-vector notation.
 
 \begin{equation*}
  \begin{array}{ll@{}ll}
@@ -177,9 +177,8 @@ p_{s}
 
 
 
-To sum up, this subsection presented a simplified linear 
-programming model for demand side management of a household
-that can be integrated into the proposed \textit{BTM}.
+To sum up, this subsection presented a simplified LP for demand side management of a household
+that can be integrated into the proposed BTM.
 
 Furthermore, the developed model should only serve as an inspiration and example
 and has no claim to completeness. 

@@ -16,14 +16,13 @@ to react in real-time to a significant growing
 amount of distributed RES \shortcite{mengelkamp2018designing} \shortcite{ampatzis2014local}.
 
 To successfully integrate and use these RES, new approaches are necessary \shortcite{mengelkamp2018blockchain}.
-A possible solution to those technical and market problems is P2P energy 
-trading in LEM \shortcite{long2017feasibility}. 
+P2P energy trading in LEM provides a possible soluation the technical and conceptual problems \shortcite{long2017feasibility}.
 
 This section will explain the general concept of LEM
 and present market components for building efficient LEM. 
 
 In the traditional centralized energy system, large power plants that operate according to a
-centralized coordination mechanism, supply a large amount of customer with energy, which are located 
+centralized coordination mechanism, supply a large amount of customers with energy, who are located 
 within a wide area (for example a country or a state) \shortcite{mengelkamp2018designing}.
 
 In contrast, decentralized energy systems consist of small-scale energy generators that are 
@@ -34,12 +33,12 @@ In this case, a community presents a group of geographically and socially close 
 Moreover, all participants buy or sell energy directly with each other by using the provided market platform
 without intermediation by conventional energy suppliers \shortcite{zhang2017review}.
 
-In addition, if prosumer has a surplus in electricity, they have the opportunity 
+In addition, if prosumers have a surplus in electricity, they have the opportunity 
 to curtail it, store it in an energy storage device or export it back to the main power grid \shortcite{zhang2017review}.
 Considering, in the traditional centralized energy system, trading of energy is mainly unidirectional.
 As stated above, electricity is usually transmitted from large-scale power plants to 
-consumers over long distances, while the cash-flow goes the opposite way. 
-On the contrary, the P2P energy trading in a LEM encourages multidirectional trading within 
+consumers over long distances, while the cash flow goes the opposite way. 
+On the contrary, the P2P energy trading in LEM encourages multidirectional trading within 
 a local geographical community \shortcite{zhang2017review}, as illustrated in figure \ref{figure:microgrid}.
 
 Due to this, LEM promote the consumption of energy close to its generation and, therefore, 
@@ -48,7 +47,7 @@ Furthermore, LEM enable (near) real-time pricing and facilitate a local balance
 of supply and demand \shortcite{mengelkamp2018blockchain}. 
 
 Further, as stated by \shortciteA{mengelkamp2018designing},
-the participants of a LEM do not necessarily have to be physically connected. A virtual microgrid
+the participants of LEM do not necessarily have to be physically connected. A virtual microgrid
 describes the aggregated control of multiple energy producers, prosumers and consumers in a virtual 
 community. Further, the revenue potential can be increased significantly by expanding a physical 
 microgrid to include virtual participants. 
@@ -56,13 +55,13 @@ microgrid to include virtual participants.
 Referring to \shortciteA{jimeno2011architecture}, an LEM has a specific characteristic
 that distinguishes it from other aggregation of DER systems. A microgrid has the opportunity
 to operate either connected to the main grid or islanded from it. In other words,
-this allows a LEM to run disconnected from the main grid, in case it fails or 
-the power quality is not satisfactory. Thus, participants of a LEM have a higher quality 
+this allows LEM to run disconnected from the main grid, in case it fails or 
+the power quality is not satisfactory. Thus, participants of LEM have a higher quality 
 of supply for the loads within it. Additionally, it offers a way of obtaining cheaper 
-and cleaner energy for all participants, if elements operated in a LEM taking into 
+and cleaner energy for all participants, if elements operated in LEM taking into 
 account by economic and emission policies.
 
-Moreover, P2P energy trading in a LEM requires advanced communication and data 
+Moreover, P2P energy trading in LEM requires advanced communication and data 
 exchanges between the different parties, which makes central management and 
 operation more and more challenging. The implementation of LEM needs 
 local distributed control and management techniques. \shortcite{andoni2019blockchain}. 
@@ -83,9 +82,9 @@ illustrate each component. Further, the compliance of the developed open blockch
 LEM simulation and the seven components will be examined later on in section \ref{sec:compliance_of_components}.
 
 \begin{description}
-    \item[Microgrid setup (C1):] In general, an explicit objective, a definition of the market 
+    \item[Microgrid Setup (C1):] In general, an explicit objective, a definition of the market 
      participants and the form of the traded energy must be well defined. 
-     A LEM can have different, often contradictory objectives. Especially in the
+     LEM can have different, often contradictory objectives. Especially in the
      design of the market mechanism, the implementation of the objective plays an important role.
      Next, a significant number of market participants is needed, who trade energy among each other.
      Moreover, a part of the market participants needs to be able to produce energy. 
@@ -93,7 +92,7 @@ LEM simulation and the seven components will be examined later on in section \re
      combination of them. Additionally, the way of energy transportation must be specified.
      Will be the traditional energy grid used or a physical microgrid build. 
     
-    \item[Grid connection (C2:)] The connection points to the superordinate main grid 
+    \item[Grid Connection (C2:)] The connection points to the superordinate main grid 
      must be well defined. These points measure the energy flows towards the main grid 
      and evaluate the performance of the LEM and can help to balance the energy generation 
      and demand within it. Besides, you have to distinguish between a physical microgrid and 
@@ -104,24 +103,24 @@ LEM simulation and the seven components will be examined later on in section \re
      Nevertheless, to operate in island-mode extensively, a physical microgrid need a large 
      amount of own energy generation capacity and flexibility to ensure supply security and robustness.
          
-    \item[Information system (C3):] In addition, all participants must be connected 
+    \item[Information System (C3):] In addition, all participants must be connected 
     and a market platform that monitors all operations must be provided. 
     Therefore, an information system is needed, which should enable equal 
     access for every market participant to avoid discrimination. 
     With reference to \shortciteA{mengelkamp2018designing}, these requirements
     can be implemented by blockchain technology based on smart contracts.
     
-    \item[Market mechanism (C4):] Besides, a market mechanism implemented through 
+    \item[Market Mechanism (C4):] Besides, a market mechanism implemented through 
      the information system is necessary. This market mechanism implies the allocation of the
      market and the payment rules. Further, a clear bidding format should be defined. 
      It follows that the main objective of the mechanism is to provide an efficient
      energy allocation by matching the buy and sell orders of the participants appropriately.
      Finally, this should happen in near real-time granularity.    
     
-    \item[Pricing mechanism (C5):] The market mechanism (C4) includes the pricing mechanism 
+    \item[Pricing Mechanism (C5):] The market mechanism (C4) includes the pricing mechanism 
      and supports the efficient allocation of energy supply and demand. 
      The traditional energy price is composed of large parts of taxes and surcharges.
-     On the contrary, in a LEM different fees come to bear, for example in case of a 
+     On the contrary, in LEM different fees come to bear, for example in case of a 
      physical microgrid. Hence, RES typically have almost zero marginal cost, prosumer can 
      price their energy above all appropriate taxes and fees to make profit. 
     Thus, the energy price should be linked to the availability of energy. In other words,
@@ -129,7 +128,7 @@ LEM simulation and the seven components will be examined later on in section \re
     market price. From an economic point of view, LEM are beneficial to their 
     participants as long as the average energy price is lower than the external grid price.
         
-    \item[Energy management trading system (C6):] The task and goal of the EMTS
+    \item[Energy Management Trading System (C6):] The task and goal of the \textit{energy management trading system (EMTS)}
      is to automatically ensure energy supply for a respective market participant.
      Therefore, the EMTS needs access to the energy-related data of the participant, like 
      the real-time demand and supply. The EMTS uses this data to forecasts consumption and
@@ -139,7 +138,7 @@ LEM simulation and the seven components will be examined later on in section \re
      For this reason, the EMTS needs to have access to the market participant’s
      blockchain account to be capable to automatically perform energy transactions.
 
-    \item[Regulation (C7):] It needs to be determined how a LEM 
+    \item[Regulation (C7):] It needs to be determined how LEM 
      fit into the current energy policy and which market design is allowed, how 
      taxes and fees are distributed and billed. Likewise, it needs to 
      be determined in which way the local market is integrated into the traditional

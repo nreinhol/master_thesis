@@ -89,7 +89,7 @@ the representation by \shortciteA{bichler2017market} is considered:
 
 
 Next, the motivation of the duality theory can be explained by the issue of trying to find 
-bounds on the value of the optimal solution to a linear programming problem. 
+bounds on the value of the optimal solution to a LP. 
 If the primal is a minimization problem, the dual represents a lower bound
 on the value of the optimal solution, otherwise, if the primal is a maximization problem,
 the dual represents an upper bound \shortcite{bichler2017market}.
@@ -169,9 +169,9 @@ is the most widely used algorithm.
 This method was developed around 1940 and had several competitors at that time.
 However, the algorithm was able to assert itself due to its efficiency. \shortcite{griva2009linear}
 In general, the simplex-method is an iterative algorithm, used to solve 
-linear programming models \shortcite{griva2009linear}. To apply the algorithm to a model, 
+a LP \shortcite{griva2009linear}. To apply the algorithm to a LP, 
 it must be in standard form \shortcite{Luenberger2008}. According to \shortciteA{griva2009linear}, 
-we consider the following linear programming model:
+we consider the following LP:
 
 \begin{equation*}
     \begin{array}{ll@{}ll}
@@ -198,7 +198,7 @@ difference between the right-hand side and the left-hand side.
 \end{equation*}
 
 
-Finally, with the linear programming model in standard form, the idea of the simplex-method
+Finally, with the LP in standard form, the idea of the simplex-method
 is to iteratively proceed from one basic feasible solution to another \shortcite{Luenberger2008}.
 Thereby, it always looks for a feasible solution which is better than the one before. 
 The definition of better, in this case, depends on the nature of the linear problem. 
