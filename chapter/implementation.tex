@@ -282,7 +282,7 @@ Next, some of the most important functions of the dealer's smart contract are in
 
 To begin with, the function for receiving the orders of the agents is outlined in the Listing \ref{lst:set_order_contract}.
 The function header contains, on the one hand, the Solidity built-in modifier \verb|payable|, and on the other hand, the custom
-modifier \verb|checkPrepayment|. A function declared with \verb|payable| is one that can accept incoming payments. 
+modifier \verb|checkPrepayment|. A function declared as \verb|payable| is one that can accept incoming payments. 
 Without the declaration, the function would reject payments and throw an exception. In this case, the modifier is required 
 to receive the prepayments of the agents. 
 Further, we developed the second modifier \verb|checkPrepayment| to verify whether the incoming payment match the amount
@@ -307,15 +307,14 @@ of required prepayment.
 Hence, if the prepayment is not sufficient, the function call of the agents is rejected and 
 the order is not accepted.
 
-Next, an \verb|Order| object is declared and initialized. The order object is implemented by the data type
-struct. It is a user-defined data container for grouping variables.
-This data type is well suited to bundle and manage all necessary information regarding an order.
-In this case, the object \verb|Order| contains the variables \verb|msg.sender|, \verb|bundle| and \verb|bid|.
-The variables \verb|bundle| and \verb|bid| are passed as function parameters.
-Besides, when a contract is executed, it has access to a small set of global objects. 
-One of these objects represents the object \verb|msg|. It is the transaction call that launched the contract execution.
-Therefore, the account address of the agent who executed the function call can be reached via the \verb|msg.sender| variable
-contained in the object \verb|msg|.
+Next, the \verb|Order| object is declared and initialized, which is implemented by the data type
+struct. It is a user-defined data container for grouping variables and is well suited to bundle and 
+manage all necessary information regarding the orders.
+In this case, the object contains the variables \verb|msg.sender|, \verb|bundle| and \verb|bid|.
+The \verb|bundle| and \verb|bid| are passed as function parameters.
+When a contract is executed, it has access to a small set of global objects to which the object \verb|msg| belongs.
+This object contains information regarding the externally owned account who invokes the contract execution,
+such as the account address that can be accessed by the variable \verb|msg.sender|.
 
 Finally, the \verb|Order| object is added to the mapping \verb|orders|.
 The variable \verb|order_count| is an incremental number that serves as the key for 
@@ -325,10 +324,9 @@ that serves as a look up table as mentioned earlier.
 
 Furthermore, the contract function which serves to set the trades of the agents is introduced in Listing \ref{lst:set_trade_contract}.
 With reference to the function header, the modifier \verb|onlyByOwner()| is applied.
-This custom modifier examines if the caller of the function is also the owner of the contract. This means, that 
-only the owner of the contract has the permission to call this function.
-The owner of the contract is the off-chain dealer. Accordingly, the applied modifier ensures that no one else can set 
-the trades. 
+This custom modifier assures that only the owner of the contract has the permission to execute 
+this function, which is in our case the off-chain dealer. Accordingly, the applied 
+modifier ensures that no one else can set the trades. 
 
 \begin{lstlisting}[float=htbp, label=lst:set_trade_contract, caption=Setting the trades, language=Java]
     function setTrade(address _account, int256[] _trade, uint256 _prepayment, uint256 _bill, uint256 _refund) public onlyByOwner() {

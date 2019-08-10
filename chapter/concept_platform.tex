@@ -1,17 +1,17 @@
 \section{Concept of LEM Simulation Platform}
 \label{sec:concept_of_lem}
 To start off, this section brings together the previous sections \ref{sec:about_blockchain} and \ref{sec:btm},
-and explains how the BTM and a blockchain interact to implement BLEMS.
+and explains how the BTM and a blockchain interact to implement the BLEMS.
 Finally, this section gives an example of a LP in terms of energy efficient demand side management of households. 
 
 First, in the presented BTM in section \ref{sec:btm}, independent, self-interested agents trading bundled resources
 in a double-auction market. 
-In case of BLEMS, the agents of the BTM represent households that 
+In case of the BLEMS, the agents of the BTM represent households that 
 trade independently and self-interested bundles of energy resources to minimize their monetary expense 
 through optimally scheduling the operation and energy consumption 
 of all energy consuming appliances.
 
-Second, blockchain is introduced as the applied ICT of BLEMS. 
+Second, blockchain is introduced as the applied ICT of the BLEMS. 
 As already mentioned earlier, the implementation of LEM needs local distributed control and 
 management techniques, which can be addressed by the blockchain technology.
 This implies that the respective households submit and receive all relevant data, information, and payments via a blockchain. 
@@ -44,13 +44,13 @@ Hence, a well-designed smart contract should move computational complexity off-c
 and focus more on updating state in the contract \shortcite{calculate_cost_eth}. A balance between on-chain
 and off-chain complexity should be found.
 
-In addition, we mentioned in section \ref{sec:btm} that BLEMS applied a synchronous
+In addition, we mentioned in section \ref{sec:btm} that the BLEMS applied a synchronous
 call market. That means, the dealer only executes the MMP after all agents have submitted their orders.
 Likewise, we mentioned in section \ref{sec:smart_contract} that smart contracts are only active and run if they called by a transaction.
 They will never run on his own or in the background. For this reason, a mechanism is necessary which triggers the execution of the 
 MMP. The implementation of an off-chain dealer is also suitable for this.
 
-So far, this section presented the basic idea and concept of BLEMS
+So far, this section presented the basic idea and concept of the BLEMS
 and explained the necessity of all existing components. In the following section \ref{sec:implementation}, 
 the setup and technical implementation is described in detail. 
 

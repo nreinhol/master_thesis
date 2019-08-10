@@ -1,28 +1,26 @@
 \section{Blockchain}
 \label{sec:about_blockchain}
 
-To begin with, in section \ref{sec:lem} we stated that the implementation of LEM
-needs local distributed control and management techniques. Further, we emphasize
+We stated that the implementation of LEM
+needs local distributed control and management techniques and emphasize
 that the blockchain technology as an emerging ICT offers new opportunities for decentralized
 market designs and helps to address the challenges faced by decentralized energy systems. 
-In conclusion, this research will use a blockchain in BLEMS
-as the underlying ICT. 
-
-Hence, this chapter will give an overview of the general purpose, 
+Therefore, this research applies a blockchain in the BLEMS as the underlying ICT, wherefore
+this chapter gives an overview of the general purpose, 
 the contained components and the fundamental functionality of a blockchain. 
 
 \subsection{General Purpose}
 In general, a blockchain can be described as a digital data structure that can be understood as a shared and 
 distributed database, containing a continuously expanding and chronological log of transactions \shortcite{andoni2019blockchain}. 
-Besides, various types like digital transactions, data records and executables can be stored in this digital data structure. 
+Besides, various data types like digital transactions, data records and executables can be stored in this digital data structure. 
 The data transmission in a blockchain is comparable with copying data from one computer to another. However, the resulting challenge 
 is that the system needs to ensure that the data is copied just once \shortcite{andoni2019blockchain}. 
 For example, in the domain of cryptocurrencies, this is equal to sending a coin from one wallet to another. 
 In this case, the system needs to validate that this coin is spent just once and there is no double-spending. 
-A conventional solution for this problem is a third intermediary. To come back to the stated example, the third 
-intermediary is represented by a traditional bank, which store, protect and continuously update the valid state of 
-the ledger \shortcite{andoni2019blockchain}. But, in some cases, central management is not practicable or reasonable. 
-Reasons for this are possible intermediary costs or a high degree of trust of the users into the intermediary who operates 
+A conventional solution for this problem is a third intermediary. To give a tangible example, the third
+intermediary can be described by a traditional bank, which stores, protects and continuously updates the valid state of 
+the ledger \shortcite{andoni2019blockchain}. In some cases, central management is not practicable or reasonable due to 
+possible intermediary costs or a high degree of trust of the users into the intermediary who operates 
 the system. Further, central management has a significant disadvantage because of a single point of failure. 
 Hence, the centralized system is fragile to technical problems as well as to external malicious attacks \shortcite{andoni2019blockchain}.
 Consequently, the main reason for blockchain technologies is the removal of such third 
@@ -33,20 +31,19 @@ to verify transactions and protect the validity of the ledger.
 This subsection covers the architectural design of a blockchain and presents the 
 contained components in detail. Due to the plurality of the blockchain technologies, 
 each of the technology slightly differs in design and components. 
-The following explanations are oriented towards the Ethereum blockchain 
-implementation, which is also used as the underlying ICT to implement 
-BLEMS.
+The following explanations are oriented towards the Ethereum, as it used 
+in the implementation of the BLEMS.
 
 \subsubsection{World State}
 \label{sec:world_state}
 Referring to the \textit{Ethereum Yellow Paper} by \shortciteA{wood2014ethereum}, Ethereum 
-can be seen as a transaction-based state machine. What does that mean? 
-In the beginning, Ethereums state machine starting with a so-called 
-\textit{"genesis state"}. This is analogous to a blank sheet. 
+can be seen as a transaction-based state machine.
+The state machine starts with a so-called 
+\textit{genesis state}. This is analogous to a blank sheet. 
 In this state, no transactions have happened on the network. 
-Next, transactions are executed and the state of the Ethereum world 
-changes into a new state. Further, transactions are executed incrementally 
-and morph it into some final state. Consequently, the final state 
+Next, transactions are executed incrementally and the state of the Ethereum world 
+changes into new states and morph it into some final state. 
+Consequently, the final state 
 is accepted as the canonical version of the world of Ethereum and 
 represents at any time the current state.
 
@@ -60,7 +57,7 @@ represents at any time the current state.
 In more detail, the world state arises out of a mapping of a key-value pair for every account which exists 
 on the Ethereum network \shortcite{wood2014ethereum}. 
 The key constitutes the address of an Ethereum account and the value presents 
-the account's state, which contains detailed information of this account. 
+the account's state, which contains detailed information. 
 However, the world state is not stored on the blockchain itself. 
 This mapping is stored and maintained in a modified data structure 
 called a \textit{Patricia Merkle tree}. This tree is stored off-chain 
