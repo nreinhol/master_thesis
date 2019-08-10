@@ -5,7 +5,7 @@ To begin with, in section \ref{sec:lem} we stated that the implementation of LEM
 needs local distributed control and management techniques. Further, we emphasize
 that the blockchain technology as an emerging ICT offers new opportunities for decentralized
 market designs and helps to address the challenges faced by decentralized energy systems. 
-In conclusion, this research will use a blockchain in the developed LEM simulation platform 
+In conclusion, this research will use a blockchain in BLEMS
 as the underlying ICT. 
 
 Hence, this chapter will give an overview of the general purpose, 
@@ -35,7 +35,7 @@ contained components in detail. Due to the plurality of the blockchain technolog
 each of the technology slightly differs in design and components. 
 The following explanations are oriented towards the Ethereum blockchain 
 implementation, which is also used as the underlying ICT to implement 
-the open simulation platform.
+BLEMS.
 
 \subsubsection{World State}
 \label{sec:world_state}
@@ -112,7 +112,7 @@ As described in section \ref{sec:world_state}, whenever transactions are execute
 the state of the Ethereum world changes into a new state. 
 Every state and the belonging transactions, which transform the prior state into 
 the new state, is cumulated in a so-called block. That means states are represented 
-by blocks. As you can see in figure \ref{figure:state_transition}, the history of 
+by blocks. As you can see in Figure \ref{figure:state_transition}, the history of 
 the Ethereum world is a linkage of states, or in other words, blocks. 
 That is where the name blockchain comes from. A blockchain is a sequence 
 of blocks, which holds a complete list of transaction records \shortcite{zheng2017overview}. 
@@ -196,7 +196,7 @@ status of the transaction \footnote{A Website to track transactions: https://eth
 
 \clearpage
 
-Further, figure \ref{figure:node_network} describes an Ethereum network. 
+Further, Figure \ref{figure:node_network} describes an Ethereum network. 
 As you can see, it contains a mix of miner nodes and non-miner nodes. 
 The non-miner nodes can be distinguished into different types of nodes with different 
 behavior, which are explained in detail in section \ref{sec:nodes}. 
@@ -270,7 +270,7 @@ The hash output includes and comprises out of the \textit{Parent Hash}, \textit{
 However, the Parent Hash and Transaction Root are given and immutable, thus the Nonce
 is the value that all the mining nodes are solving for \footnote{A interactive blockchain demo: https://anders.com/blockchain/}.
 Consequently, the mining nodes modify the Nonce until the hash output is lower than the required target \shortcite{andoni2019blockchain}.
-The following pseudocode in listing \ref{lst:pow_mechanism} will illustrate the PoW procedure:
+The following pseudocode in Listing \ref{lst:pow_mechanism} will illustrate the PoW procedure:
 
 \vspace{7mm}
 \begin{lstlisting}[label={lst:pow_mechanism}, caption={Pseudocode for PoW mechanism}]
@@ -298,7 +298,7 @@ If the block is validated through all other mining nodes, all nodes will append 
 
 % erklärung multiple chains
 Considering, the network is decentralized and the simultaneous generation of valid blocks is possible when multiple nodes find 
-the suitable Nonce at a nearly same time \shortcite{zheng2016blockchain}. In this case, branches will be generated as shown in figure \ref{figure:blockchain_branches}
+the suitable Nonce at a nearly same time \shortcite{zheng2016blockchain}. In this case, branches will be generated as shown in Figure \ref{figure:blockchain_branches}
 
 \begin{figure}[htbp]
 	\centering
@@ -309,11 +309,11 @@ the suitable Nonce at a nearly same time \shortcite{zheng2016blockchain}. In thi
 
 Nevertheless, it is unlikely that two competing branches will generate the next block simultaneously again. 
 In the PoW protocol, the longer branch is judged as the authentic one. 
-In figure \ref{figure:blockchain_branches}, two branches arised out of 
+In Figure \ref{figure:blockchain_branches}, two branches arised out of 
 two simultaneous valided blocks Block 4a and Block 4b. 
 After that, all mining nodes accept both branches and start working on 
 the next consecutive block until a longer branch is found \shortcite{andoni2019blockchain}. 
-As you can see in figure \ref{figure:blockchain_branches}, Block 4b and Block 5 forms the longer 
+As you can see in Figure \ref{figure:blockchain_branches}, Block 4b and Block 5 forms the longer 
 chain, therefore all miners on the branch with Block 4a will switch to 
 the longer branch \shortcite{zheng2017overview}. 
 
@@ -327,7 +327,7 @@ the validation process of newly generated blocks is explained and illustrated.
 
 First of all, the expressions Ethereum client and Ethereum node can be used interchangeably. 
 As mentioned earlier in the previous section \ref{sec:transaction_lifecycle} 
-and illustrated in the figure \ref{figure:node_network}, clients can be distinguished into different types. 
+and illustrated in the Figure \ref{figure:node_network}, clients can be distinguished into different types. 
 This section will describe the concept of an Ethereum client in general and will give a brief overview of the different
 types.
 

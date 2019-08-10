@@ -1,23 +1,22 @@
 \section{Concept of LEM Simulation Platform}
 \label{sec:concept_of_lem}
 To start off, this section brings together the previous sections \ref{sec:about_blockchain} and \ref{sec:btm},
-and explains how the BTM and a blockchain interact to implement a simulation 
-of LEM.
+and explains how the BTM and a blockchain interact to implement BLEMS.
 Finally, this section gives an example of a LP in terms of energy efficient demand side management of households. 
 
-First, in the presented market mechanism in section \ref{sec:btm}, independent, self-interested agents trading bundled resources
+First, in the presented BTM in section \ref{sec:btm}, independent, self-interested agents trading bundled resources
 in a double-auction market. 
-In case of the developed open-blockchain based LEM simulation, the agents of the BTM represent households. 
-These households are trading independently and self-interested bundles of energy resources 
-to minimize the monetary expense through optimally scheduling the operation and energy consumption 
+In case of BLEMS, the agents of the BTM represent households that 
+trade independently and self-interested bundles of energy resources to minimize their monetary expense 
+through optimally scheduling the operation and energy consumption 
 of all energy consuming appliances.
 
-Next, blockchain is introduced as the applied ICT of the developed LEM simulation. 
-As already mentioned earlier, the implementation of LEM needs 
-local distributed control and management techniques, which can be addressed by the blockchain technology.
+Second, blockchain is introduced as the applied ICT of BLEMS. 
+As already mentioned earlier, the implementation of LEM needs local distributed control and 
+management techniques, which can be addressed by the blockchain technology.
 This implies that the respective households submit and receive all relevant data, information, and payments via a blockchain. 
 Moreover, the double-auction market which enables households to trade their energy bundles is operated by a dealer.
-In turn, the dealer is implemented by a smart contract and a conventional software client. 
+In turn, the dealer is implemented by a smart contract in conjunction with a conventional software client. 
 The dealer's smart contract contains all relevant information regarding the market mechanism, like submitted orders, trades, 
 dealer's inventory, and market prices. 
 Therefore, households exclusively communicate with the dealer's smart contract. 
@@ -29,8 +28,8 @@ Therefore, households exclusively communicate with the dealer's smart contract.
     \label{figure:concept_lem}
 \end{figure}
 
-With reference to figure \ref{figure:concept_lem}, the households submit their orders to the dealer's smart contract. 
-Afterwards, the dealer's conventional software client, designated as \textit{off-chain} dealer in the figure, fetches all existing orders contained in the smart contract
+As can be seen in Figure \ref{figure:concept_lem}, the households submit their orders to the dealer's smart contract. 
+Afterwards, the dealer's conventional software client, labeled as \textit{off-chain} dealer in the Figure, fetches all existing orders contained in the smart contract
 and solves the MMP.
 Secondly, the off-chain dealer updates all relevant information in the smart contract, for instance 
 the settled orders, the trades, the new market prices, and the resource inventory.
@@ -45,25 +44,26 @@ Hence, a well-designed smart contract should move computational complexity off-c
 and focus more on updating state in the contract \shortcite{calculate_cost_eth}. A balance between on-chain
 and off-chain complexity should be found.
 
-In addition, we mentioned in section \ref{sec:btm} that the developed open blockchain-based LEM platform applied a synchronous
+In addition, we mentioned in section \ref{sec:btm} that BLEMS applied a synchronous
 call market. That means, the dealer only executes the MMP after all agents have submitted their orders.
 Likewise, we mentioned in section \ref{sec:smart_contract} that smart contracts are only active and run if they called by a transaction.
 They will never run on his own or in the background. For this reason, a mechanism is necessary which triggers the execution of the 
 MMP. The implementation of an off-chain dealer is also suitable for this.
 
-So far, this section presented the basic idea and concept of the developed open blockchain-based LEM platform
-and explained the necessity of all existing components. In the following section \ref{sec:implementation}, the setup and technical implementation of the simulation will be described in detail. 
+So far, this section presented the basic idea and concept of BLEMS
+and explained the necessity of all existing components. In the following section \ref{sec:implementation}, 
+the setup and technical implementation is described in detail. 
 
 However, we stated earlier in this section that the agents of the BTM represent households
 that trade bundles of energy resources to minimize the monetary expense. 
 In section \ref{sec:btm_problem_overview}, we introduced the individual LPs of the agents.
 Further, we explained in section \ref{sec:agent_bidding} that a rational agent will choose an improving bundle for 
 trading which leaves his wealth level on the same level or better off and defined the selection of such a bundle 
-as the bundle determination problem.
+as the BDP.
 Finally, to embed the BTM into the topic of LEM, we need to define 
 a LP which depicts the energy efficient demand side management of households.
 
-\subsection{Demand side management of a household}
+\subsection{Demand Side Management of a Household}
 This subsection will embed the BTM into the topic of LEM. 
 Therefore, we develop an exemplary and simplified LP in terms of energy efficient demand side management of households. 
 That means the objective of the respective households is to minimize their monetary expense regarding energy consumption.

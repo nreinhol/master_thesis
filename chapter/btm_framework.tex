@@ -7,7 +7,7 @@ In addition, we presented in section \ref{sec:components_of_local_energy_markets
 a market mechanism as one of seven core components for the efficient operation of blockchain-based
 LEM.
 
-On account of that, this chapter covers and explains in detail the applied market mechanism in the developed open blockchain-based LEM platform. 
+On account of that, this chapter covers and explains in detail the applied market mechanism in the BLEMS. 
 
 As already briefly introduced in the sections \ref{sec:research_motivation} 
 and \ref{sec:Distributed Resource Optimization}, the applied market mechanism is implemented 
@@ -35,7 +35,7 @@ This subsection will give an introductory description to the overall problem.
 With reference to \shortciteA{guo2012computational}, we consider a distributed 
 system with $k$ independent agents.
 In addition, we have a central problem and individual problems of the $k$ individual agents, which both can be expressed as the 
-LPs shown the in equations \ref{eq:central_problem} and \ref{eq:agent_problem}. 
+LPs shown the in equations (\ref{eq:central_problem}) and (\ref{eq:agent_problem}). 
 Besides, the BTM presented by \shortciteA{guo2007market} requires 
 a nondegenerate central problem with a bounded solution. In contrast to discrete markets where 
 only integer number of units can be traded, the proposed framework facilitates continuous trade amounts. 
@@ -45,7 +45,7 @@ only integer number of units can be traded, the proposed framework facilitates c
 \label{eq:central_problem}
  \begin{array}{ll@{}ll}
  Z(c) = \underset{x_{j} \geq 0}{\text{min}} & \displaystyle\sum\limits_{j=1}^{k} d^{T}_{j}x_{j} &\\
- \text{s.t.}& \displaystyle N_{j}x_{j} \leq n_{j}, &&i=1 ,..., k \\
+ \text{s.t.}& \displaystyle N_{j}x_{j} \leq n_{j}, &&j=1 ,..., k \\
  & \displaystyle\sum\limits_{j=1}^{k} C_{j}x_{j} \leq c
  \end{array}
 \end{equation}
@@ -56,7 +56,7 @@ only integer number of units can be traded, the proposed framework facilitates c
  \begin{array}{ll@{}ll}
  z_{j}(c_{j}) = \underset{x_{j} \geq 0}{\text{min}} & \displaystyle d^{T}_{j}x_{j} &\\
  \text{s.t.}& \displaystyle N_{j}x_{j} \leq n_{j}, &&\\
- & \displaystyle\sum\limits_{j=1}^{k} C_{j}x_{j} \leq c_{j}
+ & \displaystyle C_{j}x_{j} \leq c_{j}
  \end{array}
 \end{equation}
 
@@ -64,7 +64,7 @@ In the table below, the applied variables in the stated equations are described:
 
 
 \begin{longtable}{c|l}
-    \caption{Applied variables in BTM Framework}
+    \caption{Applied Variables in BTM Framework}
     \label{table:applied_variables_in_btm}
     \\
     \textbf{Variable} & \textbf{Description} \\
@@ -80,9 +80,8 @@ In the table below, the applied variables in the stated equations are described:
 Further, the overall objective of the central problem is to minimize the operating costs of the overall system. The minimization of the central problem
 has to be implemented in consideration of the operational constraints 
 (first set of constraints) and the total shared resources capacity constraints (second set of constraints) of each individual agent. 
-Anyhow, the optimal solution to the central problem cannot be directly calculated, 
-due to the lack of access to all relevant information for decision making
-($d_{j}, n_{j}, c_{j}, N_{j}, C_{j},$ for $j=1, ..., k$). 
+Anyhow, it is assumed that the optimal solution to the central problem cannot be directly calculated, due to the lack of access to all relevant
+information to make the decisions ($d_{j}, n_{j}, c_{j}, N_{j}, C_{j},$ for $j=1, ..., k$). 
 Additionally, \shortciteA{guo2007market} stated that, for an allocation of 
 $c_{j}, j=1, ..., k$, such that $C_{j}x_{j}^{*} \leq c_{j}, \sum\limits_{j=1}^{k} C_{j}$, 
 solving the agents’ problems is equivalent to solving the central problem.
@@ -97,19 +96,21 @@ wealth-improving bidding process among the self-interested agents.
 \subsection{Market Environment}
 Generally, a dealer and $k$ independent agents constitute the whole market economy. 
 Each of the agents has the opportunity to trade the shared resources $c_{j}$ 
-in a double auction market, which is operated by the dealer. Moreover, each agent only has a local perspective and knowledge, that is to say, they don't know anything about the production decisions of the others. 
-Further, the market prices to match the trades will be determined by the dealer.
-Subsequently, the roles of the market participants and what they know is described. 
-Equally, the market operations like the agent bidding, market matching, and settlement are outlined and a summary of the market-based algorithm is presented. 
+in a double auction market, which is operated by the dealer. Moreover, each agent only has a local perspective 
+and knowledge, that is to say, they don't know anything about the production decisions of the others. 
+Further, the market prices to match the trades will be determined and published by the dealer.
+Subsequently, the roles of the market participants are described
+and the market operations like the agent bidding, market matching, 
+and settlement are outlined. Finally, a summary of the market-based algorithm is presented. 
 
-\subsubsection{Agent bidding}
+\subsubsection{Agent Bidding}
 \label{sec:agent_bidding}
-First of all, the initialization takes place. That means, each of the $j=1, ..., k$ agent receives an
+First of all, the initialization takes place, which means that each of the $j=1, ..., k$ agents receive an initial
 endowment of the $m$ shared resources $c_{j}$ , and a cash endowment $e_{j}$.
 The wealth of an agent at any point is defined as $e_{j} - z_{j}(c_{j})$ \shortcite{guo2007market}.
-Next, agents have the opportunity to buy additional resources or to sell some of their own resources to lower their operating costs. 
+The agents have the opportunity to buy additional resources or to sell some of their own resources to lower their operating costs. 
 Therefore, each agent knows the current market prices $p \in R^{m}$ for the shared resources, 
-which are published by the dealer. Further, for trading the shared resources in the market, 
+which are published by the dealer after each auction round. Further, for trading the shared resources in the market, 
 a bundle referring to \shortciteA{guo2012computational} is defined:
 
 \paragraph*{Bundle} A bundle $w \in R^{m}$ is an $m$-dimensional vector of shared resources. 
@@ -136,14 +137,13 @@ On the opposite, if $p^{T}w \leq 0$, the term $p^{T}w$ constitutes the revenue f
 
 
 Accordingly, a rational agent will choose an improving bundle for trading, 
-which leaves his wealth level on the same level or better off. 
-In addition, the basic market mechanism of \shortciteA{guo2007market} assume no 
+which leaves his wealth on the same level or better off. 
+In addition, the basic market mechanism of \shortciteA{guo2007market} assumes no 
 strategic actions in the bundle selection and pricing. However, strategic actions 
 can be relaxed and \shortciteA{guo2012computational} also incorporate strategic factors
 in their extended BTM. 
-Nevertheless, the applied market mechanism in the developed open blockchain-based
-LEM simulation implemented nonstrategic bidding, wherefore an agents bundle selection 
-can be defined as the following \textit{bundle determination problem:}
+Nevertheless, the applied market mechanism in BLEMS implemented nonstrategic bidding, wherefore an agents bundle selection 
+can be defined as the following \textit{Bundle Determination Problem (BDP):}
 
 \paragraph*{Bundle Determination Problem}
 \begin{equation}
@@ -154,7 +154,7 @@ can be defined as the following \textit{bundle determination problem:}
  \end{array}
 \end{equation}
 
-According to \shortciteA{guo2007market}, the bundle determination problem have either 
+According to \shortciteA{guo2007market}, the BDP have either 
 a bounded, or an unbounded solution. A bounded solution is called \textit{limited bundle} 
 $w \in R^{m}$, whereby an unbounded solution is called \textit{unlimited bundle}
 $u \in R^{m}$.
@@ -162,7 +162,7 @@ $u \in R^{m}$.
 Furthermore, each agent needs to determine a limit price, which indicates
 the maximum an agent is willing to pay for the bundle. 
 As already explained above, nonstrategic pricing is implemented. 
-Therefore, an agent will always submit a limit price equal to the valuation of the bundle. That is to say, $l(w) = v(w)$.
+Therefore, an agent will always submits a limit price equal to the valuation of the bundle. That is to say, $l(w) = v(w)$.
 
 For a limited bundle $w$, the value $v(w)$ is defined as:
 
@@ -190,15 +190,15 @@ as open orders and bids, because the valuation of an agent for a bundle is
 independent of the market price $p$.
 It only depends on the respective resource level $c_{j}$. 
 
-\subsubsection{The Dealer’s Market Clearing Mechanism}
+\subsubsection{Market Clearing Mechanism}
 \label{sec:market_clearing_mechanism}
-First of all, the developed open blockchain-based LEM platform applied a synchronous call market where the market prices $p$ are announced periodically by the market dealer. 
-However, the synchronous requirement can be relaxed. 
-Therefore, \shortciteA{guo2012computational} introduced an asynchronous market trading environment in their e-companion. 
+BLEMS applied a synchronous call market where the market prices $p$ are announced periodically by the market dealer. 
+However, the synchronous requirement can be relaxed through the 
+asynchronous market trading environment introduced by \shortciteA{guo2012computational} . 
 
-Furthermore, the market has a dealer who trades on its own account. 
-The dealer has some initial cash endowment $e_{0}$ and resource endowment $c_{0}$.
-Anyway, the sum of all resource endowments needs to fulfill the following equation:
+The dealer trades on its own account and has also an 
+initial cash endowment $e_{0}$ and resource endowment $c_{0}$.
+The sum of all resource endowments needs to fulfill the following equation:
 
 \begin{equation*}
  \begin{array}{ll@{}ll}
@@ -206,15 +206,18 @@ Anyway, the sum of all resource endowments needs to fulfill the following equati
  \end{array}
 \end{equation*}
 
-Next, agents submit sealed bids to the dealer. The dealer maintains an individual order book for each agent. Each individual order book contains two different order sets. On the one hand, the set for limited orders $I_{j}$,
+Next, agents submit sealed bids to the dealer. The dealer maintains an individual order book for each agent. 
+Each individual order book contains two different order sets. On the one hand, the set for limited orders $I_{j}$,
 on the other hand, the set for unlimited orders $H_{j}$.
-If an agent submits orders and no trade is executed, the orders are collected and accumulated for the respective agent. Otherwise, any trade from an agent will clear the respective order book. 
-Lastly, to determine the maximal trade surplus the dealer solves 
-the following MMP:
+If an agent submits orders and no trade is executed, the orders are collected and 
+accumulated for the respective agent. Otherwise, any trade from an agent will clear the respective order book,
+as it cannot be safely assumed that an old bundle still improves the agents LP given its new resource endowment.
+To determine the maximal trade surplus the dealer solves the following MMP:
 
 \paragraph*{Market Matching Problem}
 
 \begin{equation}
+\label{eq:mmp}
  \begin{array}{ll@{}ll}
  \underset{y_{j}^{i} \geq 0, t_{j}^{h} \geq 0 }{\text{max}} & 
  \sum\limits_{j=1}^{k}
@@ -228,13 +231,12 @@ the following MMP:
  \end{array}
 \end{equation}
 
-The objective of the MMP maximizes the trade surplus. 
-
 Considering the first set of constraints, if $c_{0} = 0$, it is required that any buy amounts be met by sell amounts. 
 On the opposite, if $c_{0} \neq 0$, the dealer supplies additional resources from the inventory
 to meet buys. 
 
-With respect to the second set of constraints, it is indicated that the market handles limited and unlimited bundles differently. The trades of unlimited bundles in $H_{j}$ are unrestricted, whereas limited bundles in $I_{j}$
+The second set of constraints indicate that the market handles limited and unlimited bundles differently. 
+The trades of unlimited bundles in $H_{j}$ are unrestricted, whereas limited bundles in $I_{j}$
 are restricted. In that case, limited trades are restricted to be convex combinations of bundles in $I_{j}$.
 
 Besides, the MMP always has a solution, because setting all variables to zero 
@@ -250,8 +252,8 @@ and the market prices remain unchanged. Finally, if the MMP has a nonzero soluti
  \end{array}
 \end{equation*}
 
-Thus, the market clearing prices $p \in R^{m}$ are derived from the dual values of the first set of constraints in the MMP. 
-To remember, the concept of duality is explained in section \ref{sec:duality_theory}.
+The market clearing prices $p \in R^{m}$ are derived from the dual values of the first set of constraints in the MMP
+(to remember, the concept of duality is explained in section \ref{sec:duality_theory}).
 Consequently, the settlement price for an agent who have traded resources are the following:
 
 \begin{equation*}
@@ -279,14 +281,10 @@ is outlined:
  \end{array}
 \end{equation*}
 
-
-\subsubsection{Summary of Market-Based Algorithm}
+\subsubsection{Summary of BTM}
 \label{sec:summary_of_btm}
-Concluding, this subsection will give an overview of the synchronous
-call market-based algorithm presented by \shortciteA{guo2007market}. 
-Therefore, the process of the algorithm is outlined.
-Moreover, a simplified flowchart of the BTM 
-framework is presented in the appendix \ref{appendix:flowchart_btm}.
+This subsection will give an summarized overview of the BTM, which 
+is based on the equations (\ref{eq:central_problem})-(\ref{eq:mmp}).
 
 \begin{description}
  \item[Input] \hfill \\
@@ -301,7 +299,7 @@ framework is presented in the appendix \ref{appendix:flowchart_btm}.
  the last market-price vector $\pi = 0$.
  \item[Step 1] \hfill \\
  The dealer saves the current market prices $\pi \leftarrow p$. Each agent solves his 
- bundle determination problem and adds new limited bundle orders to $I_{j}$ and 
+ BDP and adds new limited bundle orders to $I_{j}$ and 
  unlimited bundle orders to $H_{j}$.
  \item[Step 2] \hfill \\
  The dealer solves the MMP ($w_{j}^{*}$ represents a matched bundle for agent $j$). 
