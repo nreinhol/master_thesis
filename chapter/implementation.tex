@@ -234,9 +234,9 @@ Due to the new allocation of shared resources, the \verb|objective| and also the
 
 \subsubsection{Smart Contract Dealer}
 \label{sec:smart_contract_dealer}
-In this part, the dealer's smart contract is introduced. 
-As already mentioned, the contract is implemented by the programming language Solidity. 
-First of all, the attributes of the contract are presented in the following Listing \ref{lst:contract_attributes}.
+The smart contract dealer is implemented by the programming language Solidity, which is the most popular and frequently 
+used language for Ethereum smart contracts. In the beginning, the attributes are outlined and presented in Listing 
+\ref{lst:contract_attributes}.
 
 \begin{lstlisting}[float=htbp, label=lst:contract_attributes, caption=Attributes of Smart Contract, language=Java]
     contract Dealer{
@@ -259,34 +259,38 @@ First of all, the attributes of the contract are presented in the following List
         mapping(address => uint256) public refunds;
 \end{lstlisting}
 
-First, general attributes are declared. As you can see, the contract contains an attribute called \verb|owner|.
-This variable is set in the constructor of the contract and initialized with the address of the contract creator,
-who is, in this case, the off-chain dealer.  
-It is being used in a modifier that ensures that certain functions can only be executed by the owner of the contract.
-Moreover, a modifier can be seen as an extension of a function and is mainly used to 
+First, general attributes are declared, to which the attributes \verb|owner| belongs.
+We stated that the creator of a smart contract does not have any special permissions at the protocol level, but
+that it is possible to specify explicitly those special permissions in the source code.  
+For this reason we initialized this variable with the address of the contract creator, who is, in our case,
+the off-chain dealer. The \verb|owner| comes to bear in the implementation of the modifier \verb|onlyByOwner()|.
+A modifier can be seen as an extension of a function and is mainly used to 
 to check if certain conditions are met before executing the rest of the source code in the body of a function.
-
+We have built the modifier to ensure that only the owner of the contract has the authority to perform certain functions.
 In addition, attributes for managing the orders and trades of the agents are declared. 
 The orders, trades and additional properties of the trades are predominantly managed in mappings.
-A mapping is a collection of key-value pairs. All of the keys have to be of the same data type, and 
-all values must be of the same data type. However, Solidity does not provide an iteration
-function to retrieve all the lists that are stored in a mapping. 
-That is to say, it is not possible to read the values from the mapping without knowing the respective keys.
+A mapping is a collection of key-value pairs, in which all keys and all values must be of the same 
+data type. However, Solidity does not provide an iteration
+function to retrieve all the lists that are stored in a mapping, wherefore it is not possible 
+to read the values from the mapping without knowing the respective keys.
 Therefore, we developed a workaround and store the keys of mappings in additional arrays which serves 
 as look up tables.
 With reference to the Listing \ref{lst:contract_attributes}, the array \verb|order_indices| functions as a 
 look up table for the mapping \verb|orders|, and the array \verb|trades_accounts| for the mapping 
-\verb|trades| and all other trades related mappings.
+\verb|trades| and all other trades related mappings. \\
 
-Next, some of the most important functions of the dealer's smart contract are introduced and explained.
+Next, the essential functions of the dealer's smart contract are introduced and described in detail.
 
-To begin with, the function for receiving the orders of the agents is outlined in the Listing \ref{lst:set_order_contract}.
-The function header contains, on the one hand, the Solidity built-in modifier \verb|payable|, and on the other hand, the custom
-modifier \verb|checkPrepayment|. A function declared as \verb|payable| is one that can accept incoming payments. 
-Without the declaration, the function would reject payments and throw an exception. In this case, the modifier is required 
-to receive the prepayments of the agents. 
-Further, we developed the second modifier \verb|checkPrepayment| to verify whether the incoming payment match the amount
-of required prepayment.
+The function for receiving the orders of the agents is outlined in the Listing \ref{lst:set_order_contract}.
+It contains, on the one hand, the Solidity built-in modifier \verb|payable|, and on the other hand, the custom
+modifier \verb|checkPrepayment|. To allow a function to receive payments, it must be declared as \verb|payable|,
+otherwise the incoming payment would not be accepted and the belonging transaction would not terminate successfully.
+In order to receive the prepayments of the agents, this function requires the stated modifier.
+Further, we developed the second modifier \verb|checkPrepayment|, which checks whether the amount sent with the 
+transaction corresponds to the amount to be paid. Thus it is verified if the transaction is a valid order.
+Hence, if the prepayment is not sufficient, the function call of the agents is rejected and 
+the order is not accepted.
+
 
 \begin{lstlisting}[float=htbp, label=lst:set_order_contract, caption=Receiving agents orders, language=Java]
     function setOrder(int256[] _bundle, uint256 _bid, uint256 _prepayment) public payable checkPrepayment(_prepayment) {
@@ -304,29 +308,24 @@ of required prepayment.
     }
 \end{lstlisting}
 
-Hence, if the prepayment is not sufficient, the function call of the agents is rejected and 
-the order is not accepted.
-
-Next, the \verb|Order| object is declared and initialized, which is implemented by the data type
-struct. It is a user-defined data container for grouping variables and is well suited to bundle and 
-manage all necessary information regarding the orders.
-In this case, the object contains the variables \verb|msg.sender|, \verb|bundle| and \verb|bid|.
-The \verb|bundle| and \verb|bid| are passed as function parameters.
+If the preconditions defined by the modifiers are fulfilled and the function body is executed, 
+the variable \verb|new_order| is initialized by the object \verb|Order|. The object is implemented by the data type
+struct, which is a user-defined data container for grouping variables and is well suited to bundle and 
+manage all necessary information regarding the orders. The \verb|msg.sender|, \verb|bundle| and \verb|bid|
+are contained in the data container and represent the essential information regarding an agents order.
 When a contract is executed, it has access to a small set of global objects to which the object \verb|msg| belongs.
-This object contains information regarding the externally owned account who invokes the contract execution,
+This object contains information regarding the transaction which invokes the contract execution,
 such as the account address that can be accessed by the variable \verb|msg.sender|.
-
-Finally, the \verb|Order| object is added to the mapping \verb|orders|.
-The variable \verb|order_count| is an incremental number that serves as the key for 
-the mapping \verb|orders|. After each incoming order, this number is increased by one. 
-Additionally, the variable \verb|order_count| is added to the array \verb|oder_indices|
+Finally, the \verb|new_order| is added to the mapping \verb|orders|, to which 
+the incremental number \verb|order_count| serves as the key.
+After each incoming order, the number is increased by one and added to the array \verb|oder_indices|
 that serves as a look up table as mentioned earlier.
 
-Furthermore, the contract function which serves to set the trades of the agents is introduced in Listing \ref{lst:set_trade_contract}.
-With reference to the function header, the modifier \verb|onlyByOwner()| is applied.
-This custom modifier assures that only the owner of the contract has the permission to execute 
-this function, which is in our case the off-chain dealer. Accordingly, the applied 
-modifier ensures that no one else can set the trades. 
+Furthermore, the function which serves to set the trades of the agents is introduced in Listing \ref{lst:set_trade_contract}.
+With reference to the function header, the modifier \verb|onlyByOwner()| is applied, which ensures that
+only the owner of the contract has the authority to call this function
+It is required, since nobody except the owner (off-chain dealer) should have 
+the permission to call this function and thus to set the trades of the agents.
 
 \begin{lstlisting}[float=htbp, label=lst:set_trade_contract, caption=Setting the trades, language=Java]
     function setTrade(address _account, int256[] _trade, uint256 _prepayment, uint256 _bill, uint256 _refund) public onlyByOwner() {
@@ -338,18 +337,22 @@ modifier ensures that no one else can set the trades.
     }
 \end{lstlisting}
 
-Next, the function \verb|addToArray()| is called and the variable \verb|account| is passed. 
-This function checks whether the account to which the trade belongs is already contained in the array \verb|trades_account|.
-If not, the function adds the account to the array, which again serves as the look up table for the
-mapping \verb|trades| and all other trades related mappings.
-Concluding, all the required information for a trade is placed in the corresponding mappings. In all
-mappings the account address is used as the key.
+Next, the function \verb|addToArray()| is called, which examines whether the belonging account 
+to a trade is already contained in the array \verb|trades_account|.
+If not, the account is added to the array, which again serves as the look up table for the
+mapping \verb|trades| and all other trades related mappings. 
+Concluding, all the required information for a trade are placed in the corresponding mappings, 
+in which the account address is used as the key.
 
 In the end, a last function of the dealer's smart contract is introduced.
 The implementation of the function is shown in Listing \ref{lst:accept_trade_contract} above
 and can be seen as a kind of collection point for the trades.
 
-\begin{lstlisting}[float=htbp, label=lst:accept_trade_contract, caption=Collection point of trades, language=Java]
+Finally, the function for providing the trades of the agents is outlined and shown in Listing \ref{lst:accept_trade_contract}.
+It can be seen as the interface of trades, as it enables agents 
+to accept and fetch or to reject their trades.
+
+\begin{lstlisting}[float=htbp, label=lst:accept_trade_contract, caption=Interface of trades, language=Java]
     function acceptTrade(bool accept_trade) public returns (int256[]) {
         if(accept_trade) {
             msg.sender.transfer(refunds[msg.sender]);
@@ -361,12 +364,11 @@ and can be seen as a kind of collection point for the trades.
     }
 \end{lstlisting}
 
-The function enables agents to receive or reject their trades. 
-In case of an acceptance, the function pay the agents their refund
-and returns their belonging granted trade.
-As explained earlier, the agents prepay the true value of the entire requested bundle.
-However, the agents often only get shares of their requested bundles due to the solution of the 
-MMP.
+In case of trade acceptance, the trade is returned and 
+the refund is paid to the respective agent who invokes the function. 
+As stated, the agents have to prepay the true value of the
+requested bundle, but they often only get shares of their requested bundles due
+to the solution of the MMP.
 For this reason, the agents have often prepaid more than they have to pay, which leads to 
 excess payments. Because of this, the dealer calculates the difference between the prepayment 
 and the price of the granted trade and refunds it.
@@ -377,26 +379,22 @@ after the settlement process.
 
 \subsubsection{Off-chain Dealer}
 \label{sec:off_chain_component}
-We mentioned earlier in the section \ref{sec:concept_of_lem} that the 
-dealer is implemented by a smart contract and a conventional software client.
-In the previous subsection \ref{sec:smart_contract_dealer}, the 
-dealer's smart contract was described. In turn, 
-this subsection deals with the counterpart, the off-chain dealer. 
+The dealer is implemented by a smart contract in conjunction with 
+a conventional software client. In the previous subsection we introduced 
+the implementation of the smart contract, so this subsection introduces
+the implementation of the conventional software client denoted as 
+off-chain dealer. It is implemented by a Python class and its class 
+attributes are presented in Listing \ref{lst:offchain_class_attributes}.
 
-Firstly, the off-chain dealer is implemented by a Python class and the 
-class attributes are introduced and presented in the Listing \ref{lst:offchain_class_attributes} below.
-The variables \verb|account_address|, \verb|web3|, 
-\verb|dealer_contract|, \verb|shared_resource_size| and \verb|mkt_prices| 
-are initialized when the class is instantiated.
-Again, the variables \verb|account_address|, \verb|web3| and 
-\verb|dealer_contract| have the same purpose as those used in the class implementation of 
-the agents, introduced in subsection \ref{sec:agent_class}.
-Further, the variable \verb|shared_resource_size| is required to determine the vector size 
-of the traded bundles and the related market price vector. 
-Additionally, the market price vector is initialized using the \verb|shared_resource_size|
-and presented by the variable \verb|mkt_prices|.
-All other class attributes are set immediately after 
-the instantiation or during the running simulation.
+Similar to the implementation of the agents, the \verb|account_address|, \verb|web3|, 
+\verb|dealer_contract| are initialized by instantiation of the class and serve for 
+the same purpose. Besides, the attributes \verb|shared_resource_size| and \verb|mkt_prices|
+are initialized simultaneously. The \verb|shared_resource_size| constitutes the amount 
+of the various shared resources $c$ and is required to determine the vector size 
+of the traded bundles and related market price vector. 
+The \verb|mkt_prices| represents the market price vector and is initialized by zeros with subject to
+the \verb|shared_resource_size|. The other shown class attributes in the Listing are set during the
+simulation process.
 
 \begin{lstlisting}[float=htbp, label=lst:offchain_class_attributes, caption=Overview of the off-chain dealer's class attributes, language=Python]
     class Dealer(object):
@@ -412,7 +410,7 @@ the instantiation or during the running simulation.
             self._order_handler = None
 \end{lstlisting}
 
-Next, some of the most important functions of the class are introduced and explained.
+Next, the essential functions of the class are introduced and explained in detail.
 To begin with, the function to retrieve the orders of the agents from the dealer's 
 smart contract is introduced in the Listing \ref{lst:offchain_get_orders}.
 
@@ -427,32 +425,23 @@ smart contract is introduced in the Listing \ref{lst:offchain_get_orders}.
             self._order_handler.add_order(order_id, order)
 \end{lstlisting}
 
-The variable \verb|order_handler| is initialized with an object of the class \verb|OrderHandler|.
-We developed the class \verb|OrderHandler| to store and manage the orders of the agents' more easily
-on the part of the off-chain dealer.
-It contains a pool for the account addresses of the agents and the 
-respective orders. In addition, the object provides functions to 
-calculate all relevant attributes regarding the trades of the belonging orders, 
-like the prepayment and the refunds.
-Then, the function of the smart contract is called to retrieve the order indices,
-which is stored in the variable of the same name. This variable is used to 
-access the individual orders of the smart contract.
-Afterwards, all orders from the contract are retrieved iteratively and stored in the \verb|order_handler|.
+We developed a class \verb|OrderHandler| to store and manage the orders of the agents' more easily
+on the side of the off-chain dealer. 
+It works like a kind of dictionary and contains the account addresses as the key 
+and the corresponding trades as values, but additionally provides methods to calculate
+the relevant attributes of the trades in subject to the belonging orders.
+Therefore, the variable \verb|order_handler| is initialized with an object of this class
+and the iteratively retrieved orders from the dealer's smart contract are stored in it.
 
 Furthermore, the class also provides functions for creating and solving the MMP.
 Due to the focus on the architectural design and implementation of the simulation and the high complexity
 of these functions, they are not presented in detail. However, the corresponding source code can be found in the appendix \ref{appendix:additional_offchain}.
 
-Finally, the function to set the trades of the agents in the contract is presented in the Listing \ref{lst:offchain_set_trades}.
-In the beginning, several functions are invoked which initiate the calculation of trades and their related attributes.
-All these calculations take place in the object \verb|OrderHandler|, which has already been presented.
-First, the calculation of the trade share is called. As stated earlier, due to the solution of the 
-MMP, the agents often just get shares of their requested bundles. In this step,
-these shares for each settled order are set. Then, the calculation of the respective trades is initiated.
-Then again, the calculation of the remaining attributes, such as the prepayment, the bill, and the refund,
-is initiated. 
-After that, all required attributes of the trades are calculated.
-
+Finally, the function to set the trades of the agents in the dealer's smart contract 
+is outlined and presented in the Listing \ref{lst:offchain_set_trades}.
+The results from the MMP represent the share of the respective orders and are set for 
+each order in the \verb|order_handler|. Then, the calculation of the relevant attributes of the trades
+(prepayment, bill, and refund) is executed, wherefore the provided methods of the \verb|OrderHandler| come to bear.
 
 \begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Submitment of trades, language=Python]
     def set_trades(self):
@@ -471,22 +460,22 @@ After that, all required attributes of the trades are calculated.
             self._dealer_contract.contract.functions.setTrade(account, trade, prepayment, bill, refund).transact({'from': self._account_address})
 \end{lstlisting}
 
-Finally, the respective orders are set iteratively in the dealer's smart contract. For each existing order, the related values of 
-\verb|prepayment|, \verb|bill| and \verb|refund| are again converted from Ether to Wei. Then, the object of the smart 
-contract dealer is used to invoke the contracts function to set the trades.
-
+Concluding, the calculated trades and the corresponding attributes are set iteratively in the dealer's smart contract. 
+Again, the monetary values like \verb|prepayment|, \verb|bill|, and \verb|refund| are converted from Ether to Wei and 
+the values of the trades are converted to integer by shifting the decimal places.
 
 \subsubsection{Blockchain}
-In this part, the used blockchain is described. At the beginning, in section \ref{sec:applied_technologies}, we already
-stated that we used a personal blockchain called Ganache. 
-This personal Ethereum blockchain acts like a full client, which is described in section \ref{sec:nodes}.
-However, Ganache has even more features that allow you to customize the properties of the Blockchain.
+The applied blockchain is described in this subsection. In section \ref{sec:applied_technologies}, we already
+stated that we used a personal blockchain called Ganache, which acts like a personal Ethereum full client  
+However, Ganache provides even more features that allow you to customize the properties of the Blockchain.
 First, you can specify the number of generated accounts and the assigned amount of ether.
-Further, it is possible to adjust the block time. The block time defines the time it takes to mine a new block. 
+This is a proper way to specify the initial cash endowments of the agents ($e_{j},$ for $j=1, ..., k$)
+and the dealer ($e_{0}$).
+Further, it is possible to adjust the block time, which defines the time it takes to mine a new block. 
 Additionally, it provides the feature to instantly mine a new block for every transaction. 
-This is very useful for testing and debugging applications like the developed simulation.
+This is very useful for testing and debugging applications like the BLEMS.
 Likewise, it is possible to specify the price of gas in Wei and the gas limit of a block. 
-Hence, the used blockchain Ganache allows you to recreate many scenarios of different blockchain behavior
+Hence, the applied blockchain Ganache allows you to recreate many scenarios of different blockchain behavior
 and is therefore perfectly suited for the application of a simulation.
 
 
