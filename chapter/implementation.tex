@@ -45,7 +45,7 @@ As stated in section \ref{sec:concept_of_lem}, the agents represent the respecti
 First, the class attributes are presented and the associated source code is shown
 in the following Listing \ref{lst:agent_class_attributes}.
 
-\begin{lstlisting}[label=lst:agent_class_attributes, caption=Overview of the agent class attributes, language=Python]
+\begin{lstlisting}[label=lst:agent_class_attributes, caption=Class Attributes of Agent, language=Python]
     class Agent(object):
 
     def __init__(self, agent_number, account_address, web3, dealer_contract):
@@ -80,7 +80,7 @@ Next, some of the essential functions of the class are introduced and described 
 The agents require a function for receiving their optimization problems, which 
 implementation is presented in Listing \ref{lst:lp_setter}.
 
-\begin{lstlisting}[label=lst:lp_setter, caption=Setter of optimization problem, language=Python]
+\begin{lstlisting}[label=lst:lp_setter, caption=Set Optimization Problem, language=Python]
     @optimization_problem.setter
     def optimization_problem(self, value):
         self._optimization_problem = value
@@ -99,7 +99,7 @@ balance of the account from the blockchain.
 In addition, the implementation of the function for solving the BDP and hence determining 
 the improving bundle set and the associated bid is introduced in the Listing \ref{lst:determine_bundle}.
 
-\begin{lstlisting}[label=lst:determine_bundle, caption=Determining of bundle attributes, language=Python]
+\begin{lstlisting}[label=lst:determine_bundle, caption=Determine Bundle Attributes, language=Python]
     def determine_bundle_attributes(self):
         result = solve_bundle_determination(self._optimization_problem, self._mkt_prices)
         self._bundle_set = result.x
@@ -128,7 +128,7 @@ the original fixed point values.
 Due to this, the \verb|bundle_set| and \verb|bid| are prepared for 
 sending to the dealer's smart contract.
 
-\begin{lstlisting}[float=htbp, label=lst:set_order, caption=Submitting of order, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:set_order, caption=Submit Order to Smart Contract Dealer, language=Python]
     def set_order(self):
         bundle_set = utils.prepare_for_sending(self._bundle_set)
         bid = utils.prepare_for_sending(self._bid)
@@ -170,7 +170,7 @@ are not rejected based on limited machine accuracy.
 Finally, the class variable \verb|accept_trade| is assigned according to the result of the trade verification 
 procedure.
 
-\begin{lstlisting}[float=htbp, label=lst:verify_trade, caption=Verification of trades, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:verify_trade, caption=Verification of Trades, language=Python]
     def verify_strong_duality(self):
         mmp_values, mmp_duals, mmp_target_coefs, mmp_bounds = self.get_mmp_attributes()
         primal_solution = (-np.sum(mmp_values * mmp_target_coefs))
@@ -188,7 +188,7 @@ procedure.
 Likewise, the class contains a function for notifing the dealer's smart contract if the respective trade is accepted or not,
 as shown in the Listing \ref{lst:accept_trade}.
 
-\begin{lstlisting}[float=htbp, label=lst:accept_trade, caption=Notification of trade acceptance, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:accept_trade, caption=Notification of Trade Acceptance, language=Python]
     def accept_trade(self):
         if(self._accept_trade):
             trade = self._dealer_contract.contract.functions.acceptTrade(self._accept_trade).call({'from': self._account_address})
@@ -219,7 +219,7 @@ is only executed if the trade is accepted.
 Finally, the implementation of the function for adding the received trade to the shared resources is presented 
 in Listing \ref{lst:add_trade_to_shared_resources}.
 
-\begin{lstlisting}[float=htbp, label=lst:add_trade_to_shared_resources, caption=Adding of trade to shared resources, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:add_trade_to_shared_resources, caption=Add Trade to Shared Resources, language=Python]
     def add_trade_to_shared_resources(self):
         if(self._accept_trade):
             self._optimization_problem.shared_resources = np.add(self._optimization_problem.shared_resources, self._trade)
@@ -238,7 +238,7 @@ The smart contract dealer is implemented by the programming language Solidity, w
 used language for Ethereum smart contracts. In the beginning, the attributes are outlined and presented in Listing 
 \ref{lst:contract_attributes}.
 
-\begin{lstlisting}[float=htbp, label=lst:contract_attributes, caption=Attributes of Smart Contract, language=Java]
+\begin{lstlisting}[float=htbp, label=lst:contract_attributes, caption=Attributes of Smart Contract Dealer, language=Java]
     contract Dealer{
         // general attributes
         address private _owner;
@@ -292,7 +292,7 @@ Hence, if the prepayment is not sufficient, the function call of the agents is r
 the order is not accepted.
 
 
-\begin{lstlisting}[float=htbp, label=lst:set_order_contract, caption=Receiving agents orders, language=Java]
+\begin{lstlisting}[float=htbp, label=lst:set_order_contract, caption=Receive Orders from Agents, language=Java]
     function setOrder(int256[] _bundle, uint256 _bid, uint256 _prepayment) public payable checkPrepayment(_prepayment) {
 
         Order memory new_order = Order(
@@ -327,7 +327,7 @@ only the owner of the contract has the authority to call this function
 It is required, since nobody except the owner (off-chain dealer) should have 
 the permission to call this function and thus to set the trades of the agents.
 
-\begin{lstlisting}[float=htbp, label=lst:set_trade_contract, caption=Setting the trades, language=Java]
+\begin{lstlisting}[float=htbp, label=lst:set_trade_contract, caption=Receive Trades from Off-chain Dealer, language=Java]
     function setTrade(address _account, int256[] _trade, uint256 _prepayment, uint256 _bill, uint256 _refund) public onlyByOwner() {
         addToArray(_account);
         trades[_account] = _trade;
@@ -352,7 +352,7 @@ Finally, the function for providing the trades of the agents is outlined and sho
 It can be seen as the interface of trades, as it enables agents 
 to accept and fetch or to reject their trades.
 
-\begin{lstlisting}[float=htbp, label=lst:accept_trade_contract, caption=Interface of trades, language=Java]
+\begin{lstlisting}[float=htbp, label=lst:accept_trade_contract, caption=Interface of Trades, language=Java]
     function acceptTrade(bool accept_trade) public returns (int256[]) {
         if(accept_trade) {
             msg.sender.transfer(refunds[msg.sender]);
@@ -396,7 +396,7 @@ The \verb|mkt_prices| represents the market price vector and is initialized by z
 the \verb|shared_resource_size|. The other shown class attributes in the Listing are set during the
 simulation process.
 
-\begin{lstlisting}[float=htbp, label=lst:offchain_class_attributes, caption=Overview of the off-chain dealer's class attributes, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:offchain_class_attributes, caption=Class Attributes of Off-chain Dealer, language=Python]
     class Dealer(object):
 
         def __init__(self, account_address, web3, dealer_contract, shared_resource_size):
@@ -414,7 +414,7 @@ Next, the essential functions of the class are introduced and explained in detai
 To begin with, the function to retrieve the orders of the agents from the dealer's 
 smart contract is introduced in the Listing \ref{lst:offchain_get_orders}.
 
-\begin{lstlisting}[float=htbp, label=lst:offchain_get_orders, caption=Retrievement of orders, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:offchain_get_orders, caption=Retrieve Orders from Smart Contract Dealer, language=Python]
     def get_orders(self):
         self._order_handler = utils.OrderHandler()
         order_indices = self.get_order_indices()
@@ -443,7 +443,7 @@ The results from the MMP represent the share of the respective orders and are se
 each order in the \verb|order_handler|. Then, the calculation of the relevant attributes of the trades
 (prepayment, bill, and refund) is executed, wherefore the provided methods of the \verb|OrderHandler| come to bear.
 
-\begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Submitment of trades, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Set Trades in Smart Contract Dealer, language=Python]
     def set_trades(self):
         self.set_trade_share()
         self.initiate_trade_calculation()
@@ -493,7 +493,7 @@ which are described in the following.
 Above all, the initial setup part is shown in the Listing \ref{lst:initial_setup}.
 The displayed source code is executed directly before the source code from listing \ref{lst:main_simulation_loop}.
 
-\begin{lstlisting}[float=htbp, label=lst:initial_setup, caption=Initial setup of the simulation, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:initial_setup, caption=Initial Setup of Simulation, language=Python]
     # general setup of simulation
     var = mem.Variables()
     lp.decompose(var)
@@ -553,7 +553,7 @@ a \verb|call()| or a \verb|transact()| method. As described earlier, the \verb|c
 a smart contract function on a read-only basis, whereas the \verb|transact()| method submits a verified transaction 
 that changes the state of the blockchain.
 
-\begin{lstlisting}[float=htbp, label=lst:main_simulation_loop, caption=Main loop of the simulation, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:main_simulation_loop, caption=Main Simulation Loop, language=Python]
     while(not equal_market_prices):
         
         # agent bidding
@@ -615,7 +615,7 @@ This is indicated by the specified for-loop, shown at the beginning of Listing \
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\linewidth]{./figures/agent_bidding.pdf}
-	\caption{Sequence of agent bidding}
+	\caption{Sequence of Agent Bidding}
 	\label{figure:agent_bidding_figure}
 \end{figure}
 
@@ -649,7 +649,7 @@ The implementation of both functions is outlined in appendix \ref{appendix:addit
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\linewidth]{./figures/dealers_mmp.pdf}
-	\caption{Sequence of dealer's market matching mechanism}
+	\caption{Sequence of Market Matching Mechanism}
 	\label{figure:dealers_mmp}
 \end{figure}
 
@@ -680,7 +680,7 @@ calls for this activity is provided in Figure \ref{figure:agents_trade_verificat
 \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=.8\linewidth]{./figures/trade_verification.pdf}
-	\caption{Sequence of agents trade verification}
+	\caption{Sequence of Agents Trade Verification}
 	\label{figure:agents_trade_verification}
 \end{figure}
 
