@@ -140,7 +140,7 @@ Moreover, we pointed out that an Ethereum state is represented by blocks and des
 all relevant information contained in it.
 However, we didn't introduce how many transactions be part 
 of a block and who build and validate a block? To answer this, 
-we introduce the transaction object and his life cycle in-depth.
+we introduce the transaction object and its life cycle in-depth.
 
 
 \subsubsection{Transaction}
@@ -180,7 +180,7 @@ After successful validation, the node will send the transaction to
 its peer nodes, who again send it to their 
 peer nodes and so on \shortcite{transaction_life_cycle}. 
 As soon as the transaction is broadcast to the network, 
-the related node will declare a transaction id, which is the hash 
+the related node will declare a transaction ID, which is the hash 
 of the signed transaction and can be used to track the 
 status of the transaction \footnote{A Website to track transactions: https://etherscan.io/}. 
 
@@ -290,7 +290,7 @@ The following pseudocode in Listing \ref{lst:pow_mechanism} will illustrate the 
 
 Finally, when one mining node successfully calculated the Nonce and therefore reaches the target value, 
 it broadcasts the block to all other mining nodes in the network. Now, all other nodes mutually validate the correctness of the hash value
-by recalculating the hash output and verifying if it is lower then the target value. 
+by recalculating the hash output and verifying if it is lower than the target value. 
 If the block is validated through all other mining nodes, all nodes will append this new block to their own blockchains \shortcite{zheng2017overview}.  
 
 % erklärung multiple chains
@@ -374,7 +374,7 @@ to participate in the mining competition, an additional software called \textit{
 run a full node. The difference lies in the light mode for synchronization. 
 In contrast to a full node, a light node only synchronize the block headers and the 
 current state of the chain \shortcite{ethereum_light_node}.
-Anyway, a light node cannot run transactions throughout the history of the 
+Therefore, a light node cannot run transactions throughout the history of the 
 whole blockchain. For this reason, it does not contribute to the health and resilience of 
 the network like a full node and traditionally cannot act as a mining node \shortcite{ethereum_clients}. 
 In addition, a light node has some further limitations. For instance, they are not 
@@ -402,7 +402,7 @@ That means smart contracts are deployed through special contract creation transa
 The special thing about these transactions is that the recipient of the transaction remains empty, whereby the transaction
 will be sent to a special destination address called \textit{zero address (0x0)}. Each contract is identified and reachable via
 a common Ethereum address, which can be used in a transaction as the recipient to send funds to the contract or to call 
-one of the contract functions. Anyway, in contrast to an externally owned account, there are no keys associated with 
+one of the contract functions. Regardless, in contrast to an externally owned account, there are no keys associated with 
 an account of a smart contract. For this reason, the creator of a smart contract does not have any special rights at the 
 protocol level. Although, it is possible to get those special rights if you explicitly 
 specify them in the source code of the contract.
@@ -413,7 +413,7 @@ A contract will never run on his own or in the background. Additionally, contrac
 They always execute consecutively, hence the Ethereum blockchain can be considered as a single-threaded machine. 
 Finally, it should be noted that transactions are atomic regardless of how many contracts they call. Transactions execute in
 their entirety and any changes in the global state are only recorded if all executions terminate successfully. 
-If the executions fail, all the changes in state are reverted as if the transaction never ran. Anyhow, a failed
+If the executions fail, all the changes in state are reverted as if the transaction never ran. Nevertheless, a failed
 execution of a transaction is recorded as having been attempted. Moreover, the gas fees spent for the execution are withdrawn
 from the originating account.
 

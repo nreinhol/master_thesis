@@ -35,14 +35,16 @@ It is used to implement the smart contract dealer.
 %--------------------------------------
 \subsection{Components}
 \label{sec:components_of_simulation}
-We present the three main components \textit{Agent},\textit{Smart Contract Dealer} and \textit{Off-chain Dealer} 
+We present the three main components \textit{Agent}, \textit{Smart Contract Dealer} and \textit{Off-chain Dealer} 
 in this subsection and introduce their attributes and functions. 
 
 \subsubsection{Agent}
 \label{sec:agent_class}
 The agents are implemented by a Python class and the naming is oriented on the proposed BTM.
 As stated in section \ref{sec:concept_of_lem}, the agents represent the respective households in the BLEMS. 
-First, the class attributes are presented and the associated source code is shown
+
+
+\paragraph{Class Attributes:} The class attributes are presented and the associated source code is shown
 in the following Listing \ref{lst:agent_class_attributes}.
 
 \begin{lstlisting}[label=lst:agent_class_attributes, caption=Class Attributes of Agent, language=Python]
@@ -77,10 +79,10 @@ All other presented class attributes in the Listing are set during the simulatio
 
 Next, some of the essential functions of the class are introduced and described in detail.
 
-The agents require a function for receiving their optimization problems, which 
+\paragraph{Setter of Optimization Problem:} The agents require a function for receiving their optimization problem, which 
 implementation is presented in Listing \ref{lst:lp_setter}.
 
-\begin{lstlisting}[label=lst:lp_setter, caption=Set Optimization Problem, language=Python]
+\begin{lstlisting}[label=lst:lp_setter, caption=Setter of Optimization Problem, language=Python]
     @optimization_problem.setter
     def optimization_problem(self, value):
         self._optimization_problem = value
@@ -96,10 +98,10 @@ However, \verb|balance| is not a class attribute, but a class function that uses
 \verb|web3| and \verb|account_address| to retrieve the current
 balance of the account from the blockchain.
 
-In addition, the implementation of the function for solving the BDP and hence determining 
+\paragraph{Determination of Bundle Attributes:} The implementation of the function for solving the BDP and hence determining 
 the improving bundle set and the associated bid is introduced in the Listing \ref{lst:determine_bundle}.
 
-\begin{lstlisting}[label=lst:determine_bundle, caption=Determine Bundle Attributes, language=Python]
+\begin{lstlisting}[label=lst:determine_bundle, caption=Determination of Bundle Attribute, language=Python]
     def determine_bundle_attributes(self):
         result = solve_bundle_determination(self._optimization_problem, self._mkt_prices)
         self._bundle_set = result.x
@@ -116,7 +118,7 @@ The value of \verb|bid| is assigned by the difference of the \verb|objective| $z
 objective of the optimization problem with the additional resources of the \verb|bundle_set| $z_{j}(c_{j}+w)$, 
 which reflects the definition of the bundles true value $v(w) = z_{j}(c_{j}) - z_{j}(c_{j}+w)$.
 
-Next, Listing \ref{lst:set_order} presents the implementation of the function for 
+\paragraph{Submitting of Order:} Listing \ref{lst:set_order} presents the implementation of the function for 
 submitting orders to the dealer's smart contract.
 Currently, smart contracts in Ethereum do not fully 
 support fixed point numbers. It is possible to declare them, but they cannot be assigned to or from \shortcite{solidity_fixed_point}.
@@ -128,7 +130,7 @@ the original fixed point values.
 Due to this, the \verb|bundle_set| and \verb|bid| are prepared for 
 sending to the dealer's smart contract.
 
-\begin{lstlisting}[float=htbp, label=lst:set_order, caption=Submit Order to Smart Contract Dealer, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:set_order, caption=Submitting of Order to Smart Contract Dealer, language=Python]
     def set_order(self):
         bundle_set = utils.prepare_for_sending(self._bundle_set)
         bid = utils.prepare_for_sending(self._bid)
@@ -154,7 +156,7 @@ Therefore, the \verb|bid| is converted from Ether to Wei before assigning to the
 Finally, the \verb|dealer_contract| is used to call the function of the dealer's smart contract which is
 responsible for setting the orders.
 
-Moving calculations off the blockchain comes along with the drawback that source code is not
+\paragraph{Agent Trade Verification:} Moving calculations off the blockchain comes along with the drawback that source code is not
 transparent to all agents anymore. 
 That comes to bear in the opacity of the trade calculation of the dealer. 
 To adress this issue we implemented a trade verification procedure based on 
@@ -170,7 +172,7 @@ are not rejected based on limited machine accuracy.
 Finally, the class variable \verb|accept_trade| is assigned according to the result of the trade verification 
 procedure.
 
-\begin{lstlisting}[float=htbp, label=lst:verify_trade, caption=Verification of Trades, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:verify_trade, caption=Agent Trade Verification, language=Python]
     def verify_strong_duality(self):
         mmp_values, mmp_duals, mmp_target_coefs, mmp_bounds = self.get_mmp_attributes()
         primal_solution = (-np.sum(mmp_values * mmp_target_coefs))
@@ -185,7 +187,7 @@ procedure.
 \end{lstlisting}
 
 
-Likewise, the class contains a function for notifing the dealer's smart contract if the respective trade is accepted or not,
+\paragraph{Notification of Trade Acceptance:} Likewise, the class contains a function for notifing the dealer's smart contract if the respective trade is accepted or not,
 as shown in the Listing \ref{lst:accept_trade}.
 
 \begin{lstlisting}[float=htbp, label=lst:accept_trade, caption=Notification of Trade Acceptance, language=Python]
@@ -216,10 +218,10 @@ whereas the second call of the function serves to notify the dealer whether the 
 For this reason, the first call of the dealer's smart contract function \verb|acceptTrade()| 
 is only executed if the trade is accepted. 
 
-Finally, the implementation of the function for adding the received trade to the shared resources is presented 
+\paragraph{Adding of Trade to Shared Resources:} The implementation of the function for adding the received trade to the shared resources is presented 
 in Listing \ref{lst:add_trade_to_shared_resources}.
 
-\begin{lstlisting}[float=htbp, label=lst:add_trade_to_shared_resources, caption=Add Trade to Shared Resources, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:add_trade_to_shared_resources, caption=Adding of Trade to Shared Resources, language=Python]
     def add_trade_to_shared_resources(self):
         if(self._accept_trade):
             self._optimization_problem.shared_resources = np.add(self._optimization_problem.shared_resources, self._trade)
@@ -259,10 +261,10 @@ used language for Ethereum smart contracts. In the beginning, the attributes are
         mapping(address => uint256) public refunds;
 \end{lstlisting}
 
-First, general attributes are declared, to which the attributes \verb|owner| belongs.
+\paragraph{Contract Attributes:} First, general attributes are declared.
 We stated that the creator of a smart contract does not have any special permissions at the protocol level, but
 that it is possible to specify explicitly those special permissions in the source code.  
-For this reason we initialized this variable with the address of the contract creator, who is, in our case,
+For this reason we initialized the variable \verb|owner| with the address of the contract creator, who is, in our case,
 the off-chain dealer. The \verb|owner| comes to bear in the implementation of the modifier \verb|onlyByOwner()|.
 A modifier can be seen as an extension of a function and is mainly used to 
 to check if certain conditions are met before executing the rest of the source code in the body of a function.
@@ -281,7 +283,7 @@ look up table for the mapping \verb|orders|, and the array \verb|trades_accounts
 
 Next, the essential functions of the dealer's smart contract are introduced and described in detail.
 
-The function for receiving the orders of the agents is outlined in the Listing \ref{lst:set_order_contract}.
+\paragraph{Receiving of Orders:} The function for receiving the orders of the agents is outlined in the Listing \ref{lst:set_order_contract}.
 It contains, on the one hand, the Solidity built-in modifier \verb|payable|, and on the other hand, the custom
 modifier \verb|checkPrepayment|. To allow a function to receive payments, it must be declared as \verb|payable|,
 otherwise the incoming payment would not be accepted and the belonging transaction would not terminate successfully.
@@ -292,7 +294,7 @@ Hence, if the prepayment is not sufficient, the function call of the agents is r
 the order is not accepted.
 
 
-\begin{lstlisting}[float=htbp, label=lst:set_order_contract, caption=Receive Orders from Agents, language=Java]
+\begin{lstlisting}[float=htbp, label=lst:set_order_contract, caption=Receiving of Orders from Agents, language=Java]
     function setOrder(int256[] _bundle, uint256 _bid, uint256 _prepayment) public payable checkPrepayment(_prepayment) {
 
         Order memory new_order = Order(
@@ -321,13 +323,17 @@ the incremental number \verb|order_count| serves as the key.
 After each incoming order, the number is increased by one and added to the array \verb|oder_indices|
 that serves as a look up table as mentioned earlier.
 
-Furthermore, the function which serves to set the trades of the agents is introduced in Listing \ref{lst:set_trade_contract}.
+\paragraph{Receiving of Trades:} The function which serves to set the trades of the agents is introduced in Listing \ref{lst:set_trade_contract}.
 With reference to the function header, the modifier \verb|onlyByOwner()| is applied, which ensures that
 only the owner of the contract has the authority to call this function
 It is required, since nobody except the owner (off-chain dealer) should have 
 the permission to call this function and thus to set the trades of the agents.
+Then, the function \verb|addToArray()| is called, which examines whether the account, 
+is already contained in the array \verb|trades_account|.
+If not, the account is added to the array, which again serves as the look up table for the
+mapping \verb|trades| and all other trades related mappings. 
 
-\begin{lstlisting}[float=htbp, label=lst:set_trade_contract, caption=Receive Trades from Off-chain Dealer, language=Java]
+\begin{lstlisting}[float=htbp, label=lst:set_trade_contract, caption=Receiving of Trades from Off-chain Dealer, language=Java]
     function setTrade(address _account, int256[] _trade, uint256 _prepayment, uint256 _bill, uint256 _refund) public onlyByOwner() {
         addToArray(_account);
         trades[_account] = _trade;
@@ -337,18 +343,11 @@ the permission to call this function and thus to set the trades of the agents.
     }
 \end{lstlisting}
 
-Next, the function \verb|addToArray()| is called, which examines whether the belonging account 
-to a trade is already contained in the array \verb|trades_account|.
-If not, the account is added to the array, which again serves as the look up table for the
-mapping \verb|trades| and all other trades related mappings. 
-Concluding, all the required information for a trade are placed in the corresponding mappings, 
-in which the account address is used as the key.
 
-In the end, a last function of the dealer's smart contract is introduced.
-The implementation of the function is shown in Listing \ref{lst:accept_trade_contract} above
-and can be seen as a kind of collection point for the trades.
+In conclusion, all the required information for a trade are placed in the corresponding mappings, 
+to which the account address is used as the key.
 
-Finally, the function for providing the trades of the agents is outlined and shown in Listing \ref{lst:accept_trade_contract}.
+\paragraph{Interface of Trades:} The function for providing the trades of the agents is outlined and shown in Listing \ref{lst:accept_trade_contract}.
 It can be seen as the interface of trades, as it enables agents 
 to accept and fetch or to reject their trades.
 
@@ -372,7 +371,7 @@ to the solution of the MMP.
 For this reason, the agents have often prepaid more than they have to pay, which leads to 
 excess payments. Because of this, the dealer calculates the difference between the prepayment 
 and the price of the granted trade and refunds it.
-In case of a rejection, the dealer refunds the whole prepayment and deletes the granted trade.
+In case of trade rejection, the dealer refunds the whole prepayment and deletes the granted trade.
 The deletion of a rejected trade is necessary to calculate the dealer's resource inventory correctly
 after the settlement process.
 
@@ -380,19 +379,20 @@ after the settlement process.
 \subsubsection{Off-chain Dealer}
 \label{sec:off_chain_component}
 The dealer is implemented by a smart contract in conjunction with 
-a conventional software client. In the previous subsection we introduced 
-the implementation of the smart contract, so this subsection introduces
-the implementation of the conventional software client denoted as 
-off-chain dealer. It is implemented by a Python class and its class 
-attributes are presented in Listing \ref{lst:offchain_class_attributes}.
+a conventional software client. 
+In contrast to the subsection in which we introduced the Smart Contract Dealer, 
+this chapter introduces the part of the conventional software client implemented 
+by a Python class, the Off-chain Dealer.
 
+\paragraph{Class Attributes:} The class attributes are described and the associated source code
+is provided in Listing \ref{lst:offchain_class_attributes}.
 Similar to the implementation of the agents, the \verb|account_address|, \verb|web3|, 
 \verb|dealer_contract| are initialized by instantiation of the class and serve for 
 the same purpose. Besides, the attributes \verb|shared_resource_size| and \verb|mkt_prices|
 are initialized simultaneously. The \verb|shared_resource_size| constitutes the amount 
 of the various shared resources $c$ and is required to determine the vector size 
 of the traded bundles and related market price vector. 
-The \verb|mkt_prices| represents the market price vector and is initialized by zeros with subject to
+The variable \verb|mkt_prices| represents the market price vector and is initialized by zeros with subject to
 the \verb|shared_resource_size|. The other shown class attributes in the Listing are set during the
 simulation process.
 
@@ -410,11 +410,12 @@ simulation process.
             self._order_handler = None
 \end{lstlisting}
 
-Next, the essential functions of the class are introduced and explained in detail.
-To begin with, the function to retrieve the orders of the agents from the dealer's 
+Next, the essential functions of the class are introduced and explained in detail.\\
+
+\paragraph{Fetching of Orders:} The function to retrieve the orders of the agents from the dealer's 
 smart contract is introduced in the Listing \ref{lst:offchain_get_orders}.
 
-\begin{lstlisting}[float=htbp, label=lst:offchain_get_orders, caption=Retrieve Orders from Smart Contract Dealer, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:offchain_get_orders, caption=Fetching of Orders from Smart Contract Dealer, language=Python]
     def get_orders(self):
         self._order_handler = utils.OrderHandler()
         order_indices = self.get_order_indices()
@@ -429,21 +430,21 @@ We developed a class \verb|OrderHandler| to store and manage the orders of the a
 on the side of the off-chain dealer. 
 It works like a kind of dictionary and contains the account addresses as the key 
 and the corresponding trades as values, but additionally provides methods to calculate
-the relevant attributes of the trades in subject to the belonging orders.
-Therefore, the variable \verb|order_handler| is initialized with an object of this class
+the relevant attributes of the trades in subject to the orders.
+Therefore, the variable \verb|order_handler| is initialized with an object of \verb|OrderHandler|
 and the iteratively retrieved orders from the dealer's smart contract are stored in it.
 
 Furthermore, the class also provides functions for creating and solving the MMP.
 Due to the focus on the architectural design and implementation of the simulation and the high complexity
 of these functions, they are not presented in detail. However, the corresponding source code can be found in the appendix \ref{appendix:additional_offchain}.
 
-Finally, the function to set the trades of the agents in the dealer's smart contract 
+\paragraph{Setting of Trades:} The function to set the trades of the agents in the dealer's smart contract 
 is outlined and presented in the Listing \ref{lst:offchain_set_trades}.
 The results from the MMP represent the share of the respective orders and are set for 
 each order in the \verb|order_handler|. Then, the calculation of the relevant attributes of the trades
 (prepayment, bill, and refund) is executed, wherefore the provided methods of the \verb|OrderHandler| come to bear.
 
-\begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Set Trades in Smart Contract Dealer, language=Python]
+\begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Setting of Trades in Smart Contract Dealer, language=Python]
     def set_trades(self):
         self.set_trade_share()
         self.initiate_trade_calculation()
@@ -460,7 +461,7 @@ each order in the \verb|order_handler|. Then, the calculation of the relevant at
             self._dealer_contract.contract.functions.setTrade(account, trade, prepayment, bill, refund).transact({'from': self._account_address})
 \end{lstlisting}
 
-Concluding, the calculated trades and the corresponding attributes are set iteratively in the dealer's smart contract. 
+In conclusion, the calculated trades and the corresponding attributes are set iteratively in the dealer's smart contract. 
 Again, the monetary values like \verb|prepayment|, \verb|bill|, and \verb|refund| are converted from Ether to Wei and 
 the values of the trades are converted to integer by shifting the decimal places.
 
@@ -480,18 +481,17 @@ and is therefore perfectly suited for the application of a simulation.
 
 
 \subsection{Simulation Process}
-To begin with, this subsection presents the whole simulation process. 
-In contrast to the previous subsection \ref{sec:components_of_simulation}, that 
+This subsection presents the whole simulation process. 
+In contrast to the previous subsection that 
 considered the individual components in isolation, this subsection focus 
 on the interaction of the various components.
-
-Further, we divided the simulation process into 
-the two parts \textit{Initial Setup}, and \textit{Main simulation loop},
+Therefore, we divided the simulation process into 
+\textit{Initial Setup} and \textit{Simulation Loop},
 which are described in the following.
 
 \subsubsection{Initial Setup}
-Above all, the initial setup part is shown in the Listing \ref{lst:initial_setup}.
-The displayed source code is executed directly before the source code from listing \ref{lst:main_simulation_loop}.
+The part of the initial setup and the associated source code is shown in the Listing \ref{lst:initial_setup}.
+As the name suggests, all initial configurations for the simulation are performed in this part.
 
 \begin{lstlisting}[float=htbp, label=lst:initial_setup, caption=Initial Setup of Simulation, language=Python]
     # general setup of simulation
@@ -503,9 +503,9 @@ The displayed source code is executed directly before the source code from listi
     var.dealer.set_mkt_prices()  
 \end{lstlisting}
 
-Firstly, an object of the class \verb|Variables| is instantiated. 
-This class object can be seen as a kind of global memory.
-It contains all fundamental variables which are required to run the simulation.
+\paragraph{Global Memory:} An object of the class \verb|Variables| is instantiated, which 
+can be seen as a kind of global memory.
+It contains all fundamental variables, which are required to run the simulation.
 These variables are described in more detail in the following list.
 
 \begin{description}
@@ -525,33 +525,28 @@ These variables are described in more detail in the following list.
     remaining account.
 \end{description}
 
-Next, the function for decomposing the central problem is called. The class object \verb|Variables| is passed to it as a parameter.
+\paragraph{Decomposition of Central Problem:} Next, the function for decomposing the central problem is called. The class object \verb|Variables| is passed to it as a parameter.
 This is needed to reach the central problem, the agent pool and thus the amount of all existing agents, and the object of the
 off-chain dealer. 
 Then, the central problem is decomposed into subproblems which are distributed among the agents. 
 The distribution step also includes the distribution of the shared resources. 
 Further, the allocation of the shared resources is implemented in such a way that all parties receive equal shares.
 
-Furthermore, the off-chain dealer sets the initial values of the resource inventory and the market prices in the dealer's
+\paragraph{Setting of Initial Values:} Furthermore, the off-chain dealer sets the initial values of the resource inventory and the market prices in the dealer's
 smart contract. As stated before, the initial resource inventory is calculated in the decomposition step of the central problem. 
 We also mentioned earlier in \ref{sec:off_chain_component}, that the market price vector is initialized when instantiating the off-chain dealer class.
-The size of the market price vector is equal to the size of the shared resources and is initially specified with zeros.
+The size of the market price vector is equal to the size of the shared resources and is initially specified with zeros.\\
 
 Finally, a few simulation parameters are set, which are needed to determine the termination of the simulation.
 These are self-explanatory and not essential for understanding the simulation process, wherefore they are not shown in the Listing \ref{lst:initial_setup}.
-Afterwards, the main simulation begins.
+Afterwards, the simulation loop starts.
 
-\subsubsection{Main Simulation Loop}
-First of all, the source code of the \textit{Main simulation loop} is outlined in the Listing \ref{lst:main_simulation_loop}.
-These loop represents the main process of the simulation and takes place after the part \textit{Initial Setup}.
-The simulation loop is implemented by a while loop, which only terminates if the 
+\subsubsection{Simulation Loop}
+The source code of the simulation loop is outlined in Listing \ref{lst:main_simulation_loop}.
+It represents the main process of the simulation and is implemented
+by a while loop, which only terminates if the 
 market prices from the previous round are equal to the market prices of the current round.
-Conversely, this means that the simulation runs as long as the market prices of the last two rounds are different.
-Additionally, there are comments in the source code of Listing \ref{lst:main_simulation_loop}.
-The inline comments to the right of the function calls indicate if the invoked function constitutes
-a \verb|call()| or a \verb|transact()| method. As described earlier, the \verb|call()| method invokes 
-a smart contract function on a read-only basis, whereas the \verb|transact()| method submits a verified transaction 
-that changes the state of the blockchain.
+That means, the simulation runs as long as the market prices of the last two rounds differ.
 
 \begin{lstlisting}[float=htbp, label=lst:main_simulation_loop, caption=Main Simulation Loop, language=Python]
     while(not equal_market_prices):
@@ -586,31 +581,30 @@ that changes the state of the blockchain.
         var.dealer.recalculate_resource_inventory() # transact        
 \end{lstlisting}
 
-The behavior of a blockchain differs from that of conventional client-server architecture.
-In a blockchain environment, the process of a \verb|transact()| method call is not immediately completed.
-The network verification requires some time due to the mining procedure. 
-Consequently, before the values written into the blockchain by a \verb|transact()| method are accessible, a certain time passes.
-Hence, it is important to take this into account if you want to read certain values 
-from the blockchain that you set in previous steps. 
-Therefore, we implemented a function called \verb|wait_for_new_block()|. This function
-simply waits for the generation (mining) of a new block and 
-is invoked whenever it is needed to wait for new values to be finally anchored in the blockchain.
+Moreover, the behavior of a blockchain differs from that of conventional client-server architecture.
+In the Ethereum blockchain environment, two different method calls are available. 
+On the one hand, the \verb|transact()| method, and on the other hand, the \verb|call()| method.
+As already stated, the difference lies in the fact that the \verb|transact()| method 
+requires the submitting of verified transactions that potentially change the state of the Blockchain, 
+whereas the \verb|call()| method only reads the state of the Blockchain. For a \verb|transact()| method 
+network verification is needed that causes a significant delay due to the mining procedure.
+Consequently, before the values written into the Blockchain by a \verb|transact()| method are accessible, 
+a certain time passes. It is important to take this into account when trying to read certain 
+values from the Blockchain that are set in previous steps. 
+Due to this, we implemented a function called \verb|wait_for_new_block()| that 
+reads the current number of blocks out of the Blockchain and waits for the generation of a 
+further block. This avoids that state changing transactions are still pending and not anchored 
+in a block while they are requested.\\
 
-In addition, the \textit{Main simulation loop} can be divided into the three main activities 
-\textit{agent bidding}, \textit{dealer's market matching mechanism}, and \textit{agent trade verification},
-which are also marked with a comment in the Listing \ref{lst:main_simulation_loop}.
-These main activities are thematically summarised function calls.
-Besides, the above described function \verb|wait_for_new_block()| is called between these activities
-to ensure a faultless process. 
-In the following, each of the three activities is described.
+Further, we divided the simulation loop logically into three thematically summarized actions 
+\textit{Agent Bidding}, \textit{Market Matching Mechanism}, and \textit{Agent Trade Verification}.
+
 
 \paragraph{Agent bidding:}
-To start with, this activity refers to section \ref{sec:agent_bidding} of the same name and represents
-the technical implementation. Further, a sequence of all function 
-calls for this activity is provided in Figure \ref{figure:agent_bidding_figure}.
+The \textit{Agent Bidding} represents the technical implementation of section \ref{sec:agent_bidding}.
+Figure \ref{figure:agent_bidding_figure} outlines the sequence of all function calls that belong 
+to this action.
 
-Above all, the steps described below are performed for all existing agents. 
-This is indicated by the specified for-loop, shown at the beginning of Listing \ref{lst:main_simulation_loop}.
 
 \begin{figure}[htbp]
 	\centering
@@ -619,32 +613,31 @@ This is indicated by the specified for-loop, shown at the beginning of Listing \
 	\label{figure:agent_bidding_figure}
 \end{figure}
 
-First, the agent gets the current market prices from the dealer's smart contract.
-To obtain the market prices, the function \verb|getMktPrices()| of the dealer's smart contract is utilized.
-The market prices are required for the determination of the preferred bundle set.
+The agents get the current market prices from the dealer's smart contract, which are required to solve 
+the BDP.
+To receive the market prices the \verb|call()| method is used and hence proceeds very quickly,
+as the values are only read from the blockchain.
+Next, the agents solve the BDP based on the received market prices and submit 
+the orders and the corresponding prepayment to the dealer's smart contract. In contrast to receiving market prices, 
+submitting the orders require the execution of verified transactions that potentially
+change the state of the blockchain. Therefore, we make use of the stated 
+\verb|wait_for_new_block()| function after the placement of the orders to ensure 
+that all submitted orders are take part in the following \textit{Market Matching Mechanism}.
 
-Next, the agent solves the bundle determination and initialize the class attributes
-\verb|bundle_set| and \verb|bid|.
-In turn, they are required for the next function call.
-The corresponding implementation of this function is presented in Listing \ref{lst:determine_bundle}.
 
-Finally, the agent sets the order in the dealer's smart contract.
-To place the order in the contract, the function \verb|setOrder()| of the contract is utilized.
-The implementation of the dealer's smart contract function is shown in the Listing \ref{lst:set_order_contract}.
-Moreover, the implementation of the function \verb|set_order()| of the agent is 
-also introduced in the Listing \ref{lst:set_order}.
+\paragraph{Market Clearing Mechanism:}
+The \textit{Market Matching Mechanism} represents the technical implementation of section 
+\ref{sec:market_clearing_mechanism} and Figure \ref{figure:dealers_mmp} provide 
+a sequence of all function calls for this action.
 
-\paragraph{Dealer's market clearing mechanism:}
-To begin with, this activity refers to section \ref{sec:market_clearing_mechanism} and can be seen as
-the technical implementation. Further, a sequence of all function 
-calls for this activity is provided in Figure \ref{figure:dealers_mmp}.
-
-First, the off-chain dealer gets the orders from the dealer's smart contract.
-Therefore, the function \verb|get_orders()| of the agent (introduced in Listing \ref{lst:offchain_get_orders})
-utilizes the function \verb|getOrder()| of the contract.
-
-Then, the off-chain dealer creates and solves the MMP.
-The implementation of both functions is outlined in appendix \ref{appendix:additional_offchain}.
+The off-chain dealer waits for the anchoring of the submitted orders and fetches the 
+respective bundle orders of the agents. 
+As the off-chain dealer only has to read the values of the orders from the blockchain,
+fetching the orders is also implemented by a \verb|call()| method, wherefore it proceeds very quickly.
+In subject to the received orders, the off-chain dealer creates and solves the MMP.
+Since the MMP is solved off-chain, the variety of implementations to solve the MMP is 
+not limited. Therefore it is possible to apply commercial solvers for improving 
+performance when large problems have to be solved.
 
 \begin{figure}[htbp]
 	\centering
@@ -654,28 +647,21 @@ The implementation of both functions is outlined in appendix \ref{appendix:addit
 \end{figure}
 
 After solving the MMP and the calculation of the respective 
-trades, the off-chain dealer sets the trades in the dealer's smart contract.
-Therefore, the function \verb|set_trade()| of the off-chain dealer (introduced in Listing \ref{lst:offchain_set_trades})
-utilizes the function \verb|setTrade()| of the dealer's smart contract.
+trades, the off-chain dealer sets the trades in the dealer's smart contract
+and deletes the settled orders out of it.
+The newly derived market prices and the values of the MMP and its duals, which are needed 
+for the agents trade verification, are set in the dealer's smart contract.
+Likewise, the setting of values in the Smart Contract also requires verified 
+transactions that have been implemented using the \verb|transact()| method. Since the 
+values are required for the agents trade verification, we again utilize the stated 
+\verb|wait_for_new_block()| function to ensure the anchoring of the values in the blockchain
+before performing the next action.
 
-Afterwards, the off-chain dealer deletes the settled orders out of the dealer's
-smart contract. 
-To do this, the function \verb|delete_order()| of the off-chain dealer
-utilizes the function \verb|deleteOrder()| of the dealer's smart contract.
-
-In addition, the off-chain dealer sets the new market prices in the dealer's smart contract.
-To set the new market prices, the function \verb|set_mkt_prices()| of the off-chain dealer 
-utilizes the function \verb|setMktPrices()| of the dealer's smart contract.
-
-Finally, the values of the MMP are set in the dealer's smart contract. 
-They are used by the agents to verify the correctness of the calculated market prices.
-Therefore, the function \verb|set_mmp_attributes()| of the off-chain dealer
-utilizes the function \verb|setMMPAttributes()| of the dealer's smart contract.
-
-\paragraph{Agent trade verification:}
-To start, this activity covers the entire trade verification step of the agent. 
-Likewise, a sequence of all function 
-calls for this activity is provided in Figure \ref{figure:agents_trade_verification}.
+\paragraph{Agent Trade Verification:}
+The \textit{Agent Trade Verification} presents the developed procedure to 
+verify the calculated trades of the dealer, which is necessary due to moving
+the calculation of the MMP off-chain. A sequence of all function calls contained 
+in this action is shown in Figure \ref{figure:agents_trade_verification}.
 
 \begin{figure}[htbp]
 	\centering
@@ -684,28 +670,19 @@ calls for this activity is provided in Figure \ref{figure:agents_trade_verificat
 	\label{figure:agents_trade_verification}
 \end{figure}
 
-First, the agent verifies if the conditions of the Strong Duality Theorem
-are fulfilled.
-Therefore, the function \verb|verify_strong_duality()| of the agent
-(introduced in Listing \ref{lst:verify_trade})
-utilizes the function \verb|getMMPAttributes()| of the dealer's smart contract.
-As mentioned ealier in section \ref{sec:agent_bidding}, this function 
-determine the class variable \verb|accept_trade| of type Boolean,
-which indicates whether the trade is accepted or not.
-
-Afer that, the agent informs the dealer's smart contract whether 
-the trade is accepted or rejected.
-For this, the function \verb|accept_trade()| of the agent
-(introduced in Listing \ref{lst:accept_trade})
-utilizes the function \verb|acceptTrade()| of the dealer's smart contract
-(introduced in Listing \ref{lst:accept_trade_contract}).
+The agents verify whether the strong duality theory holds in subject 
+to the results of the MMP and the corresponding dual, which are 
+fetched from the dealer's smart contract. 
+After determining whether the agents accept or reject the trades, the dealer's
+smart contract is notified.
 In case of acceptance, the dealer's smart contract transfers the refunds 
-to the agents and returns the respective bundle. Otherwise, in case of  
-rejection, dealer's smart contract transfer the whole prepayment 
-and deletes the respective trade.
-
-Finally, the agent adds the trade to the shared resources. The invocation
-of this function only affects if the trade was previously accepted. \newline
+to the agents and returns the respective trades. Otherwise, in case of  
+rejection, the dealer's smart contract transfer the whole prepayment 
+and deletes the respective trades.
+Finally, the agents add the trades to the shared resources, wherefore the new allocation
+of the shared resources is calculated. Due to the new allocation of 
+shared resources, the new objective and wealth level of the agents is calculated.
+The invocation of this function only affects if the trade was previously accepted. \newline
 
 At the end of each iteration, the resource inventory of the dealer is recalculated.
 Therefore the off-chain dealer calculates how much of the inventory is used for

@@ -80,7 +80,7 @@ In the table below, the applied variables in the stated equations are described:
 Further, the overall objective of the central problem is to minimize the operating costs of the overall system. The minimization of the central problem
 has to be implemented in consideration of the operational constraints 
 (first set of constraints) and the total shared resources capacity constraints (second set of constraints) of each individual agent. 
-Anyhow, it is assumed that the optimal solution to the central problem cannot be directly calculated, due to the lack of access to all relevant
+Nevertheless, it is assumed that the optimal solution to the central problem cannot be directly calculated, due to the lack of access to all relevant
 information to make the decisions ($d_{j}, n_{j}, c_{j}, N_{j}, C_{j},$ for $j=1, ..., k$). 
 Additionally, \shortciteA{guo2007market} stated that, for an allocation of 
 $c_{j}, j=1, ..., k$, such that $C_{j}x_{j}^{*} \leq c_{j}, \sum\limits_{j=1}^{k} C_{j}$, 
@@ -105,7 +105,7 @@ and settlement are outlined. Finally, a summary of the market-based algorithm is
 
 \subsubsection{Agent Bidding}
 \label{sec:agent_bidding}
-First of all, the initialization takes place, which means that each of the $j=1, ..., k$ agents receive an initial
+Firstly, the initialization takes place, which means that each of the $j=1, ..., k$ agents receive an initial
 endowment of the $m$ shared resources $c_{j}$ , and a cash endowment $e_{j}$.
 The wealth of an agent at any point is defined as $e_{j} - z_{j}(c_{j})$ \shortcite{guo2007market}.
 The agents have the opportunity to buy additional resources or to sell some of their own resources to lower their operating costs. 
@@ -133,7 +133,7 @@ To remember that $z_{j}(c_{j})$ is the optimal value of the agent $j's$ problem 
 That means, an agent looking for bundles that satisfy 
 $d_{j}^{T}x_{j} + p^{T}w \leq z_{j}(c_{j})$. If 
 $p^{T}w \geq 0$, the term $p^{T}w$ is interpreted as the payment to receive the bundle $w$.
-On the opposite, if $p^{T}w \leq 0$, the term $p^{T}w$ constitutes the revenue for selling the bundle $w$.
+For the opposite, if $p^{T}w \leq 0$, the term $p^{T}w$ constitutes the revenue for selling the bundle $w$.
 
 
 Accordingly, a rational agent will choose an improving bundle for trading, 

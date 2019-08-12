@@ -12,7 +12,7 @@ through optimally scheduling the operation and energy consumption
 of all energy consuming appliances.
 
 Second, blockchain is introduced as the applied ICT of the BLEMS. 
-As already mentioned earlier, the implementation of LEM needs local distributed control and 
+As previously mentioned, the implementation of LEM needs local distributed control and 
 management techniques, which can be addressed by the blockchain technology.
 This implies that the respective households submit and receive all relevant data, information, and payments via a blockchain. 
 Moreover, the double-auction market which enables households to trade their energy bundles is operated by a dealer.
@@ -35,7 +35,7 @@ Secondly, the off-chain dealer updates all relevant information in the smart con
 the settled orders, the trades, the new market prices, and the resource inventory.
 Finally, the households get their respective trades from the dealer's smart contract. 
 
-Anyway, the off-chain dealer is necessary due to the complex and costly calculation of the MMP.
+Nevertheless, the off-chain dealer is necessary due to the complex and costly calculation of the MMP.
 As mentioned in section \ref{sec:transaction}, each transaction consumes gas. Additionally, each mathematical operation in a smart contract
 increases the amount of gas to be paid for the respective transaction. As a consequence, implementation and execution of the MMP
 in the smart contract itself would be hard to realize and associated with high transaction costs. 
@@ -44,15 +44,16 @@ Hence, a well-designed smart contract should move computational complexity off-c
 and focus more on updating state in the contract \shortcite{calculate_cost_eth}. A balance between on-chain
 and off-chain complexity should be found.
 
-In addition, we mentioned in section \ref{sec:btm} that the BLEMS applied a synchronous
-call market. That means, the dealer only executes the MMP after all agents have submitted their orders.
-Likewise, we mentioned in section \ref{sec:smart_contract} that smart contracts are only active and run if they called by a transaction.
-They will never run on his own or in the background. For this reason, a mechanism is necessary which triggers the execution of the 
-MMP. The implementation of an off-chain dealer is also suitable for this.
+In addition, the BLEMS applied the synchronous call market, which means that the dealer executes the MMP exclusively after all agents 
+have submitted their orders.
+Likewise, we stated that smart contracts are only active and run if they called by a transaction,
+wherefore they never run on his own or in the background.
+For this reason, a mechanism is necessary which triggers the execution of the 
+MMP, for wich the implementation of the off-chain dealer is also suitable.
 
 So far, this section presented the basic idea and concept of the BLEMS
 and explained the necessity of all existing components. In the following section \ref{sec:implementation}, 
-the setup and technical implementation is described in detail. 
+the technical implementation is described in detail. 
 
 However, we stated earlier in this section that the agents of the BTM represent households
 that trade bundles of energy resources to minimize the monetary expense. 
@@ -65,11 +66,9 @@ a LP which depicts the energy efficient demand side management of households.
 
 \subsection{Demand Side Management of a Household}
 This subsection will embed the BTM into the topic of LEM. 
-Therefore, we develop an exemplary and simplified LP in terms of energy efficient demand side management of households. 
-That means the objective of the respective households is to minimize their monetary expense regarding energy consumption.
-However, the minimization of the costs depends on several constraints.
-The sufficient provision of energy must be ensured at all times.
-
+Therefore, we develop an exemplary LP in terms of energy efficient demand side management of households. 
+The objective of the households is to minimize their monetary expense regarding energy consumption depending
+on several constraints, which ensures the sufficient provision of energy at all times.
 
 \shortciteA{Chen2013} developed such a LP for demand side management of households, on which the following
 presented model is based. 
