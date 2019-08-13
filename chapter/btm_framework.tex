@@ -283,8 +283,9 @@ is outlined:
 
 \subsubsection{Summary of BTM}
 \label{sec:summary_of_btm}
-This subsection will give an summarized overview of the BTM, which 
-is based on the equations (\ref{eq:central_problem})-(\ref{eq:mmp}).
+This subsection gives a summarized overview of the BTM, which 
+is based on the equations (\ref{eq:central_problem})-(\ref{eq:mmp}) and 
+present a belonging flowchart in Figure \ref{figure:btm_flowchart}.
 
 \begin{description}
  \item[Input] \hfill \\
@@ -315,8 +316,15 @@ is based on the equations (\ref{eq:central_problem})-(\ref{eq:mmp}).
  Now, go to \textit{Step 1}. 
  \item[Step 4] \hfill \\
  The dual values of the clearing constraints from the MMP form the new market prices $p$. 
- If the new market prices $p \neq \pi$ , go to \textit{Step 1}, otherweise, stop.
+ If the new market prices $p \neq \pi$ , go to \textit{Step 1}, otherwise, stop.
 \end{description}
+
+\begin{figure}[htbp]
+        \centering
+        \includegraphics[width=0.59\linewidth]{./figures/btm_flowchart.pdf}
+        \caption{Flowchart of BTM, inspired by \protect\shortciteA{guo2012computational}}
+        \label{figure:btm_flowchart}
+\end{figure}
 
 
 \clearpage
