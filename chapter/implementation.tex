@@ -266,8 +266,8 @@ We stated that the creator of a smart contract does not have any special permiss
 that it is possible to specify explicitly those special permissions in the source code.  
 For this reason we initialized the variable \verb|owner| with the address of the contract creator, who is, in our case,
 the off-chain dealer. The \verb|owner| comes to bear in the implementation of the modifier \verb|onlyByOwner()|.
-A modifier can be seen as an extension of a function and is mainly used to 
-to check if certain conditions are met before executing the rest of the source code in the body of a function.
+A modifier can be seen as an extension of a function and is mainly used to
+check if certain conditions are met before executing the rest of the source code in the body of a function.
 We have built the modifier to ensure that only the owner of the contract has the authority to perform certain functions.
 In addition, attributes for managing the orders and trades of the agents are declared. 
 The orders, trades and additional properties of the trades are predominantly managed in mappings.
@@ -325,7 +325,7 @@ that serves as a look up table as mentioned earlier.
 
 \paragraph{Receiving of Trades:} The function which serves to set the trades of the agents is introduced in Listing \ref{lst:set_trade_contract}.
 With reference to the function header, the modifier \verb|onlyByOwner()| is applied, which ensures that
-only the owner of the contract has the authority to call this function
+only the owner of the contract has the authority to call this function.
 It is required, since nobody except the owner (off-chain dealer) should have 
 the permission to call this function and thus to set the trades of the agents.
 Then, the function \verb|addToArray()| is called, which examines whether the account, 
@@ -467,7 +467,7 @@ the values of the trades are converted to integer by shifting the decimal places
 
 \subsubsection{Blockchain}
 The applied blockchain is described in this subsection. In section \ref{sec:applied_technologies}, we already
-stated that we used a personal blockchain called Ganache, which acts like a personal Ethereum full client  
+stated that we used a personal blockchain called Ganache, which acts like a personal Ethereum full client.
 However, Ganache provides even more features that allow you to customize the properties of the Blockchain.
 First, you can specify the number of generated accounts and the assigned amount of ether.
 This is a proper way to specify the initial cash endowments of the agents ($e_{j},$ for $j=1, ..., k$)
