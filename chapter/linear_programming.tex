@@ -1,12 +1,14 @@
 \section{Linear Programming}
 \label{sec:linear_progamming}
-This section will give an introduction into the basics of mathematical linear programming
-and linear programming duality.
-It will present the purpose and necessity of optimization models and will give
-an example of how an optimization model is constructed. 
+This section gives an introduction into the basics of mathematical linear programming, 
+which forms the basis for the BTM applied in the BLEMS.
+It presents the purpose and necessity of optimization models, gives
+an example of how an optimization model is constructed and explains the duality theory,
+which is essential for determining the market prices in the BTM and for the developed 
+agent trade verification procedure, outlined later on in \ref{sec:agent_class}. Finally,
+the used algorithm to solve such optimization models is presented.
 
-To begin with, optimization models try to define in mathematical terms, the goal
-of solving a problem in the best or optimal way. 
+Optimization models mathematically define the goal of solving a problem in the optimal way.
 This can be applied in many different areas, for example, it might mean running a business to 
 maximize profit, designing a bridge to minimize weight or selecting a flight plan for an aircraft
 to minimize time or fuel use \shortcite{griva2009linear}. 
@@ -18,7 +20,7 @@ in the last decades, optimization models became a practical tool
 in business, science and engineering \shortcite{griva2009linear}. 
 Finally, it is possible to solve optimization problems with a huge set of variables. 
 
-Further, linear optimization, also known as a \textit{linear program (LP)}, refers to the optimization
+Linear optimization, also known as a \textit{linear program (LP)}, refers to the optimization
 of a linear function with the decision variables, $x_{1}, ..., x_{n}$ subject to 
 linear equality or inequality constraints. 
 As presented by \shortciteA{bichler2017market}, in canonical form 
@@ -26,8 +28,8 @@ a linear optimization model is given as:
 
 \begin{equation*}
     \begin{array}{ll@{}ll}
-        \text{max}  & \displaystyle\sum\limits_{j=1}^{n} c_{j}x_{j} &\\
-        \text{s.t.}& \displaystyle\sum\limits_{j=1}^{n} a_{ij}x_{j} \leq b_{i},  &&i=1 ,..., m\\
+        \text{min}  & \displaystyle\sum\limits_{j=1}^{n} c_{j}x_{j} &\\
+        \text{s.t.}& \displaystyle\sum\limits_{j=1}^{n} a_{ij}x_{j} \geq b_{i},  &&i=1 ,..., m\\
                     &                        x_{j} \geq 0, &&j=1 ,..., n
     \end{array}
 \end{equation*}
@@ -40,8 +42,8 @@ the model becomes:
 
 \begin{equation*}
     \begin{array}{ll@{}ll}
-        \text{max}  & \displaystyle c^{T}x &\\
-        \text{s.t.}& \displaystyle Ax \leq b&\\
+        \text{min}  & \displaystyle c^{T}x &\\
+        \text{s.t.}& \displaystyle Ax \geq b&\\
                     &                        x \geq 0
     \end{array}
 \end{equation*}
@@ -53,7 +55,7 @@ and the variables are unrestricted or restricted in sign \shortcite{bichler2017m
 
 \subsection{Duality Theory}
 \label{sec:duality_theory}
-In addition, for every LP exists another problem, which
+For every LP exists another problem, which
 is called the \textit{dual} of the original linear problem, also known as the 
 \textit{primal} \shortcite{bichler2017market}.
 In the dual, the roles of variables and constraints are reversed. 
@@ -164,10 +166,8 @@ optimal objective values \shortcite{vanderbei2015linear}.
 
 \subsubsection{Simplex-Method}
 This subsection will give a brief introduction to the \textit{simplex-method}. 
-To start with, in the field of linear programming, the simplex-method 
-is the most widely used algorithm. 
-This method was developed around 1940 and had several competitors at that time.
-However, the algorithm was able to assert itself due to its efficiency. \shortcite{griva2009linear}
+In the field of linear programming, the simplex-method 
+is the most widely used algorithm due to its  efficiency. \shortcite{griva2009linear}.
 In general, the simplex-method is an iterative algorithm, used to solve 
 a LP \shortcite{griva2009linear}. To apply the algorithm to a LP, 
 it must be in standard form \shortcite{Luenberger2008}. According to \shortciteA{griva2009linear}, 

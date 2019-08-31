@@ -1,13 +1,11 @@
 \section{The Bundle-Trading-Market Framework}
 \label{sec:btm}
-To start with, we explained in section \ref{sec:lem} that LEM enable the trading 
+We explained in section \ref{sec:lem} that LEM enable the trading 
 of locally generated energy through a market platform, market mechanism and market access for 
 small-scale prosumer and consumer. 
 In addition, we presented in section \ref{sec:components_of_local_energy_markets} 
 a market mechanism as one of seven core components for the efficient operation of blockchain-based
-LEM.
-
-On account of that, this chapter covers and explains in detail the applied market mechanism in the BLEMS. 
+LEM. On account of that, this chapter covers and explains in detail the applied market mechanism in the BLEMS. 
 
 As already briefly introduced in the sections \ref{sec:research_motivation} 
 and \ref{sec:Distributed Resource Optimization}, the applied market mechanism is implemented 
@@ -18,25 +16,25 @@ agents trading bundled resources in a double-auction market, which run by a deal
 In this case, the dealer replaces the central authority and agents represent distributed
 entities. Generally, the BTM consists of a master problem that solves the \textit{market matching problem (MMP)}, which is managed by the dealer
 and subproblems that solve the bundle-determination problem of the agents.
-Further, the solution process is an iteration between the MMP and the 
+The solution process is an iteration between the MMP and the 
 the bundle-determination problems \shortcite{guo2007market}.
 Considering, the BTM constitutes a market-based decomposition method 
 for decomposable linear systems,
 which can be easily implemented to support real-time optimization 
 of distributed systems \shortcite{guo2007market}.
-Likewise, the central problem of the BTM can be interpreted as the welfare optimization of all participants in LEM. 
+The central problem of the BTM can be interpreted as the welfare optimization of all participants in LEM. 
 The dealer, which runs the double auction market, maximizes the welfare through allowing 
 agents to trade their preferable bundles of energy.
 Therefore, the BTM is a suitable market mechanism for the concept of LEM.
 
 \subsection{Problem Overview}
 \label{sec:btm_problem_overview}
-This subsection will give an introductory description to the overall problem. 
+This subsection gives an introductory description to the overall problem. 
 With reference to \shortciteA{guo2012computational}, we consider a distributed 
 system with $k$ independent agents.
-In addition, we have a central problem and individual problems of the $k$ individual agents, which both can be expressed as the 
+We have a central problem and individual problems of the $k$ individual agents, which both can be expressed as the 
 LPs shown the in equations (\ref{eq:central_problem}) and (\ref{eq:agent_problem}). 
-Besides, the BTM presented by \shortciteA{guo2007market} requires 
+The BTM presented by \shortciteA{guo2007market} requires 
 a nondegenerate central problem with a bounded solution. In contrast to discrete markets where 
 only integer number of units can be traded, the proposed framework facilitates continuous trade amounts. 
 
@@ -77,12 +75,12 @@ In the table below, the applied variables in the stated equations are described:
     $c_{j} \in R^{m}$ & agent $j's$ vector of shared resources \\
 \end{longtable} 
 
-Further, the overall objective of the central problem is to minimize the operating costs of the overall system. The minimization of the central problem
+The overall objective of the central problem is to minimize the operating costs of the overall system. The minimization of the central problem
 has to be implemented in consideration of the operational constraints 
 (first set of constraints) and the total shared resources capacity constraints (second set of constraints) of each individual agent. 
 Nevertheless, it is assumed that the optimal solution to the central problem cannot be directly calculated, due to the lack of access to all relevant
 information to make the decisions ($d_{j}, n_{j}, c_{j}, N_{j}, C_{j},$ for $j=1, ..., k$). 
-Additionally, \shortciteA{guo2007market} stated that, for an allocation of 
+\shortciteA{guo2007market} stated that, for an allocation of 
 $c_{j}, j=1, ..., k$, such that $C_{j}x_{j}^{*} \leq c_{j}, \sum\limits_{j=1}^{k} C_{j}$, 
 solving the agents’ problems is equivalent to solving the central problem.
 
@@ -96,21 +94,21 @@ wealth-improving bidding process among the self-interested agents.
 \subsection{Market Environment}
 Generally, a dealer and $k$ independent agents constitute the whole market economy. 
 Each of the agents has the opportunity to trade the shared resources $c_{j}$ 
-in a double auction market, which is operated by the dealer. Moreover, each agent only has a local perspective 
+in a double auction market, which is operated by the dealer. Each agent only has a local perspective 
 and knowledge, that is to say, they don't know anything about the production decisions of the others. 
-Further, the market prices to match the trades will be determined and published by the dealer.
+The market prices to match the trades will be determined and published by the dealer.
 Subsequently, the roles of the market participants are described
 and the market operations like the agent bidding, market matching, 
 and settlement are outlined. Finally, a summary of the market-based algorithm is presented. 
 
 \subsubsection{Agent Bidding}
 \label{sec:agent_bidding}
-Firstly, the initialization takes place, which means that each of the $j=1, ..., k$ agents receive an initial
+The initialization takes place, which means that each of the $j=1, ..., k$ agents receive an initial
 endowment of the $m$ shared resources $c_{j}$ , and a cash endowment $e_{j}$.
 The wealth of an agent at any point is defined as $e_{j} - z_{j}(c_{j})$ \shortcite{guo2007market}.
 The agents have the opportunity to buy additional resources or to sell some of their own resources to lower their operating costs. 
 Therefore, each agent knows the current market prices $p \in R^{m}$ for the shared resources, 
-which are published by the dealer after each auction round. Further, for trading the shared resources in the market, 
+which are published by the dealer after each auction round. For trading the shared resources in the market, 
 a bundle referring to \shortciteA{guo2012computational} is defined:
 
 \paragraph*{Bundle} A bundle $w \in R^{m}$ is an $m$-dimensional vector of shared resources. 
@@ -138,11 +136,11 @@ For the opposite, if $p^{T}w \leq 0$, the term $p^{T}w$ constitutes the revenue 
 
 Accordingly, a rational agent will choose an improving bundle for trading, 
 which leaves his wealth on the same level or better off. 
-In addition, the basic market mechanism of \shortciteA{guo2007market} assumes no 
+The basic market mechanism of \shortciteA{guo2007market} assumes no 
 strategic actions in the bundle selection and pricing. However, strategic actions 
 can be relaxed and \shortciteA{guo2012computational} also incorporate strategic factors
 in their extended BTM. 
-Nevertheless, the applied market mechanism in the BLEMS implemented nonstrategic bidding, wherefore an agents bundle selection 
+The applied market mechanism in the BLEMS implemented nonstrategic bidding, hence an agents bundle selection 
 can be defined as the following \textit{Bundle Determination Problem (BDP):}
 
 \paragraph*{Bundle Determination Problem}
@@ -158,8 +156,7 @@ According to \shortciteA{guo2007market}, the BDP have either
 a bounded, or an unbounded solution. A bounded solution is called \textit{limited bundle} 
 $w \in R^{m}$, whereby an unbounded solution is called \textit{unlimited bundle}
 $u \in R^{m}$.
-
-Furthermore, each agent needs to determine a limit price, which indicates
+Each agent needs to determine a limit price, which indicates
 the maximum an agent is willing to pay for the bundle. 
 As already explained above, nonstrategic pricing is implemented. 
 Therefore, an agent will always submits a limit price equal to the valuation of the bundle. That is to say, $l(w) = v(w)$.
@@ -184,8 +181,7 @@ as:
 
 Potentially, an agent has multiple optimal solutions in his bundle-determination problem. Hence, it is allowed to submit more than
 one bundle at a time. 
-
-Finally, old orders and bids of prior rounds without any trades will be treated 
+Old orders and bids of prior rounds without any trades will be treated 
 as open orders and bids, because the valuation of an agent for a bundle is
 independent of the market price $p$.
 It only depends on the respective resource level $c_{j}$. 
@@ -206,7 +202,7 @@ The sum of all resource endowments needs to fulfill the following equation:
  \end{array}
 \end{equation*}
 
-Next, agents submit sealed bids to the dealer. The dealer maintains an individual order book for each agent. 
+Agents submit sealed bids to the dealer. The dealer maintains an individual order book for each agent. 
 Each individual order book contains two different order sets. On the one hand, the set for limited orders $I_{j}$,
 on the other hand, the set for unlimited orders $H_{j}$.
 If an agent submits orders and no trade is executed, the orders are collected and 
@@ -239,7 +235,7 @@ The second set of constraints indicate that the market handles limited and unlim
 The trades of unlimited bundles in $H_{j}$ are unrestricted, whereas limited bundles in $I_{j}$
 are restricted. In that case, limited trades are restricted to be convex combinations of bundles in $I_{j}$.
 
-Besides, the MMP always has a solution, because setting all variables to zero 
+The MMP always has a solution, because setting all variables to zero 
 is always a feasible solution. As described by \shortciteA{guo2007market}, the market closes when no trade takes place 
 and the market prices remain unchanged. Finally, if the MMP has a nonzero solution for
  $y_{j}^{i^{*}}$, for $i \in I_{j}$ and $t_{j}^{h^{*}}$, for $h \in H_{j}$, then agent $j$ will have traded the following:

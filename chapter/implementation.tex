@@ -109,11 +109,11 @@ the improving bundle set and the associated bid is introduced in the Listing \re
 \end{lstlisting}
 
 First, the BDP is solved in a separate function in subject to the optimization problem and the current market prices.
-The associated source code of the function can be found in the appendix \ref{appendix:additional_agent}.
+The associated source code of the function can be found in appendix \ref{appendix:additional_agent}.
 
 The \verb|bundle_set| constitutes the improving bundle set and is assigned from the results of the BDP.
 Further, the \verb|bid| is initialized. We stated that the BTM implemented nonstrategic bidding and pricing,
-wherefore an agent always submits a limit price equal to the valuation of the bundle, such that $l(w) = v(w)$.
+which is why an agent always submits a limit price equal to the valuation of the bundle, such that $l(w) = v(w)$.
 The value of \verb|bid| is assigned by the difference of the \verb|objective| $z_{j}(c_{j})$ and the 
 objective of the optimization problem with the additional resources of the \verb|bundle_set| $z_{j}(c_{j}+w)$, 
 which reflects the definition of the bundles true value $v(w) = z_{j}(c_{j}) - z_{j}(c_{j}+w)$.
@@ -149,8 +149,8 @@ the variable \verb|prepayment| is assigned in the amount of \verb|bid|.
 We implemented this procedure to prevent the strategic placing of orders and to ensure 
 that the financial resources are available.
 In case of a sell order, no payment in advance is required and the \verb|prepayment| is set to zero.
-Moreover, Wei is a subdivision of the cryptographic currency of Ethereum and presents the base unit within smart contracts.
-As 1 Ether is defined as $10^{-18}$ Wei, we decided to specify all monetary values on the side 
+As stated earlier, Wei is a subdivision of the cryptographic currency of Ethereum and presents the base unit within smart contracts.
+As 1 Ether is defined as $10^{18}$ Wei, we decided to specify all monetary values on the side 
 of the agents and the off-chain dealer in Ether for better clarity.
 Therefore, the \verb|bid| is converted from Ether to Wei before assigning to the \verb|prepayment|.
 Finally, the \verb|dealer_contract| is used to call the function of the dealer's smart contract which is
@@ -273,7 +273,7 @@ In addition, attributes for managing the orders and trades of the agents are dec
 The orders, trades and additional properties of the trades are predominantly managed in mappings.
 A mapping is a collection of key-value pairs, in which all keys and all values must be of the same 
 data type. However, Solidity does not provide an iteration
-function to retrieve all the lists that are stored in a mapping, wherefore it is not possible 
+function to retrieve all the lists that are stored in a mapping, why it is not possible 
 to read the values from the mapping without knowing the respective keys.
 Therefore, we developed a workaround and store the keys of mappings in additional arrays which serves 
 as look up tables.
@@ -436,13 +436,13 @@ and the iteratively retrieved orders from the dealer's smart contract are stored
 
 Furthermore, the class also provides functions for creating and solving the MMP.
 Due to the focus on the architectural design and implementation of the simulation and the high complexity
-of these functions, they are not presented in detail. However, the corresponding source code can be found in the appendix \ref{appendix:additional_offchain}.
+of these functions, they are not presented in detail. However, the corresponding source code can be found in appendix \ref{appendix:additional_offchain}.
 
 \paragraph{Setting of Trades:} The function to set the trades of the agents in the dealer's smart contract 
 is outlined and presented in the Listing \ref{lst:offchain_set_trades}.
 The results from the MMP represent the share of the respective orders and are set for 
 each order in the \verb|order_handler|. Then, the calculation of the relevant attributes of the trades
-(prepayment, bill, and refund) is executed, wherefore the provided methods of the \verb|OrderHandler| come to bear.
+(prepayment, bill, and refund) is executed, whereby the provided methods of the \verb|OrderHandler| come to bear.
 
 \begin{lstlisting}[float=htbp, label=lst:offchain_set_trades, caption=Setting of Trades in Smart Contract Dealer, language=Python]
     def set_trades(self):
@@ -538,7 +538,7 @@ We also mentioned earlier in \ref{sec:off_chain_component}, that the market pric
 The size of the market price vector is equal to the size of the shared resources and is initially specified with zeros.\\
 
 Finally, a few simulation parameters are set, which are needed to determine the termination of the simulation.
-These are self-explanatory and not essential for understanding the simulation process, wherefore they are not shown in the Listing \ref{lst:initial_setup}.
+These are self-explanatory and not essential for understanding the simulation process, which is why they are not shown in the Listing \ref{lst:initial_setup}.
 Afterwards, the simulation loop starts.
 
 \subsubsection{Simulation Loop}
@@ -633,7 +633,7 @@ a sequence of all function calls for this action.
 The off-chain dealer waits for the anchoring of the submitted orders and fetches the 
 respective bundle orders of the agents. 
 As the off-chain dealer only has to read the values of the orders from the blockchain,
-fetching the orders is also implemented by a \verb|call()| method, wherefore it proceeds very quickly.
+fetching the orders is also implemented by a \verb|call()| method, why it proceeds very quickly.
 In subject to the received orders, the off-chain dealer creates and solves the MMP.
 Since the MMP is solved off-chain, the variety of implementations to solve the MMP is 
 not limited. Therefore it is possible to apply commercial solvers for improving 
@@ -679,8 +679,8 @@ In case of acceptance, the dealer's smart contract transfers the refunds
 to the agents and returns the respective trades. Otherwise, in case of  
 rejection, the dealer's smart contract transfer the whole prepayment 
 and deletes the respective trades.
-Finally, the agents add the trades to the shared resources, wherefore the new allocation
-of the shared resources is calculated. Due to the new allocation of 
+Finally, the agents add the trades to the shared resources and calculate the new allocation
+of the shared resources. Due to the new allocation of 
 shared resources, the new objective and wealth level of the agents is calculated.
 The invocation of this function only affects if the trade was previously accepted. \newline
 

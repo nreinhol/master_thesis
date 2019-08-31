@@ -1,77 +1,94 @@
 \section{Literature Review}
 \label{sec:literature_review}
+This section outlines the different research streams which are 
+combined by this thesis. This includes previous work in the area of 
+blockchain-based energy markets, distributed resource optimization
+and competitive benchmarking.
 
 \subsection{Blockchain-based Energy Markets}
 \label{sec:Blockchain-based Energy Markets}
-To start, \shortciteA{mihaylov2014nrgcoin} were the first who addressed blockchain technology in
-energy markets. They presented a new decentralized digital currency with the aid of
-which prosumers can trade locally produced renewable energy.
+This subsection presents previous work on the topic of blockchain-based energy markets.
+
+\shortciteA{mihaylov2014nrgcoin} were the first who addressed blockchain technology in
+energy markets. They presented a new decentralized digital currency for prosumers to trade locally produced renewable energy.
 In their introduced concept, the generation and consumption of renewable energy are directly
-transferable into virtual coins. However, the market value of the virtual currency is determined
-centrally by the distributed system operator. Further, \shortciteA{al2015bitcoin} introduced a blockchain-based
+transferable into virtual coins. The market value of the virtual currency is determined
+centrally by the distributed system operator. 
+\shortciteA{al2015bitcoin} introduced a blockchain-based
 model for a decentralized carbon emission trading infrastructure.
-Their model based on the bitcoin protocol and focus on privacy and system security goals.
-Besides, they provide a solution to the problem of anonymous carbon emission trading.
-Equally, \shortciteA{aitzhan2018security} addressed the issue of transaction security in
+Their model is based on the bitcoin protocol and focuses on privacy and system security goals.
+\shortciteA{aitzhan2018security} addressed the issue of transaction security in
 decentralized smart grid energy trading and implemented a proof-of-concept for a
 blockchain-based energy trading system including anonymous encrypted messaging streams.
-In conclusion, they have shown that blockchains enable the implementation of decentralized energy trading and that the degree
+They have shown that blockchains enable the implementation of decentralized energy trading and that the degree
 of privacy and security is higher than in traditional centralized trading platforms.
-Furthermore, \shortciteA{sikorski2017blockchain}
-presented a proof-of-concept where a blockchain enables machine-to-machine (M2M) interactions depicting an
+\shortciteA{sikorski2017blockchain} presented a proof-of-concept where a blockchain enables machine-to-machine (M2M) interactions depicting an
 M2M energy market. They pointed out that the blockchain technology has
-significant potential to support and enhance the 4th industrial revolution. 
-Moreover, \shortciteA{mengelkamp2018designing}
-revealed the concept of a blockchain-based local energy market without the need of a thrusted
-third entity. In addition, they deduced seven market
+significant potential to support and enhance the fourth industrial revolution.
+\shortciteA{mengelkamp2018designing}
+presented the concept of a blockchain-based local energy market without the need of a thrusted
+third entity. They deduced seven market
 components as a framework for building efficient microgrid energy markets. Consequently,
 the Brooklyn Microgrid project is introduced and evaluated according to the market components.
-As a result, the Brooklyn Microgrid has also shown that blockchains are a suitable technology
+The Brooklyn Microgrid has also shown that blockchains are a suitable technology
 to implement decentralized microgrid energy markets, though current regulation does not
-allow running such LEM in most of the countries. Later on, \shortciteA{mengelkamp2018blockchain}
+allow running such LEM in most of the countries. \shortciteA{mengelkamp2018blockchain}
 presented a initial proof-of-concept of a simple blockchain-based concept, market design and
 simulation of a local energy market consisting of a hundred households.
-Finally, they concluded that the real-life realization and technological limitations of such blockchain-based
+They concluded that the real-life realization and technological limitations of such blockchain-based
 market approaches need to be investigated by further research. 
 In addition, it is mentioned that regulatory
 changes will play an important role in the future of blockchain-based LEM.
 
 \subsection{Distributed Resource Optimization}
 \label{sec:Distributed Resource Optimization}
-To begin with, \shortciteA{fan2003decentralized} outlined a new approach for the 
+
+The interpretation of dual variables in optimization problems as shadow prices provides a natural understanding of mathematical programs
+for resource allocation as models of economic activity. 
+The developed decomposition techniques by \shortciteA{dantzig1961decomposition} deepen this understanding, as they allow different actors to emerge 
+from the program's structure. However, when accounting for (adverse) incentives, 
+it is clear that traditional decomposition approaches can be understood rather as a computational than an organizational technique.  
+
+\shortciteA{bertsekas1992auction} provides an explicit interpretation of network flow problems from an economic viewpoint and 
+\shortciteA{clearwater1996market} gives an extensive overview of control problems 
+that can be approached by economically-inspired techniques.
+
+This stream of research is continued by \shortciteA{fan2003decentralized}. They outlined a new approach for the 
 development of an information system
 that can be used for the problem of a supply chain. The concept demonstrated a decentralized
 decision-making process that is realized through the design of a market-based coordination
-system which incites the participants to act in a way that is beneficial to the overall
-systems. Further, \shortciteA{guo2007market} revived this concept
+system which incentivizes the participants to act in a way that is beneficial to the overall
+systems. \shortciteA{guo2007market} refined this concept
 and developed the BTM, a market-based decomposition method for decomposable linear systems,
 which can be easily implemented to support real-time optimization of distributed
 systems. They proved that the system optimality can be
 achieved under a dynamic market-trading algorithm in a finite number of trades.
-Moreover, the outlined algorithm can be operated in synchronous and as well in
-asynchronous environments. Later on, \shortciteA{guo2012computational} extended 
+The outlined algorithm can be operated in synchronous as well in
+asynchronous environments. \shortciteA{guo2012computational} extended 
 their stated concept to a dynamic, asynchronous internet market environment.
-Additionally, they examined how various market design factors like dealer inventory
+They examined how various market design factors like dealer inventory
 policies, market communication patterns, and agent learning strategies affect
-computational market efficiency and implementation. Finally,
-they proved finite convergence to an optimal solution under all these different schemes.
+computational market efficiency and implementation. 
+They proved finite convergence to an optimal solution under all these different schemes.
 
 \subsection{Competitive Benchmarking}
-Firstly, \shortciteA{march1995design} described a two-dimensional framework for research in IS.
+This subsection presents the stream of research of the applied research design.
+
+\shortciteA{march1995design} described a two-dimensional framework for research in IS.
 The two dimensions can be distinguished into behavioral-science and design-science. The behavioral-science
-paradigm is based on explaining and predicting human or organizational behavior. Whereas, the design-science
+paradigm is based on explaining and predicting human or organizational behavior. The design-science
 paradigm is based on broad types of outputs produced by design research. It strives to extend the boundaries
 of human and organizational capabilities through the creation of new artifacts.
 
 % connection of these two - design science approach by hevner
-Furthermore, the research framework presented by \shortciteA{hevner2008design} combines both stated
+The research framework presented by \shortciteA{hevner2008design} combines both stated
 IT research paradigms and illustrates the interaction between these two.
-They presented that technology and behavior are inseparable in an information system. Therefore,
-they argued that considering the complementary research cycle between design-science and behavioral-science
+They presented that technology and behavior are inseparable in an information system and 
+argued that considering the complementary research cycle between design-science and behavioral-science
 is crucial to address fundamental problems faced in the productive application of information technology.
 
 % competitive benchmarking include basic principles of hevner
-In addition, \shortciteA{ketter2015competitive} introduced the IS research approach CB,
+\shortciteA{ketter2015competitive} introduced the IS research approach CB,
 which includes various basic principles of the design science approach of \shortciteA{hevner2008design}.
 This IS research concept is designed for so-called wicked problems and addresses the problems and needs of interdisciplinary
 research communities. CB focuses on the interconnection of problems at the same and different levels to imitate the real world.
