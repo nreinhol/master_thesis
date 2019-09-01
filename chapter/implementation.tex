@@ -13,22 +13,22 @@ to the applied software technologies and libraries.
 
 \paragraph{Python}
 An interpreted, object-oriented, high-level programming language with dynamic semantics. 
-Additionally, it is simple and comes with an easy to learn syntax \footnote{https://www.python.org/}.
+Additionally, it is simple and comes with an easy to learn syntax\footnote{https://www.python.org/}.
 The programming language of choice, which is used to develop the 
 respective components that communicate via the blockchain.
 
 \paragraph{Web3.py}
-A Python library for interacting with an Ethereum blockchain \footnote{https://github.com/ethereum/web3.py}. 
+A Python library for interacting with an Ethereum blockchain\footnote{https://github.com/ethereum/web3.py}. 
 It enables the developed Python components to communicate via the blockchain.
 
 \paragraph{Ganache}
-A personal blockchain for Ethereum development \footnote{https://github.com/trufflesuite/ganache-cli}.
+A personal blockchain for Ethereum development\footnote{https://github.com/trufflesuite/ganache-cli}.
 It simulates a full client behavior and makes developing Ethereum applications faster, easier and safer.
 Ganache is provided on the one hand as a software tool with a graphical user interface (GUI) and on the other hand as command-line tool (CLI). In the develop LEM simulation the command line version of Ganache is used. 
 
 \paragraph{Solidity}
 A statically typed, contract-oriented, high-level programming language for implementing smart contracts on the Ethereum
-blockchain \footnote{https://github.com/ethereum/solidity}.
+blockchain\footnote{https://github.com/ethereum/solidity}.
 It is used to implement the smart contract dealer. 
 
 \clearpage
@@ -166,7 +166,7 @@ That means, if the primal MMP has an optimal solution $x^{*}$, then
 the dual also has an optimal solution $y^{*}$, such that $c^{T}x^{*} = b^{T}y^{*}$.
 Due to this, it is possible to verify if the solution of the dealer is optimal, without solving the corresponding MMP. 
 The agents calculate whether strong duality holds and decide on the basis of the result whether they accept the trade or not.
-Because of the limitations of floating point arithmetic \footnote{https://docs.python.org/2/tutorial/floatingpoint.html}, 
+Because of the limitations of floating point arithmetic\footnote{https://docs.python.org/2/tutorial/floatingpoint.html}, 
 we round off the values of the MMP and the dual problem to make sure that correct trades 
 are not rejected based on limited machine accuracy.
 Finally, the class variable \verb|accept_trade| is assigned according to the result of the trade verification 

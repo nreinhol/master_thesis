@@ -138,7 +138,7 @@ how these individual states are stored and emphasizes the meaning of this storag
 We pointed out that an Ethereum state is represented by blocks and described 
 all relevant information contained in it.
 However, we didn't introduce how many transactions be part 
-of a block and who build and validate a block? To answer this, 
+of a block and who build and validate a block. Therefore, 
 we introduce the transaction object and its life cycle in-depth.
 
 
@@ -152,7 +152,7 @@ Both different types of transaction share the following common attributes \short
 
 \begin{description}
 	\item[Nonce: ] This attribute is discontiguous of the block attribute. In contrast to the block attribute, the nonce of a transaction keeps track of the total number of transactions that an account has executed. 
-	\item[Gas Price: ] As mentioned in section \ref{sec:block}, each transaction consume gas. Gas can be seen as fees. This attribute presents the price per unit of gas for a transaction \footnote{A website to see current gas prices: https://ethgasstation.info/index.php}. 
+	\item[Gas Price: ] As mentioned in section \ref{sec:block}, each transaction consume gas. Gas can be seen as fees. This attribute presents the price per unit of gas for a transaction\footnote{A website to see current gas prices: https://ethgasstation.info/index.php}. 
 	\item[Gas Limit: ] This attribute is similar to the block attribute of the same name. In this case, it is a quantity equal to the current maximum gas expenditure per transaction.  
 	\item[To: ] In case of a message call, this attribute contains the address of the recipient. Otherwise, in case of a contract creation this value remains empty. 
 	\item[Value: ] In case of a message call, this attribute contains the amount of Wei, which will be transferred to the recipient. 
@@ -162,7 +162,7 @@ Both different types of transaction share the following common attributes \short
 
 \subsubsection{Transaction Life Cycle}
 \label{sec:transaction_lifecycle}
-The life cycle of a transaction is outlined.
+This subsection outlines the life cycle of a transaction.
 We take a simple message call as an example 
 and pass through the entire flow of how this transaction 
 gets executed and permanently stored on the blockchain. 
@@ -183,7 +183,7 @@ peer nodes and so on \shortcite{transaction_life_cycle}.
 As soon as the transaction is broadcast to the network, 
 the related node will declare a transaction ID, which is the hash 
 of the signed transaction and can be used to track the 
-status of the transaction \footnote{A Website to track transactions: https://etherscan.io/}. 
+status of the transaction\footnote{A Website to track transactions: https://etherscan.io/}. 
 
 \begin{figure}[htbp]
 	\centering
@@ -194,8 +194,8 @@ status of the transaction \footnote{A Website to track transactions: https://eth
 
 \clearpage
 
-Further, Figure \ref{figure:node_network} describes an Ethereum network. 
-It contains a mix of miner nodes and non-miner nodes. 
+Figure \ref{figure:node_network} describes an Ethereum network 
+which contains a mix of miner nodes and non-miner nodes. 
 The non-miner nodes can be distinguished into different types of nodes with different 
 behavior, which are explained in detail in section \ref{sec:nodes}. 
 The miner nodes are the ones who processing transactions into blocks \shortcite{transaction_life_cycle}. 
@@ -219,11 +219,11 @@ optimize for a higher pay \shortcite{transaction_life_cycle}.
 	hashOfTransaction5 & 7 Gwei \\
 \end{longtable} 
 
-Further, the mining node takes transactions from the pool and processes them into a pending block. 
+The mining node takes transactions from the pool and processes them into a pending block. 
 A block can only contain a certain number of transactions due to the block 
 attribute \textit{gas limit}, mentioned in section \ref{sec:block}. 
 That means the mining node can only process so many transactions into one 
-block until the gas limit is reached \footnote{A website to see 
+block until the gas limit is reached\footnote{A website to see 
 current attributes: https://ethstats.net/}. For example, 
 imagine that the current gas limit of a block is 28 Gwei. 
 Next, we look at the transaction pool of a mining node in 
@@ -250,7 +250,7 @@ To a large extent, the key performance drivers of a blockchain
 like transaction speed, scalability and security depend on the embedded consensus algorithm \shortcite{andoni2019blockchain}. 
 
 In this section, we expound the \textit{Proof of Work (PoW)} mechanism, 
-which is at the time of this writing the used consensus mechanism in the Ethereum blockchain.
+which is at the time of writing the used consensus mechanism in the Ethereum blockchain.
 PoW enables high scalability in terms of the number 
 of nodes and clients \shortcite{vukolic2015quest}, whereas it provides a poor transaction speed and high 
 power consumption due to the solving of a cryptographical puzzle, which requires 
@@ -363,7 +363,7 @@ is a crucial and very important indicator for the health, resilience and
 censorship resistance of a blockchain \shortcite{antonopoulos2018mastering}. 
 However, a full node is not necessarily a mining node. It authoritatively validates all transactions, but 
 to participate in the mining competition, an additional software called \textit{ethminer}
- is needed \footnote{GPU Mining Worker: https://github.com/ethereum-mining/ethminer}
+ is needed\footnote{GPU Mining Worker: https://github.com/ethereum-mining/ethminer}
 
 \paragraph{Light Node:} To begin with, a light node is not a separate piece of software from the clients that 
 run a full node. The difference lies in the light mode for synchronization. 
